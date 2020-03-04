@@ -12,6 +12,8 @@
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
+        <fileType name="ACS Script file" implementationClass="by.home.acs.language.ACSScriptType"
+                  fieldName="INSTANCE" language="ACSScript" extensions="acs"/>
         <!-- Add your extensions here -->
     </extensions>
 
