@@ -1,0 +1,45 @@
+{
+  parserClass="by.home.acs.language.parser.ACSScriptParser"
+
+  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+  psiClassPrefix="ACSScript"
+  psiImplClassSuffix="Impl"
+  psiPackage="by.home.acs.language.psi"
+  psiImplPackage="by.home.acs.language.psi.impl"
+
+  elementTypeHolderClass="by.home.acs.language.ACSScriptTypes"
+  elementTypeClass="by.home.acs.language.psi.ACSScriptElementType"
+  tokenTypeClass="by.home.acs.language.psi.ACSScriptTokenType"
+
+  psiImplUtilClass="by.home.acs.language.psi.impl.ACSScriptPsiImplUtil"
+}
+
+{
+    tokens = [
+        IDENTIFIER = 'regexp:[a-zA-Z_][a-zA-Z0-9_]*'
+        WHITE_SPACE = 'regexp:\s+'
+    ]
+}
+
+
+ACSScriptFile ::= (COMMENT|Definition*)
+
+Definition ::= (FunctionDefinition|ScriptDefinition) // maybe "*" this is not necessary here
+
+FunctionDefinition ::= function IDENTIFIER '(' ')' (returns Type)? '{' FunctionBody '}'
+
+ScriptDefinition ::= Script Type '(' ')' '{' FunctionBody '}'
+
+FunctionBody ::= Statement*
+
+Statement ::= VariableDefinition | AssignmentStatement | FunctionInvocation
+
+VariableDefinition ::= Type IDENTIFIER (';' | ('=' FunctionInvocation)?)
+
+Type ::= int | str
+
+AssignmentStatement ::= IDENTIFIER '=' FunctionInvocation
+
+FunctionInvocation ::= IDENTIFIER '(' ')' ';'
+
