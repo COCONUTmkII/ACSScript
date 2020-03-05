@@ -1,9 +1,9 @@
 // This is a generated file. Not intended for manual editing.
-package by.home.acs.language.parser;
+package generated;
 
 import com.intellij.lang.PsiBuilder;
 import com.intellij.lang.PsiBuilder.Marker;
-import static by.home.acs.language.ACSScriptTypes.*;
+import static generated.GeneratedTypes.*;
 import static com.intellij.lang.parser.GeneratedParserUtilBase.*;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.lang.ASTNode;
@@ -12,7 +12,7 @@ import com.intellij.lang.PsiParser;
 import com.intellij.lang.LightPsiParser;
 
 @SuppressWarnings({"SimplifiableIfStatement", "UnusedAssignment"})
-public class ACSScriptParser implements PsiParser, LightPsiParser {
+public class GeneratedParser implements PsiParser, LightPsiParser {
 
   public ASTNode parse(IElementType t, PsiBuilder b) {
     parseLight(t, b);
@@ -151,19 +151,7 @@ public class ACSScriptParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // net
-  public static boolean NetType(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "NetType")) return false;
-    if (!nextTokenIs(b, NET)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, NET);
-    exit_section_(b, m, NET_TYPE, r);
-    return r;
-  }
-
-  /* ********************************************************** */
-  // Script (NUMBER | STRING) (ScriptType)? (NetType)? '{' FunctionBody '}'
+  // Script (NUMBER | STRING) '(' ')' '{' FunctionBody '}'
   public static boolean ScriptDefinition(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ScriptDefinition")) return false;
     if (!nextTokenIs(b, SCRIPT)) return false;
@@ -171,8 +159,8 @@ public class ACSScriptParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b);
     r = consumeToken(b, SCRIPT);
     r = r && ScriptDefinition_1(b, l + 1);
-    r = r && ScriptDefinition_2(b, l + 1);
-    r = r && ScriptDefinition_3(b, l + 1);
+    r = r && consumeToken(b, "(");
+    r = r && consumeToken(b, ")");
     r = r && consumeToken(b, "{");
     r = r && FunctionBody(b, l + 1);
     r = r && consumeToken(b, "}");
@@ -186,60 +174,6 @@ public class ACSScriptParser implements PsiParser, LightPsiParser {
     boolean r;
     r = consumeToken(b, NUMBER);
     if (!r) r = consumeToken(b, STRING);
-    return r;
-  }
-
-  // (ScriptType)?
-  private static boolean ScriptDefinition_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "ScriptDefinition_2")) return false;
-    ScriptDefinition_2_0(b, l + 1);
-    return true;
-  }
-
-  // (ScriptType)
-  private static boolean ScriptDefinition_2_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "ScriptDefinition_2_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = ScriptType(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // (NetType)?
-  private static boolean ScriptDefinition_3(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "ScriptDefinition_3")) return false;
-    ScriptDefinition_3_0(b, l + 1);
-    return true;
-  }
-
-  // (NetType)
-  private static boolean ScriptDefinition_3_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "ScriptDefinition_3_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = NetType(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  /* ********************************************************** */
-  // OPEN | ENTER | RETURN | RESPAWN | DEATH | LIGHTNING | UNLOADING | DISCONNECT | KILL | REOPEN
-  public static boolean ScriptType(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "ScriptType")) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NONE_, SCRIPT_TYPE, "<script type>");
-    r = consumeToken(b, OPEN);
-    if (!r) r = consumeToken(b, ENTER);
-    if (!r) r = consumeToken(b, RETURN);
-    if (!r) r = consumeToken(b, RESPAWN);
-    if (!r) r = consumeToken(b, DEATH);
-    if (!r) r = consumeToken(b, LIGHTNING);
-    if (!r) r = consumeToken(b, UNLOADING);
-    if (!r) r = consumeToken(b, DISCONNECT);
-    if (!r) r = consumeToken(b, KILL);
-    if (!r) r = consumeToken(b, REOPEN);
-    exit_section_(b, l, m, r, false, null);
     return r;
   }
 

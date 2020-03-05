@@ -10,7 +10,10 @@ public interface ACSScriptScriptDefinition extends PsiElement {
   @NotNull
   ACSScriptFunctionBody getFunctionBody();
 
-  @NotNull
-  ACSScriptType getType();
+  @Nullable
+  ACSScriptNetType getNetType();
+
+  @Nullable
+  ACSScriptScriptType getScriptType();
 
 }

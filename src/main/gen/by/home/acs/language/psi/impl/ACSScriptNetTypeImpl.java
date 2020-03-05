@@ -11,37 +11,19 @@ import static by.home.acs.language.ACSScriptTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import by.home.acs.language.psi.*;
 
-public class ACSScriptScriptDefinitionImpl extends ASTWrapperPsiElement implements ACSScriptScriptDefinition {
+public class ACSScriptNetTypeImpl extends ASTWrapperPsiElement implements ACSScriptNetType {
 
-  public ACSScriptScriptDefinitionImpl(@NotNull ASTNode node) {
+  public ACSScriptNetTypeImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull ACSScriptVisitor visitor) {
-    visitor.visitScriptDefinition(this);
+    visitor.visitNetType(this);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof ACSScriptVisitor) accept((ACSScriptVisitor)visitor);
     else super.accept(visitor);
-  }
-
-  @Override
-  @NotNull
-  public ACSScriptFunctionBody getFunctionBody() {
-    return findNotNullChildByClass(ACSScriptFunctionBody.class);
-  }
-
-  @Override
-  @Nullable
-  public ACSScriptNetType getNetType() {
-    return findChildByClass(ACSScriptNetType.class);
-  }
-
-  @Override
-  @Nullable
-  public ACSScriptScriptType getScriptType() {
-    return findChildByClass(ACSScriptScriptType.class);
   }
 
 }

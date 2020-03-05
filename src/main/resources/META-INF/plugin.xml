@@ -16,6 +16,8 @@
                   fieldName="INSTANCE" language="ACSScript" extensions="acs"/>
         <lang.parserDefinition language="ACSScript"
                                implementationClass="by.home.acs.language.ACSScriptFileDefinition"/>
+        <lang.syntaxHighlighterFactory language="ACSScript"
+                                       implementationClass="by.home.acs.language.ACSScriptSyntaxHighlightFactory"/>
         <!-- Add your extensions here -->
     </extensions>
 

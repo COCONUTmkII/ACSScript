@@ -4,8 +4,8 @@ package by.home.acs.language;
 
 import by.home.acs.language.psi.ACSScriptTokenType;
 import com.intellij.lexer.FlexLexer;
-import com.intellij.psi.TokenType;import com.intellij.psi.tree.IElementType;
-import com.intellij.psi.TokenType.*;
+import com.intellij.psi.TokenType;
+import com.intellij.psi.tree.IElementType;
 
 
 /**
@@ -36,25 +36,27 @@ public class ACSScriptLexer implements FlexLexer {
 
   /** 
    * Translates characters to character classes
-   * Chosen bits are [8, 6, 7]
-   * Total runtime size is 1040 bytes
+   * Chosen bits are [9, 6, 6]
+   * Total runtime size is 1568 bytes
    */
   public static int ZZ_CMAP(int ch) {
-    return ZZ_CMAP_A[ZZ_CMAP_Y[ZZ_CMAP_Z[ch>>13]|((ch>>7)&0x3f)]|(ch&0x7f)];
+    return ZZ_CMAP_A[(ZZ_CMAP_Y[ZZ_CMAP_Z[ch>>12]|((ch>>6)&0x3f)]<<6)|(ch&0x3f)];
   }
 
-  /* The ZZ_CMAP_Z table has 136 entries */
+  /* The ZZ_CMAP_Z table has 272 entries */
   static final char ZZ_CMAP_Z[] = zzUnpackCMap(
-    "\1\0\207\100");
+    "\1\0\1\100\1\200\u010d\100");
 
-  /* The ZZ_CMAP_Y table has 128 entries */
+  /* The ZZ_CMAP_Y table has 192 entries */
   static final char ZZ_CMAP_Y[] = zzUnpackCMap(
-    "\1\0\177\200");
+    "\1\0\1\1\1\2\175\3\1\4\77\3");
 
-  /* The ZZ_CMAP_A table has 256 entries */
+  /* The ZZ_CMAP_A table has 320 entries */
   static final char ZZ_CMAP_A[] = zzUnpackCMap(
-    "\11\0\5\3\22\0\1\3\17\0\12\2\7\0\22\1\1\4\7\1\4\0\1\1\1\0\2\1\1\5\1\1\1\16"+
-    "\1\12\1\20\1\1\1\7\4\1\1\14\1\15\1\10\1\1\1\6\1\17\1\11\1\13\5\1\205\0");
+    "\11\0\1\7\4\5\22\0\1\7\1\0\1\4\15\0\1\2\11\3\7\0\1\33\1\1\1\42\1\35\1\26\1"+
+    "\1\1\41\1\36\1\40\1\1\1\43\1\37\1\1\1\27\1\24\1\25\1\1\1\31\1\10\1\30\1\32"+
+    "\1\1\1\34\3\1\4\0\1\1\1\0\2\1\1\11\1\1\1\22\1\16\2\1\1\13\4\1\1\20\1\21\1"+
+    "\14\1\1\1\12\1\23\1\15\1\17\5\1\12\0\1\6\242\0\2\6\26\0");
 
   /** 
    * Translates DFA states to action switch labels.
@@ -62,11 +64,14 @@ public class ACSScriptLexer implements FlexLexer {
   private static final int [] ZZ_ACTION = zzUnpackAction();
 
   private static final String ZZ_ACTION_PACKED_0 =
-    "\1\0\1\1\1\2\1\3\14\2\1\4\12\2\1\5"+
-    "\2\2\1\6\1\7\1\2\1\10";
+    "\1\0\1\1\1\2\1\3\1\1\1\4\15\2\1\0"+
+    "\16\2\1\5\2\2\1\6\1\2\1\7\1\10\15\2"+
+    "\1\11\10\2\1\12\3\2\1\13\4\2\1\14\2\2"+
+    "\1\15\3\2\1\16\1\17\3\2\1\20\1\2\1\21"+
+    "\3\2\1\22\3\2\1\23\1\2\1\24\1\25";
 
   private static int [] zzUnpackAction() {
-    int [] result = new int[34];
+    int [] result = new int[98];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
@@ -91,14 +96,22 @@ public class ACSScriptLexer implements FlexLexer {
   private static final int [] ZZ_ROWMAP = zzUnpackRowMap();
 
   private static final String ZZ_ROWMAP_PACKED_0 =
-    "\0\0\0\21\0\42\0\63\0\104\0\125\0\146\0\167"+
-    "\0\210\0\231\0\252\0\273\0\314\0\335\0\356\0\377"+
-    "\0\42\0\u0110\0\u0121\0\u0132\0\u0143\0\u0154\0\u0165\0\u0176"+
-    "\0\u0187\0\u0198\0\u01a9\0\42\0\u01ba\0\u01cb\0\42\0\42"+
-    "\0\u01dc\0\42";
+    "\0\0\0\44\0\110\0\154\0\220\0\264\0\330\0\374"+
+    "\0\u0120\0\u0144\0\u0168\0\u018c\0\u01b0\0\u01d4\0\u01f8\0\u021c"+
+    "\0\u0240\0\u0264\0\u0288\0\u02ac\0\u02d0\0\u02f4\0\u0318\0\u033c"+
+    "\0\u0360\0\u0384\0\u03a8\0\u03cc\0\u03f0\0\u0414\0\u0438\0\u045c"+
+    "\0\u0480\0\u04a4\0\44\0\u04c8\0\u04ec\0\110\0\u0510\0\110"+
+    "\0\110\0\u0534\0\u0558\0\u057c\0\u05a0\0\u05c4\0\u05e8\0\u060c"+
+    "\0\u0630\0\u0654\0\u0678\0\u069c\0\u06c0\0\u06e4\0\110\0\u0708"+
+    "\0\u072c\0\u0750\0\u0774\0\u0798\0\u07bc\0\u07e0\0\u0804\0\110"+
+    "\0\u0828\0\u084c\0\u0870\0\110\0\u0894\0\u08b8\0\u08dc\0\u0900"+
+    "\0\110\0\u0924\0\u0948\0\110\0\u096c\0\u0990\0\u09b4\0\110"+
+    "\0\110\0\u09d8\0\u09fc\0\u0a20\0\110\0\u0a44\0\110\0\u0a68"+
+    "\0\u0a8c\0\u0ab0\0\110\0\u0ad4\0\u0af8\0\u0b1c\0\110\0\u0b40"+
+    "\0\110\0\110";
 
   private static int [] zzUnpackRowMap() {
-    int [] result = new int[34];
+    int [] result = new int[98];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
@@ -121,30 +134,71 @@ public class ACSScriptLexer implements FlexLexer {
   private static final int [] ZZ_TRANS = zzUnpackTrans();
 
   private static final String ZZ_TRANS_PACKED_0 =
-    "\1\2\1\3\1\2\1\4\1\5\1\3\1\6\1\7"+
-    "\2\3\1\10\4\3\1\11\1\3\22\0\2\3\1\0"+
-    "\15\3\3\0\1\4\16\0\2\3\1\0\1\3\1\12"+
-    "\13\3\1\0\2\3\1\0\12\3\1\13\2\3\1\0"+
-    "\2\3\1\0\10\3\1\14\4\3\1\0\2\3\1\0"+
-    "\7\3\1\15\5\3\1\0\2\3\1\0\5\3\1\16"+
-    "\7\3\1\0\2\3\1\0\2\3\1\17\12\3\1\0"+
-    "\2\3\1\0\5\3\1\20\7\3\1\0\2\3\1\0"+
-    "\5\3\1\21\7\3\1\0\2\3\1\0\10\3\1\22"+
-    "\4\3\1\0\2\3\1\0\2\3\1\23\12\3\1\0"+
-    "\2\3\1\0\3\3\1\24\11\3\1\0\2\3\1\0"+
-    "\7\3\1\25\5\3\1\0\2\3\1\0\1\3\1\26"+
-    "\13\3\1\0\2\3\1\0\3\3\1\27\11\3\1\0"+
-    "\2\3\1\0\4\3\1\30\10\3\1\0\2\3\1\0"+
-    "\2\3\1\31\12\3\1\0\2\3\1\0\5\3\1\32"+
-    "\7\3\1\0\2\3\1\0\10\3\1\33\4\3\1\0"+
-    "\2\3\1\0\5\3\1\34\7\3\1\0\2\3\1\0"+
-    "\10\3\1\35\4\3\1\0\2\3\1\0\3\3\1\36"+
-    "\11\3\1\0\2\3\1\0\14\3\1\37\1\0\2\3"+
-    "\1\0\13\3\1\40\1\3\1\0\2\3\1\0\11\3"+
-    "\1\41\3\3\1\0\2\3\1\0\10\3\1\42\4\3";
+    "\1\2\1\3\1\2\1\4\1\5\1\6\1\2\1\6"+
+    "\1\7\1\3\1\10\1\11\2\3\1\12\1\3\1\13"+
+    "\2\3\1\14\1\15\1\3\1\16\2\3\1\17\1\20"+
+    "\2\3\1\21\1\3\1\22\3\3\1\23\45\0\3\3"+
+    "\4\0\34\3\2\0\2\4\40\0\5\24\2\0\35\24"+
+    "\5\0\1\6\1\0\1\6\35\0\3\3\4\0\1\3"+
+    "\1\25\32\3\1\0\3\3\4\0\12\3\1\26\21\3"+
+    "\1\0\3\3\4\0\10\3\1\27\23\3\1\0\3\3"+
+    "\4\0\7\3\1\30\24\3\1\0\3\3\4\0\12\3"+
+    "\1\31\21\3\1\0\3\3\4\0\5\3\1\32\26\3"+
+    "\1\0\3\3\4\0\15\3\1\33\16\3\1\0\3\3"+
+    "\4\0\17\3\1\34\14\3\1\0\3\3\4\0\16\3"+
+    "\1\35\15\3\1\0\3\3\4\0\17\3\1\36\14\3"+
+    "\1\0\3\3\4\0\16\3\1\37\11\3\1\40\3\3"+
+    "\1\0\3\3\4\0\30\3\1\41\3\3\1\0\3\3"+
+    "\4\0\30\3\1\42\3\3\4\24\1\43\37\24\1\0"+
+    "\3\3\4\0\2\3\1\44\31\3\1\0\3\3\4\0"+
+    "\5\3\1\45\26\3\1\0\3\3\4\0\5\3\1\46"+
+    "\26\3\1\0\3\3\4\0\10\3\1\47\23\3\1\0"+
+    "\3\3\4\0\5\3\1\50\26\3\1\0\3\3\4\0"+
+    "\2\3\1\51\31\3\1\0\3\3\4\0\16\3\1\52"+
+    "\15\3\1\0\3\3\4\0\20\3\1\53\13\3\1\0"+
+    "\3\3\4\0\1\54\13\3\1\55\3\3\1\56\13\3"+
+    "\1\0\3\3\4\0\27\3\1\57\4\3\1\0\3\3"+
+    "\4\0\23\3\1\60\10\3\1\0\3\3\4\0\1\61"+
+    "\33\3\1\0\3\3\4\0\31\3\1\62\2\3\1\0"+
+    "\3\3\4\0\27\3\1\63\4\3\1\0\3\3\4\0"+
+    "\3\3\1\64\30\3\1\0\3\3\4\0\7\3\1\65"+
+    "\24\3\1\0\3\3\4\0\1\3\1\66\32\3\1\0"+
+    "\3\3\4\0\17\3\1\67\14\3\1\0\3\3\4\0"+
+    "\16\3\1\70\15\3\1\0\3\3\4\0\15\3\1\71"+
+    "\16\3\1\0\3\3\4\0\15\3\1\72\16\3\1\0"+
+    "\3\3\4\0\22\3\1\73\11\3\1\0\3\3\4\0"+
+    "\14\3\1\74\17\3\1\0\3\3\4\0\20\3\1\75"+
+    "\13\3\1\0\3\3\4\0\32\3\1\76\1\3\1\0"+
+    "\3\3\4\0\26\3\1\77\5\3\1\0\3\3\4\0"+
+    "\27\3\1\100\4\3\1\0\3\3\4\0\4\3\1\101"+
+    "\27\3\1\0\3\3\4\0\2\3\1\102\31\3\1\0"+
+    "\3\3\4\0\5\3\1\103\26\3\1\0\3\3\4\0"+
+    "\21\3\1\104\12\3\1\0\3\3\4\0\23\3\1\105"+
+    "\10\3\1\0\3\3\4\0\16\3\1\106\15\3\1\0"+
+    "\3\3\4\0\21\3\1\107\12\3\1\0\3\3\4\0"+
+    "\23\3\1\110\10\3\1\0\3\3\4\0\26\3\1\111"+
+    "\5\3\1\0\3\3\4\0\14\3\1\112\17\3\1\0"+
+    "\3\3\4\0\20\3\1\113\13\3\1\0\3\3\4\0"+
+    "\5\3\1\114\26\3\1\0\3\3\4\0\10\3\1\115"+
+    "\23\3\1\0\3\3\4\0\3\3\1\116\30\3\1\0"+
+    "\3\3\4\0\24\3\1\117\7\3\1\0\3\3\4\0"+
+    "\17\3\1\120\14\3\1\0\3\3\4\0\17\3\1\121"+
+    "\14\3\1\0\3\3\4\0\25\3\1\122\6\3\1\0"+
+    "\3\3\4\0\17\3\1\123\14\3\1\0\3\3\4\0"+
+    "\17\3\1\124\14\3\1\0\3\3\4\0\13\3\1\125"+
+    "\20\3\1\0\3\3\4\0\11\3\1\126\22\3\1\0"+
+    "\3\3\4\0\17\3\1\127\14\3\1\0\3\3\4\0"+
+    "\30\3\1\130\3\3\1\0\3\3\4\0\17\3\1\131"+
+    "\14\3\1\0\3\3\4\0\30\3\1\132\3\3\1\0"+
+    "\3\3\4\0\10\3\1\133\23\3\1\0\3\3\4\0"+
+    "\17\3\1\134\14\3\1\0\3\3\4\0\16\3\1\135"+
+    "\15\3\1\0\3\3\4\0\17\3\1\136\14\3\1\0"+
+    "\3\3\4\0\31\3\1\137\2\3\1\0\3\3\4\0"+
+    "\32\3\1\140\1\3\1\0\3\3\4\0\31\3\1\141"+
+    "\2\3\1\0\3\3\4\0\20\3\1\142\13\3";
 
   private static int [] zzUnpackTrans() {
-    int [] result = new int[493];
+    int [] result = new int[2916];
     int offset = 0;
     offset = zzUnpackTrans(ZZ_TRANS_PACKED_0, offset, result);
     return result;
@@ -182,10 +236,10 @@ public class ACSScriptLexer implements FlexLexer {
   private static final int [] ZZ_ATTRIBUTE = zzUnpackAttribute();
 
   private static final String ZZ_ATTRIBUTE_PACKED_0 =
-    "\1\0\1\11\40\1";
+    "\1\0\1\11\21\1\1\0\16\1\1\11\77\1";
 
   private static int [] zzUnpackAttribute() {
-    int [] result = new int[34];
+    int [] result = new int[98];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;
@@ -489,42 +543,107 @@ public class ACSScriptLexer implements FlexLexer {
             { return TokenType.BAD_CHARACTER;
             } 
             // fall through
-          case 9: break;
+          case 22: break;
           case 2: 
             { return ACSScriptTypes.IDENTIFIER;
             } 
             // fall through
-          case 10: break;
+          case 23: break;
           case 3: 
+            { return ACSScriptTypes.NUMBER;
+            } 
+            // fall through
+          case 24: break;
+          case 4: 
             { return TokenType.WHITE_SPACE;
             } 
             // fall through
-          case 11: break;
-          case 4: 
+          case 25: break;
+          case 5: 
+            { return ACSScriptTypes.STRING;
+            } 
+            // fall through
+          case 26: break;
+          case 6: 
             { return ACSScriptTypes.INT;
             } 
             // fall through
-          case 12: break;
-          case 5: 
-            { return ACSScriptTypes.SCRIPT;
+          case 27: break;
+          case 7: 
+            { return ACSScriptTypes.NET;
             } 
             // fall through
-          case 13: break;
-          case 6: 
+          case 28: break;
+          case 8: 
             { return ACSScriptTypes.STR;
             } 
             // fall through
-          case 14: break;
-          case 7: 
+          case 29: break;
+          case 9: 
+            { return ACSScriptTypes.OPEN;
+            } 
+            // fall through
+          case 30: break;
+          case 10: 
+            { return ACSScriptTypes.KILL;
+            } 
+            // fall through
+          case 31: break;
+          case 11: 
+            { return ACSScriptTypes.ENTER;
+            } 
+            // fall through
+          case 32: break;
+          case 12: 
+            { return ACSScriptTypes.DEATH;
+            } 
+            // fall through
+          case 33: break;
+          case 13: 
+            { return ACSScriptTypes.SCRIPT;
+            } 
+            // fall through
+          case 34: break;
+          case 14: 
+            { return ACSScriptTypes.REOPEN;
+            } 
+            // fall through
+          case 35: break;
+          case 15: 
+            { return ACSScriptTypes.RETURN;
+            } 
+            // fall through
+          case 36: break;
+          case 16: 
             { return ACSScriptTypes.RETURNS;
             } 
             // fall through
-          case 15: break;
-          case 8: 
+          case 37: break;
+          case 17: 
+            { return ACSScriptTypes.RESPAWN;
+            } 
+            // fall through
+          case 38: break;
+          case 18: 
             { return ACSScriptTypes.FUNCTION;
             } 
             // fall through
-          case 16: break;
+          case 39: break;
+          case 19: 
+            { return ACSScriptTypes.UNLOADING;
+            } 
+            // fall through
+          case 40: break;
+          case 20: 
+            { return ACSScriptTypes.LIGHTNING;
+            } 
+            // fall through
+          case 41: break;
+          case 21: 
+            { return ACSScriptTypes.DISCONNECT;
+            } 
+            // fall through
+          case 42: break;
           default:
             zzScanError(ZZ_NO_MATCH);
           }

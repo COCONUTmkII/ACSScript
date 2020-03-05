@@ -23,13 +23,13 @@ WHITE_SPACE=[ \t\n\x0B\f\r]+
 %%
 <YYINITIAL> {
   // In here, we match keywords. So if a keyword is found, this returns a token which corresponds to that keyword.
-  // These tokens are generated using the `Ballerina.bnf` file and located in the SimpleTypes `class`.
+  // These tokens are generated using the `Ballerina.bnf` file and located in the ACSScruptTypes `class`.
   // These tokens are Parser uses these return values to match token squence to a parser rule.
   "Script"           { return ACSScriptTypes.SCRIPT;}
-  "function"         { return ACSScriptTypes.FUNCTION; } // This indicates that the `function` keyword is encountered.
-  "returns"          { return ACSScriptTypes.RETURNS; }  // This indicates that the `returns` keyword is encountered.
-  "int"              { return ACSScriptTypes.INT; }      // This indicates that the `int` keyword is encountered.
-  "str"              { return ACSScriptTypes.STR; }      // This indicates that the `string` keyword is encountered.
+  "function"         { return ACSScriptTypes.FUNCTION; }
+  "returns"          { return ACSScriptTypes.RETURNS; }
+  "int"              { return ACSScriptTypes.INT; }
+  "str"              { return ACSScriptTypes.STR; }
   "OPEN"             { return ACSScriptTypes.OPEN;}
   "ENTER"            { return ACSScriptTypes.ENTER;}
   "RETURN"           { return ACSScriptTypes.RETURN;}
