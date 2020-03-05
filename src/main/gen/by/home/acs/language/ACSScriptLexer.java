@@ -4,9 +4,8 @@ package by.home.acs.language;
 
 import by.home.acs.language.psi.ACSScriptTokenType;
 import com.intellij.lexer.FlexLexer;
-import com.intellij.psi.tree.IElementType;
-import com.intellij.psi.TokenType;
-import by.home.acs.language.psi.ACSScriptType;
+import com.intellij.psi.TokenType;import com.intellij.psi.tree.IElementType;
+import com.intellij.psi.TokenType.*;
 
 
 /**
@@ -14,7 +13,7 @@ import by.home.acs.language.psi.ACSScriptType;
  * <a href="http://www.jflex.de/">JFlex</a> 1.7.0
  * from the specification file <tt>ACSSCript.flex</tt>
  */
-class ACSScriptLexer implements FlexLexer {
+public class ACSScriptLexer implements FlexLexer {
 
   /** This character denotes the end of file */
   public static final int YYEOF = -1;
@@ -24,7 +23,6 @@ class ACSScriptLexer implements FlexLexer {
 
   /** lexical states */
   public static final int YYINITIAL = 0;
-  public static final int WAITING_VALUE = 2;
 
   /**
    * ZZ_LEXSTATE[l] is the state in the DFA for the lexical state l
@@ -33,7 +31,7 @@ class ACSScriptLexer implements FlexLexer {
    * l is of the form l = 2*k, k a non negative integer
    */
   private static final int ZZ_LEXSTATE[] = { 
-     0,  0,  1, 1
+     0, 0
   };
 
   /** 
@@ -55,9 +53,8 @@ class ACSScriptLexer implements FlexLexer {
 
   /* The ZZ_CMAP_A table has 256 entries */
   static final char ZZ_CMAP_A[] = zzUnpackCMap(
-    "\11\0\1\5\1\4\2\5\1\4\22\0\1\5\1\3\1\0\1\3\14\0\12\2\7\0\32\1\4\0\1\1\1\0"+
-    "\2\1\1\11\1\1\1\16\1\6\2\1\1\13\4\1\1\10\1\14\2\1\1\15\1\17\1\12\1\7\5\1\205"+
-    "\0");
+    "\11\0\5\3\22\0\1\3\17\0\12\2\7\0\22\1\1\4\7\1\4\0\1\1\1\0\2\1\1\5\1\1\1\16"+
+    "\1\12\1\20\1\1\1\7\4\1\1\14\1\15\1\10\1\1\1\6\1\17\1\11\1\13\5\1\205\0");
 
   /** 
    * Translates DFA states to action switch labels.
@@ -65,11 +62,11 @@ class ACSScriptLexer implements FlexLexer {
   private static final int [] ZZ_ACTION = zzUnpackAction();
 
   private static final String ZZ_ACTION_PACKED_0 =
-    "\2\0\5\1\1\2\1\3\1\4\5\0\1\5\1\0"+
-    "\1\6\7\0\1\7\1\10";
+    "\1\0\1\1\1\2\1\3\14\2\1\4\12\2\1\5"+
+    "\2\2\1\6\1\7\1\2\1\10";
 
   private static int [] zzUnpackAction() {
-    int [] result = new int[27];
+    int [] result = new int[34];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
@@ -94,13 +91,14 @@ class ACSScriptLexer implements FlexLexer {
   private static final int [] ZZ_ROWMAP = zzUnpackRowMap();
 
   private static final String ZZ_ROWMAP_PACKED_0 =
-    "\0\0\0\20\0\40\0\60\0\100\0\120\0\140\0\160"+
-    "\0\200\0\220\0\240\0\260\0\300\0\320\0\340\0\40"+
-    "\0\360\0\40\0\u0100\0\u0110\0\u0120\0\u0130\0\u0140\0\u0150"+
-    "\0\u0160\0\40\0\40";
+    "\0\0\0\21\0\42\0\63\0\104\0\125\0\146\0\167"+
+    "\0\210\0\231\0\252\0\273\0\314\0\335\0\356\0\377"+
+    "\0\42\0\u0110\0\u0121\0\u0132\0\u0143\0\u0154\0\u0165\0\u0176"+
+    "\0\u0187\0\u0198\0\u01a9\0\42\0\u01ba\0\u01cb\0\42\0\42"+
+    "\0\u01dc\0\42";
 
   private static int [] zzUnpackRowMap() {
-    int [] result = new int[27];
+    int [] result = new int[34];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
@@ -123,17 +121,30 @@ class ACSScriptLexer implements FlexLexer {
   private static final int [] ZZ_TRANS = zzUnpackTrans();
 
   private static final String ZZ_TRANS_PACKED_0 =
-    "\6\3\1\4\4\3\1\5\1\3\1\6\1\3\1\7"+
-    "\1\3\1\10\1\3\1\11\2\12\12\10\27\0\1\13"+
-    "\20\0\1\14\25\0\1\15\13\0\1\16\6\0\2\10"+
-    "\3\0\12\10\4\11\1\0\13\11\4\0\2\12\22\0"+
-    "\1\17\21\0\1\20\17\0\1\21\22\0\1\22\13\0"+
-    "\1\23\15\0\1\24\22\0\1\25\22\0\1\26\15\0"+
-    "\1\27\14\0\1\30\23\0\1\31\22\0\1\32\10\0"+
-    "\1\33\7\0";
+    "\1\2\1\3\1\2\1\4\1\5\1\3\1\6\1\7"+
+    "\2\3\1\10\4\3\1\11\1\3\22\0\2\3\1\0"+
+    "\15\3\3\0\1\4\16\0\2\3\1\0\1\3\1\12"+
+    "\13\3\1\0\2\3\1\0\12\3\1\13\2\3\1\0"+
+    "\2\3\1\0\10\3\1\14\4\3\1\0\2\3\1\0"+
+    "\7\3\1\15\5\3\1\0\2\3\1\0\5\3\1\16"+
+    "\7\3\1\0\2\3\1\0\2\3\1\17\12\3\1\0"+
+    "\2\3\1\0\5\3\1\20\7\3\1\0\2\3\1\0"+
+    "\5\3\1\21\7\3\1\0\2\3\1\0\10\3\1\22"+
+    "\4\3\1\0\2\3\1\0\2\3\1\23\12\3\1\0"+
+    "\2\3\1\0\3\3\1\24\11\3\1\0\2\3\1\0"+
+    "\7\3\1\25\5\3\1\0\2\3\1\0\1\3\1\26"+
+    "\13\3\1\0\2\3\1\0\3\3\1\27\11\3\1\0"+
+    "\2\3\1\0\4\3\1\30\10\3\1\0\2\3\1\0"+
+    "\2\3\1\31\12\3\1\0\2\3\1\0\5\3\1\32"+
+    "\7\3\1\0\2\3\1\0\10\3\1\33\4\3\1\0"+
+    "\2\3\1\0\5\3\1\34\7\3\1\0\2\3\1\0"+
+    "\10\3\1\35\4\3\1\0\2\3\1\0\3\3\1\36"+
+    "\11\3\1\0\2\3\1\0\14\3\1\37\1\0\2\3"+
+    "\1\0\13\3\1\40\1\3\1\0\2\3\1\0\11\3"+
+    "\1\41\3\3\1\0\2\3\1\0\10\3\1\42\4\3";
 
   private static int [] zzUnpackTrans() {
-    int [] result = new int[368];
+    int [] result = new int[493];
     int offset = 0;
     offset = zzUnpackTrans(ZZ_TRANS_PACKED_0, offset, result);
     return result;
@@ -171,11 +182,10 @@ class ACSScriptLexer implements FlexLexer {
   private static final int [] ZZ_ATTRIBUTE = zzUnpackAttribute();
 
   private static final String ZZ_ATTRIBUTE_PACKED_0 =
-    "\2\0\1\11\7\1\5\0\1\11\1\0\1\11\7\0"+
-    "\2\11";
+    "\1\0\1\11\40\1";
 
   private static int [] zzUnpackAttribute() {
-    int [] result = new int[27];
+    int [] result = new int[34];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;
@@ -236,7 +246,7 @@ class ACSScriptLexer implements FlexLexer {
    *
    * @param   in  the java.io.Reader to read input from.
    */
-  ACSScriptLexer(java.io.Reader in) {
+  public ACSScriptLexer(java.io.Reader in) {
     this.zzReader = in;
   }
 
@@ -386,18 +396,6 @@ class ACSScriptLexer implements FlexLexer {
 
 
   /**
-   * Contains user EOF-code, which will be executed exactly once,
-   * when the end of file is reached
-   */
-  private void zzDoEOF() {
-    if (!zzEOFDone) {
-      zzEOFDone = true;
-    
-    }
-  }
-
-
-  /**
    * Resumes scanning until the next regular expression is matched,
    * the end of input is encountered or an I/O-Error occurs.
    *
@@ -483,7 +481,6 @@ class ACSScriptLexer implements FlexLexer {
 
       if (zzInput == YYEOF && zzStartRead == zzCurrentPos) {
         zzAtEOF = true;
-        zzDoEOF();
         return null;
       }
       else {
@@ -494,37 +491,37 @@ class ACSScriptLexer implements FlexLexer {
             // fall through
           case 9: break;
           case 2: 
-            { yybegin(YYINITIAL); return ACSScriptTypes.IDENTIFIER;
+            { return ACSScriptTypes.IDENTIFIER;
             } 
             // fall through
           case 10: break;
           case 3: 
-            { yybegin(YYINITIAL); return ACSScriptTypes.COMMENT;
+            { return TokenType.WHITE_SPACE;
             } 
             // fall through
           case 11: break;
           case 4: 
-            { yybegin(YYINITIAL); return TokenType.WHITE_SPACE;
+            { return ACSScriptTypes.INT;
             } 
             // fall through
           case 12: break;
           case 5: 
-            { yybegin(YYINITIAL); return ACSScriptTypes.INT;
+            { return ACSScriptTypes.SCRIPT;
             } 
             // fall through
           case 13: break;
           case 6: 
-            { yybegin(YYINITIAL); return ACSScriptTypes.STR;
+            { return ACSScriptTypes.STR;
             } 
             // fall through
           case 14: break;
           case 7: 
-            { yybegin(YYINITIAL); return ACSScriptTypes.RETURNS;
+            { return ACSScriptTypes.RETURNS;
             } 
             // fall through
           case 15: break;
           case 8: 
-            { yybegin(YYINITIAL); return ACSScriptTypes.FUNCTION;
+            { return ACSScriptTypes.FUNCTION;
             } 
             // fall through
           case 16: break;
