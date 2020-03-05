@@ -13,8 +13,9 @@ import com.intellij.psi.tree.IElementType;
 %type IElementType
 %unicode
 
-IDENTIFIER=[a-zA-Z_][a-zA-Z0-9_]*
-
+IDENTIFIER= [a-zA-Z_][a-zA-Z0-9_]*
+NUMBER= [1-9][0-9]*
+STRING= \"(.[^\"]*)\"
 // If some character sequence is matched to this regex, it will be treated as a WHITE_SPACE.
 WHITE_SPACE=[ \t\n\x0B\f\r]+
 
@@ -28,13 +29,26 @@ WHITE_SPACE=[ \t\n\x0B\f\r]+
   "function"         { return ACSScriptTypes.FUNCTION; } // This indicates that the `function` keyword is encountered.
   "returns"          { return ACSScriptTypes.RETURNS; }  // This indicates that the `returns` keyword is encountered.
   "int"              { return ACSScriptTypes.INT; }      // This indicates that the `int` keyword is encountered.
-  "string"           { return ACSScriptTypes.STR; }   // This indicates that the `string` keyword is encountered.
-
+  "str"              { return ACSScriptTypes.STR; }      // This indicates that the `string` keyword is encountered.
+  "OPEN"             { return ACSScriptTypes.OPEN;}
+  "ENTER"            { return ACSScriptTypes.ENTER;}
+  "RETURN"           { return ACSScriptTypes.RETURN;}
+  "RESPAWN"          { return ACSScriptTypes.RESPAWN;}
+  "DEATH"            { return ACSScriptTypes.DEATH;}
+  "LIGHTNING"        { return ACSScriptTypes.LIGHTNING;}
+  "UNLOADING"        { return ACSScriptTypes.UNLOADING;}
+  "DISCONNECT"       { return ACSScriptTypes.DISCONNECT;}
+  "KILL"             { return ACSScriptTypes.KILL;}
+  "REOPEN"           { return ACSScriptTypes.REOPEN;}
+  "net"              { return ACSScriptTypes.NET;}
   // In here, we check for character sequences which matches regular expressions which we defined above.
   {IDENTIFIER}       { return ACSScriptTypes.IDENTIFIER; } // This indicates that a character sequence which matches to the rule
                                             // identifier is encountered.
   {WHITE_SPACE}      { return TokenType.WHITE_SPACE; } // This indicates that a character sequence which matches to the rule
                                              // whitespace is encountered.
+  {NUMBER}           { return ACSScriptTypes.NUMBER;}
+  {STRING}           { return ACSScriptTypes.STRING;}
+
 }
 
 // If the character sequence does not match any of the above rules, we return BAD_CHARACTER which indicates that
