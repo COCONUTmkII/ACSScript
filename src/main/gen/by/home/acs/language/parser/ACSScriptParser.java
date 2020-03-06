@@ -163,7 +163,7 @@ public class ACSScriptParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // Script (NUMBER | STRING) (ScriptType)? (NetType)? '{' FunctionBody '}'
+  // Script (NUMBER | STRING) (ScriptType)? ('(' Type IDENTIFIER')' | '(' VoidType ')')?  (NetType)? '{' FunctionBody '}'
   public static boolean ScriptDefinition(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ScriptDefinition")) return false;
     if (!nextTokenIs(b, SCRIPT)) return false;
@@ -173,6 +173,7 @@ public class ACSScriptParser implements PsiParser, LightPsiParser {
     r = r && ScriptDefinition_1(b, l + 1);
     r = r && ScriptDefinition_2(b, l + 1);
     r = r && ScriptDefinition_3(b, l + 1);
+    r = r && ScriptDefinition_4(b, l + 1);
     r = r && consumeToken(b, "{");
     r = r && FunctionBody(b, l + 1);
     r = r && consumeToken(b, "}");
@@ -206,16 +207,59 @@ public class ACSScriptParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // (NetType)?
+  // ('(' Type IDENTIFIER')' | '(' VoidType ')')?
   private static boolean ScriptDefinition_3(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ScriptDefinition_3")) return false;
     ScriptDefinition_3_0(b, l + 1);
     return true;
   }
 
-  // (NetType)
+  // '(' Type IDENTIFIER')' | '(' VoidType ')'
   private static boolean ScriptDefinition_3_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ScriptDefinition_3_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = ScriptDefinition_3_0_0(b, l + 1);
+    if (!r) r = ScriptDefinition_3_0_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // '(' Type IDENTIFIER')'
+  private static boolean ScriptDefinition_3_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "ScriptDefinition_3_0_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, "(");
+    r = r && Type(b, l + 1);
+    r = r && consumeToken(b, IDENTIFIER);
+    r = r && consumeToken(b, ")");
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // '(' VoidType ')'
+  private static boolean ScriptDefinition_3_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "ScriptDefinition_3_0_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, "(");
+    r = r && VoidType(b, l + 1);
+    r = r && consumeToken(b, ")");
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // (NetType)?
+  private static boolean ScriptDefinition_4(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "ScriptDefinition_4")) return false;
+    ScriptDefinition_4_0(b, l + 1);
+    return true;
+  }
+
+  // (NetType)
+  private static boolean ScriptDefinition_4_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "ScriptDefinition_4_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = NetType(b, l + 1);
@@ -309,6 +353,18 @@ public class ACSScriptParser implements PsiParser, LightPsiParser {
     r = consumeToken(b, "=");
     r = r && FunctionInvocation(b, l + 1);
     exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // void
+  public static boolean VoidType(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "VoidType")) return false;
+    if (!nextTokenIs(b, VOID)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, VOID);
+    exit_section_(b, m, VOID_TYPE, r);
     return r;
   }
 

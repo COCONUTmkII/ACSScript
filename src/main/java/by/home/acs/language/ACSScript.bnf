@@ -31,11 +31,13 @@ Definition ::= (FunctionDefinition|ScriptDefinition)
 
 FunctionDefinition ::= function IDENTIFIER '(' ')' (returns Type)? '{' FunctionBody '}'
 
-ScriptDefinition ::= Script (NUMBER | STRING) (ScriptType)? (NetType)? '{' FunctionBody '}'
+ScriptDefinition ::= Script (NUMBER | STRING) (ScriptType)? ('(' Type IDENTIFIER')' | '(' VoidType ')')?  (NetType)? '{' FunctionBody '}'
 
 ScriptType ::= OPEN | ENTER | RETURN | RESPAWN | DEATH | LIGHTNING | UNLOADING | DISCONNECT | KILL | REOPEN
 
 NetType ::= net
+
+VoidType ::= void
 
 FunctionBody ::= Statement*
 

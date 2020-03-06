@@ -33,6 +33,9 @@ public class ACSScriptSyntaxHighlighter extends SyntaxHighlighterBase {
     public static final TextAttributesKey KEY =
             createTextAttributesKey("SIMPLE_KEY", DefaultLanguageHighlighterColors.KEYWORD);
 
+    public static final TextAttributesKey SCRIPT_TYPE =
+            createTextAttributesKey("SIMPLE_SCRIPT_TYPE", DefaultLanguageHighlighterColors.METADATA);
+
     @NotNull
     @Override
     public Lexer getHighlightingLexer() {

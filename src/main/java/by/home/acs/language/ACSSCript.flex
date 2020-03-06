@@ -28,6 +28,7 @@ WHITE_SPACE=[ \t\n\x0B\f\r]+
   "Script"           { return ACSScriptTypes.SCRIPT;}
   "function"         { return ACSScriptTypes.FUNCTION; }
   "returns"          { return ACSScriptTypes.RETURNS; }
+  "void"             { return ACSScriptTypes.VOID;}
   "int"              { return ACSScriptTypes.INT; }
   "str"              { return ACSScriptTypes.STR; }
   "OPEN"             { return ACSScriptTypes.OPEN;}

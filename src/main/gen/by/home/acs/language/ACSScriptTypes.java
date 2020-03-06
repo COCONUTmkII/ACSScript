@@ -21,6 +21,7 @@ public interface ACSScriptTypes {
   IElementType STATEMENT = new ACSScriptElementType("STATEMENT");
   IElementType TYPE = new ACSScriptElementType("TYPE");
   IElementType VARIABLE_DEFINITION = new ACSScriptElementType("VARIABLE_DEFINITION");
+  IElementType VOID_TYPE = new ACSScriptElementType("VOID_TYPE");
 
   IElementType COMMENT = new ACSScriptTokenType("COMMENT");
   IElementType DEATH = new ACSScriptTokenType("DEATH");
@@ -42,6 +43,7 @@ public interface ACSScriptTypes {
   IElementType STR = new ACSScriptTokenType("str");
   IElementType STRING = new ACSScriptTokenType("STRING");
   IElementType UNLOADING = new ACSScriptTokenType("UNLOADING");
+  IElementType VOID = new ACSScriptTokenType("void");
 
   class Factory {
     public static PsiElement createElement(ASTNode node) {
@@ -78,6 +80,9 @@ public interface ACSScriptTypes {
       }
       else if (type == VARIABLE_DEFINITION) {
         return new ACSScriptVariableDefinitionImpl(node);
+      }
+      else if (type == VOID_TYPE) {
+        return new ACSScriptVoidTypeImpl(node);
       }
       throw new AssertionError("Unknown element type: " + type);
     }

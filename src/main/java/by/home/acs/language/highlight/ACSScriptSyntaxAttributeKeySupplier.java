@@ -16,19 +16,22 @@ public class ACSScriptSyntaxAttributeKeySupplier {
     private static final Map<IElementType, Supplier<TextAttributesKey[]>> IElements;
     static {
         final Map<IElementType, Supplier<TextAttributesKey[]>> elements = new ConcurrentHashMap<>();
-        elements.put(ACSScriptTypes.OPEN, () -> new TextAttributesKey[]{KEY});
-        elements.put(ACSScriptTypes.DEATH, () -> new TextAttributesKey[]{KEY});
-        elements.put(ACSScriptTypes.ENTER, () -> new TextAttributesKey[]{KEY});
-        elements.put(ACSScriptTypes.DISCONNECT, () -> new TextAttributesKey[]{KEY});
-        elements.put(ACSScriptTypes.REOPEN, () -> new TextAttributesKey[]{KEY});
-        elements.put(ACSScriptTypes.RETURN, () -> new TextAttributesKey[]{KEY});
-        elements.put(ACSScriptTypes.RESPAWN, () -> new TextAttributesKey[]{KEY});
+        elements.put(ACSScriptTypes.OPEN, () -> new TextAttributesKey[]{SCRIPT_TYPE});
+        elements.put(ACSScriptTypes.DEATH, () -> new TextAttributesKey[]{SCRIPT_TYPE});
+        elements.put(ACSScriptTypes.ENTER, () -> new TextAttributesKey[]{SCRIPT_TYPE});
+        elements.put(ACSScriptTypes.DISCONNECT, () -> new TextAttributesKey[]{SCRIPT_TYPE});
+        elements.put(ACSScriptTypes.REOPEN, () -> new TextAttributesKey[]{SCRIPT_TYPE});
+        elements.put(ACSScriptTypes.RETURN, () -> new TextAttributesKey[]{SCRIPT_TYPE});
+        elements.put(ACSScriptTypes.RESPAWN, () -> new TextAttributesKey[]{SCRIPT_TYPE});
         elements.put(ACSScriptTypes.SCRIPT, () -> new TextAttributesKey[]{KEY});
         elements.put(ACSScriptTypes.FUNCTION, () -> new TextAttributesKey[]{KEY});
         elements.put(ACSScriptTypes.STR, () -> new TextAttributesKey[]{KEY});
         elements.put(ACSScriptTypes.INT, () -> new TextAttributesKey[]{KEY});
         elements.put(ACSScriptTypes.COMMENT, () -> new TextAttributesKey[]{COMMENT});
         elements.put(ACSScriptTypes.IDENTIFIER, () -> new TextAttributesKey[]{IDENTIFIER});
+        elements.put(ACSScriptTypes.STRING, () -> new TextAttributesKey[]{STRING_VALUE});
+        elements.put(ACSScriptTypes.VOID, () -> new TextAttributesKey[]{KEY});
+        elements.put(ACSScriptTypes.NUMBER, () -> new TextAttributesKey[]{INT_VALUE});
         IElements = Collections.unmodifiableMap(elements);
     }
 

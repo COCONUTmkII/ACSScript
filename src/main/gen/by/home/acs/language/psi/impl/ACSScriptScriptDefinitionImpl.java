@@ -44,4 +44,16 @@ public class ACSScriptScriptDefinitionImpl extends ASTWrapperPsiElement implemen
     return findChildByClass(ACSScriptScriptType.class);
   }
 
+  @Override
+  @Nullable
+  public ACSScriptType getType() {
+    return findChildByClass(ACSScriptType.class);
+  }
+
+  @Override
+  @Nullable
+  public ACSScriptVoidType getVoidType() {
+    return findChildByClass(ACSScriptVoidType.class);
+  }
+
 }
