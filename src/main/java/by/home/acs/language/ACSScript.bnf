@@ -43,7 +43,9 @@ FunctionBody ::= Statement*
 
 Statement ::= VariableDefinition | AssignmentStatement | FunctionInvocation
 
-VariableDefinition ::= Type IDENTIFIER (';' | ('=' FunctionInvocation)?)
+VariableDefinition ::= Type IDENTIFIER (';' | ('=' FunctionInvocation|VariableInitialization)?)
+
+VariableInitialization ::= IDENTIFIER';'
 
 Type ::= int | str | bool
 

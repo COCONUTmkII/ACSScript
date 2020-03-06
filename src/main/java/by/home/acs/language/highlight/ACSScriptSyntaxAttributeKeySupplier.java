@@ -10,7 +10,7 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 
-import static by.home.acs.language.highlight.ACSScriptSyntaxHighlighter.*;
+import static by.home.acs.language.highlight.ACSScriptTextAttributeKeyValue.*;
 
 public class ACSScriptSyntaxAttributeKeySupplier {
     private static final Map<IElementType, Supplier<TextAttributesKey[]>> IElements;
@@ -31,7 +31,6 @@ public class ACSScriptSyntaxAttributeKeySupplier {
         elements.put(ACSScriptTypes.BOOL, () -> new TextAttributesKey[]{KEY});
         elements.put(ACSScriptTypes.COMMENT, () -> new TextAttributesKey[]{COMMENT});
         elements.put(ACSScriptTypes.IDENTIFIER, () -> new TextAttributesKey[]{IDENTIFIER});
-
         elements.put(ACSScriptTypes.VOID, () -> new TextAttributesKey[]{KEY});
         elements.put(ACSScriptTypes.NUMBER, () -> new TextAttributesKey[]{INT_VALUE});
         IElements = Collections.unmodifiableMap(elements);
