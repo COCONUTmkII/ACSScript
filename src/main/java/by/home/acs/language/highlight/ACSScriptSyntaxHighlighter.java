@@ -9,8 +9,6 @@ import org.jetbrains.annotations.NotNull;
 
 public class ACSScriptSyntaxHighlighter extends SyntaxHighlighterBase {
 
-
-
     @NotNull
     @Override
     public Lexer getHighlightingLexer() {

@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>by.home.ACSScript</id>
     <name>ACSScript</name>
-    <vendor email="gameopeninghomerun@gmail.com" url="DISCORD: COCONUTmkII#9021 ">COCONUTmkII</vendor>
+    <vendor email="gameopeninghomerun@gmail.com" url="DISCORD: COCONUTmkII#9021">COCONUTmkII</vendor>
 
     <description><![CDATA[
     This is ACS Script Language Plugin for IDEA
