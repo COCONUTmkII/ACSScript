@@ -301,14 +301,14 @@ public class ACSScriptParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // int | str
+  // int | str | bool
   public static boolean Type(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "Type")) return false;
-    if (!nextTokenIs(b, "<type>", INT, STR)) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, TYPE, "<type>");
     r = consumeToken(b, INT);
     if (!r) r = consumeToken(b, STR);
+    if (!r) r = consumeToken(b, BOOL);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
@@ -317,7 +317,6 @@ public class ACSScriptParser implements PsiParser, LightPsiParser {
   // Type IDENTIFIER (';' | ('=' FunctionInvocation)?)
   public static boolean VariableDefinition(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "VariableDefinition")) return false;
-    if (!nextTokenIs(b, "<variable definition>", INT, STR)) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, VARIABLE_DEFINITION, "<variable definition>");
     r = Type(b, l + 1);

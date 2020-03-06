@@ -23,6 +23,7 @@ public interface ACSScriptTypes {
   IElementType VARIABLE_DEFINITION = new ACSScriptElementType("VARIABLE_DEFINITION");
   IElementType VOID_TYPE = new ACSScriptElementType("VOID_TYPE");
 
+  IElementType BOOL = new ACSScriptTokenType("bool");
   IElementType COMMENT = new ACSScriptTokenType("COMMENT");
   IElementType DEATH = new ACSScriptTokenType("DEATH");
   IElementType DISCONNECT = new ACSScriptTokenType("DISCONNECT");

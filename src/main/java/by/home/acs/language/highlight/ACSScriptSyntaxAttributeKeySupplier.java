@@ -27,9 +27,11 @@ public class ACSScriptSyntaxAttributeKeySupplier {
         elements.put(ACSScriptTypes.FUNCTION, () -> new TextAttributesKey[]{KEY});
         elements.put(ACSScriptTypes.STR, () -> new TextAttributesKey[]{KEY});
         elements.put(ACSScriptTypes.INT, () -> new TextAttributesKey[]{KEY});
+        elements.put(ACSScriptTypes.STRING, () -> new TextAttributesKey[]{STRING_VALUE});
+        elements.put(ACSScriptTypes.BOOL, () -> new TextAttributesKey[]{KEY});
         elements.put(ACSScriptTypes.COMMENT, () -> new TextAttributesKey[]{COMMENT});
         elements.put(ACSScriptTypes.IDENTIFIER, () -> new TextAttributesKey[]{IDENTIFIER});
-        elements.put(ACSScriptTypes.STRING, () -> new TextAttributesKey[]{STRING_VALUE});
+
         elements.put(ACSScriptTypes.VOID, () -> new TextAttributesKey[]{KEY});
         elements.put(ACSScriptTypes.NUMBER, () -> new TextAttributesKey[]{INT_VALUE});
         IElements = Collections.unmodifiableMap(elements);

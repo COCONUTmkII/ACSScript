@@ -31,6 +31,7 @@ WHITE_SPACE=[ \t\n\x0B\f\r]+
   "void"             { return ACSScriptTypes.VOID;}
   "int"              { return ACSScriptTypes.INT; }
   "str"              { return ACSScriptTypes.STR; }
+  "bool"             { return ACSScriptTypes.BOOL;}
   "OPEN"             { return ACSScriptTypes.OPEN;}
   "ENTER"            { return ACSScriptTypes.ENTER;}
   "RETURN"           { return ACSScriptTypes.RETURN;}

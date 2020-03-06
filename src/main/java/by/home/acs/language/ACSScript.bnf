@@ -45,7 +45,7 @@ Statement ::= VariableDefinition | AssignmentStatement | FunctionInvocation
 
 VariableDefinition ::= Type IDENTIFIER (';' | ('=' FunctionInvocation)?)
 
-Type ::= int | str
+Type ::= int | str | bool
 
 AssignmentStatement ::= IDENTIFIER '=' FunctionInvocation
 
