@@ -1,4 +1,4 @@
-package by.home.acs.language;
+package by.home.acs.language.highlight;
 
 import com.intellij.openapi.fileTypes.SyntaxHighlighter;
 import com.intellij.openapi.fileTypes.SyntaxHighlighterFactory;

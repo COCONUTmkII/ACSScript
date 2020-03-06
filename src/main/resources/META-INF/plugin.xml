@@ -17,7 +17,7 @@
         <lang.parserDefinition language="ACSScript"
                                implementationClass="by.home.acs.language.ACSScriptFileDefinition"/>
         <lang.syntaxHighlighterFactory language="ACSScript"
-                                       implementationClass="by.home.acs.language.ACSScriptSyntaxHighlightFactory"/>
+                                       implementationClass="by.home.acs.language.highlight.ACSScriptSyntaxHighlightFactory"/>
         <!-- Add your extensions here -->
     </extensions>
 
