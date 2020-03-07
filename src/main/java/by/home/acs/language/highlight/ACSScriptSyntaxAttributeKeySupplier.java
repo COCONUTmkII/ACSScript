@@ -2,6 +2,7 @@ package by.home.acs.language.highlight;
 
 
 import by.home.acs.language.ACSScriptTypes;
+import by.home.acs.language.psi.ACSScriptType;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.psi.tree.IElementType;
 import java.util.Collections;
@@ -23,6 +24,7 @@ public class ACSScriptSyntaxAttributeKeySupplier {
         elements.put(ACSScriptTypes.REOPEN, () -> new TextAttributesKey[]{SCRIPT_TYPE});
         elements.put(ACSScriptTypes.RETURN, () -> new TextAttributesKey[]{SCRIPT_TYPE});
         elements.put(ACSScriptTypes.RESPAWN, () -> new TextAttributesKey[]{SCRIPT_TYPE});
+        elements.put(ACSScriptTypes.UNLOADING, () -> new TextAttributesKey[]{SCRIPT_TYPE});
         elements.put(ACSScriptTypes.SCRIPT, () -> new TextAttributesKey[]{KEY});
         elements.put(ACSScriptTypes.FUNCTION, () -> new TextAttributesKey[]{KEY});
         elements.put(ACSScriptTypes.STR, () -> new TextAttributesKey[]{KEY});
@@ -33,6 +35,14 @@ public class ACSScriptSyntaxAttributeKeySupplier {
         elements.put(ACSScriptTypes.IDENTIFIER, () -> new TextAttributesKey[]{IDENTIFIER});
         elements.put(ACSScriptTypes.VOID, () -> new TextAttributesKey[]{KEY});
         elements.put(ACSScriptTypes.NUMBER, () -> new TextAttributesKey[]{INT_VALUE});
+        elements.put(ACSScriptTypes.TRUE, () -> new TextAttributesKey[]{KEY});
+        elements.put(ACSScriptTypes.FALSE, () -> new TextAttributesKey[]{KEY});
+        elements.put(ACSScriptTypes.BREAK, () -> new TextAttributesKey[]{KEY});
+        elements.put(ACSScriptTypes.DEFAULT, () -> new TextAttributesKey[]{KEY});
+        elements.put(ACSScriptTypes.IF, () -> new TextAttributesKey[]{KEY});
+        elements.put(ACSScriptTypes.ELSE, () -> new TextAttributesKey[]{KEY});
+        elements.put(ACSScriptTypes.SWITCH, () -> new TextAttributesKey[]{KEY});
+        elements.put(ACSScriptTypes.CASE, () -> new TextAttributesKey[]{KEY});
         IElements = Collections.unmodifiableMap(elements);
     }
 

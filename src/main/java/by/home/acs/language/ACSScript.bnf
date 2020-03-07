@@ -41,15 +41,27 @@ VoidType ::= void
 
 FunctionBody ::= Statement*
 
-Statement ::= VariableDefinition | AssignmentStatement | FunctionInvocation
+Statement ::= VariableDefinition | AssignmentStatement | FunctionInvocation | ConditionalOperator | ReturnOperator
+
+CaseOperator ::=   case IDENTIFIER ':'  (FunctionInvocation | VariableDefinition)?  (break ';')? CaseOperator? (default ':' FunctionInvocation)?
 
 VariableDefinition ::= Type IDENTIFIER (';' | ('=' ((FunctionInvocation) | VariableInitialization ))?)
 
-VariableInitialization ::= (NUMBER | STRING) ';'
+VariableInitialization ::= (NUMBER | STRING | LogicalType) ';' // Classify initialization directly
 
 Type ::= int | str | bool
 
+LogicalType ::= true | false
+
+ReturnOperator ::= return ';' | return IDENTIFIER ';' // Use something else but IDENTIFIER later
+
 AssignmentStatement ::= IDENTIFIER '=' FunctionInvocation
 
-FunctionInvocation ::= IDENTIFIER '(' ')' ';'
+FunctionInvocation ::= IDENTIFIER '(' ')' ';' ReturnOperator?
+
+ConditionalOperator ::= IfElseStatement | SwitchStatement
+
+IfElseStatement ::= if '(' LogicalType ')' '{' FunctionBody '}' (else ('{' FunctionBody '}' | IfElseStatement) )?
+
+SwitchStatement ::= switch '(' IDENTIFIER ')' '{' CaseOperator '}'
 

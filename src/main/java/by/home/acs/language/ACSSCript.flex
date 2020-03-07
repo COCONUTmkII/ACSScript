@@ -43,6 +43,16 @@ WHITE_SPACE=[ \t\n\x0B\f\r]+
   "KILL"             { return ACSScriptTypes.KILL;}
   "REOPEN"           { return ACSScriptTypes.REOPEN;}
   "net"              { return ACSScriptTypes.NET;}
+  "true"             { return ACSScriptTypes.TRUE;}
+  "false"            { return ACSScriptTypes.FALSE;}
+  "switch"           { return ACSScriptTypes.SWITCH;}
+  "case"             { return ACSScriptTypes.CASE;}
+  "break"            { return ACSScriptTypes.BREAK;}
+  "default"          { return ACSScriptTypes.DEFAULT;}
+  "if"               { return ACSScriptTypes.IF;}
+  "else"             { return ACSScriptTypes.ELSE;}
+  "return"           { return ACSScriptTypes.RETURN;}
+
   // In here, we check for character sequences which matches regular expressions which we defined above.
   {IDENTIFIER}       { return ACSScriptTypes.IDENTIFIER; } // This indicates that a character sequence which matches to the rule
                                             // identifier is encountered.
@@ -50,7 +60,6 @@ WHITE_SPACE=[ \t\n\x0B\f\r]+
                                              // whitespace is encountered.
   {NUMBER}           { return ACSScriptTypes.NUMBER;}
   {STRING}           { return ACSScriptTypes.STRING;}
-
 }
 
 // If the character sequence does not match any of the above rules, we return BAD_CHARACTER which indicates that
