@@ -7,4 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface ACSScriptFunctionInvocation extends PsiElement {
 
+  @Nullable
+  ACSScriptReturnOperator getReturnOperator();
+
 }

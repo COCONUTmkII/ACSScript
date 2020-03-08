@@ -27,7 +27,6 @@ WHITE_SPACE=[ \t\n\x0B\f\r]+
   // These tokens are Parser uses these return values to match token squence to a parser rule.
   "Script"           { return ACSScriptTypes.SCRIPT;}
   "function"         { return ACSScriptTypes.FUNCTION; }
-  "returns"          { return ACSScriptTypes.RETURNS; }
   "void"             { return ACSScriptTypes.VOID;}
   "int"              { return ACSScriptTypes.INT; }
   "str"              { return ACSScriptTypes.STR; }
@@ -47,6 +46,10 @@ WHITE_SPACE=[ \t\n\x0B\f\r]+
   "false"            { return ACSScriptTypes.FALSE;}
   "switch"           { return ACSScriptTypes.SWITCH;}
   "case"             { return ACSScriptTypes.CASE;}
+  "for"              { return ACSScriptTypes.FOR;}
+  "while"            { return ACSScriptTypes.WHILE;}
+  "until"            { return ACSScriptTypes.UNTIL;}
+  "do"               { return ACSScriptTypes.DO;}
   "break"            { return ACSScriptTypes.BREAK;}
   "default"          { return ACSScriptTypes.DEFAULT;}
   "if"               { return ACSScriptTypes.IF;}

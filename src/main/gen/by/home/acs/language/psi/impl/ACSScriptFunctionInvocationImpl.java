@@ -26,4 +26,10 @@ public class ACSScriptFunctionInvocationImpl extends ASTWrapperPsiElement implem
     else super.accept(visitor);
   }
 
+  @Override
+  @Nullable
+  public ACSScriptReturnOperator getReturnOperator() {
+    return findChildByClass(ACSScriptReturnOperator.class);
+  }
+
 }

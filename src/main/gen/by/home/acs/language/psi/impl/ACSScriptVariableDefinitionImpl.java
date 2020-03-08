@@ -38,4 +38,10 @@ public class ACSScriptVariableDefinitionImpl extends ASTWrapperPsiElement implem
     return findNotNullChildByClass(ACSScriptType.class);
   }
 
+  @Override
+  @Nullable
+  public ACSScriptVariableInitialization getVariableInitialization() {
+    return findChildByClass(ACSScriptVariableInitialization.class);
+  }
+
 }

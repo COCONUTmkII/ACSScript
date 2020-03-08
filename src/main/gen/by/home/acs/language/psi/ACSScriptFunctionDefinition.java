@@ -13,4 +13,7 @@ public interface ACSScriptFunctionDefinition extends PsiElement {
   @Nullable
   ACSScriptType getType();
 
+  @Nullable
+  ACSScriptVoidType getVoidType();
+
 }

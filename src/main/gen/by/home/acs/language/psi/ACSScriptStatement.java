@@ -11,7 +11,16 @@ public interface ACSScriptStatement extends PsiElement {
   ACSScriptAssignmentStatement getAssignmentStatement();
 
   @Nullable
+  ACSScriptConditionalOperator getConditionalOperator();
+
+  @Nullable
   ACSScriptFunctionInvocation getFunctionInvocation();
+
+  @Nullable
+  ACSScriptLoops getLoops();
+
+  @Nullable
+  ACSScriptReturnOperator getReturnOperator();
 
   @Nullable
   ACSScriptVariableDefinition getVariableDefinition();

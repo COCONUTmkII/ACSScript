@@ -11,6 +11,14 @@ public class ACSScriptVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitCaseOperator(@NotNull ACSScriptCaseOperator o) {
+    visitPsiElement(o);
+  }
+
+  public void visitConditionalOperator(@NotNull ACSScriptConditionalOperator o) {
+    visitPsiElement(o);
+  }
+
   public void visitDefinition(@NotNull ACSScriptDefinition o) {
     visitPsiElement(o);
   }
@@ -27,7 +35,23 @@ public class ACSScriptVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitIfElseStatement(@NotNull ACSScriptIfElseStatement o) {
+    visitPsiElement(o);
+  }
+
+  public void visitLogicalType(@NotNull ACSScriptLogicalType o) {
+    visitPsiElement(o);
+  }
+
+  public void visitLoops(@NotNull ACSScriptLoops o) {
+    visitPsiElement(o);
+  }
+
   public void visitNetType(@NotNull ACSScriptNetType o) {
+    visitPsiElement(o);
+  }
+
+  public void visitReturnOperator(@NotNull ACSScriptReturnOperator o) {
     visitPsiElement(o);
   }
 
@@ -43,6 +67,10 @@ public class ACSScriptVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitSwitchStatement(@NotNull ACSScriptSwitchStatement o) {
+    visitPsiElement(o);
+  }
+
   public void visitType(@NotNull ACSScriptType o) {
     visitPsiElement(o);
   }
@@ -51,7 +79,31 @@ public class ACSScriptVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitVariableInitialization(@NotNull ACSScriptVariableInitialization o) {
+    visitPsiElement(o);
+  }
+
   public void visitVoidType(@NotNull ACSScriptVoidType o) {
+    visitPsiElement(o);
+  }
+
+  public void visitDoUntilLoop(@NotNull ACSScriptDoUntilLoop o) {
+    visitPsiElement(o);
+  }
+
+  public void visitDoWhileLoop(@NotNull ACSScriptDoWhileLoop o) {
+    visitPsiElement(o);
+  }
+
+  public void visitForLoop(@NotNull ACSScriptForLoop o) {
+    visitPsiElement(o);
+  }
+
+  public void visitUntilLoop(@NotNull ACSScriptUntilLoop o) {
+    visitPsiElement(o);
+  }
+
+  public void visitWhileLoop(@NotNull ACSScriptWhileLoop o) {
     visitPsiElement(o);
   }
 

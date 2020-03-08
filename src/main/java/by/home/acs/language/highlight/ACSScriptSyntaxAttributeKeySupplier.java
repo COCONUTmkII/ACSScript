@@ -2,7 +2,6 @@ package by.home.acs.language.highlight;
 
 
 import by.home.acs.language.ACSScriptTypes;
-import by.home.acs.language.psi.ACSScriptType;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.psi.tree.IElementType;
 import java.util.Collections;
@@ -43,6 +42,10 @@ public class ACSScriptSyntaxAttributeKeySupplier {
         elements.put(ACSScriptTypes.ELSE, () -> new TextAttributesKey[]{KEY});
         elements.put(ACSScriptTypes.SWITCH, () -> new TextAttributesKey[]{KEY});
         elements.put(ACSScriptTypes.CASE, () -> new TextAttributesKey[]{KEY});
+        elements.put(ACSScriptTypes.FOR, () -> new TextAttributesKey[]{KEY});
+        elements.put(ACSScriptTypes.WHILE, () -> new TextAttributesKey[]{KEY});
+        elements.put(ACSScriptTypes.DO, () -> new TextAttributesKey[]{KEY});
+        elements.put(ACSScriptTypes.UNTIL, () -> new TextAttributesKey[]{KEY});
         IElements = Collections.unmodifiableMap(elements);
     }
 

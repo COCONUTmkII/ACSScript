@@ -34,8 +34,26 @@ public class ACSScriptStatementImpl extends ASTWrapperPsiElement implements ACSS
 
   @Override
   @Nullable
+  public ACSScriptConditionalOperator getConditionalOperator() {
+    return findChildByClass(ACSScriptConditionalOperator.class);
+  }
+
+  @Override
+  @Nullable
   public ACSScriptFunctionInvocation getFunctionInvocation() {
     return findChildByClass(ACSScriptFunctionInvocation.class);
+  }
+
+  @Override
+  @Nullable
+  public ACSScriptLoops getLoops() {
+    return findChildByClass(ACSScriptLoops.class);
+  }
+
+  @Override
+  @Nullable
+  public ACSScriptReturnOperator getReturnOperator() {
+    return findChildByClass(ACSScriptReturnOperator.class);
   }
 
   @Override
