@@ -8,7 +8,13 @@ import com.intellij.psi.PsiElement;
 public interface ACSScriptDefinition extends PsiElement {
 
   @Nullable
+  ACSScriptDirectivesDeclaration getDirectivesDeclaration();
+
+  @Nullable
   ACSScriptFunctionDefinition getFunctionDefinition();
+
+  @Nullable
+  ACSScriptGlobalModifier getGlobalModifier();
 
   @Nullable
   ACSScriptScriptDefinition getScriptDefinition();

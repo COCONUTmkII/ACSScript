@@ -23,6 +23,10 @@ public class ACSScriptVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitDirectivesDeclaration(@NotNull ACSScriptDirectivesDeclaration o) {
+    visitPsiElement(o);
+  }
+
   public void visitFunctionBody(@NotNull ACSScriptFunctionBody o) {
     visitPsiElement(o);
   }
@@ -35,7 +39,19 @@ public class ACSScriptVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitGlobalModifier(@NotNull ACSScriptGlobalModifier o) {
+    visitPsiElement(o);
+  }
+
   public void visitIfElseStatement(@NotNull ACSScriptIfElseStatement o) {
+    visitPsiElement(o);
+  }
+
+  public void visitImportDeclaration(@NotNull ACSScriptImportDeclaration o) {
+    visitPsiElement(o);
+  }
+
+  public void visitIncludeDeclaration(@NotNull ACSScriptIncludeDeclaration o) {
     visitPsiElement(o);
   }
 

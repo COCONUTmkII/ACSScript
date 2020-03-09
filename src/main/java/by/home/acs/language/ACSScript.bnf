@@ -27,13 +27,21 @@
 
 ACSScriptFile ::= (COMMENT|Definition*)
 
-Definition ::= (FunctionDefinition|ScriptDefinition)
+Definition ::= (FunctionDefinition | ScriptDefinition | DirectivesDeclaration | GlobalModifier)
 
 FunctionDefinition ::= function (VoidType | Type) IDENTIFIER '(' ')'  '{' FunctionBody '}'
 
 ScriptDefinition ::= SCRIPT (NUMBER | STRING) (ScriptType)? ('(' Type IDENTIFIER')' | '(' VoidType ')')?  (NetType)? '{' FunctionBody '}'
 
 ScriptType ::= OPEN | ENTER | RETURN | RESPAWN | DEATH | LIGHTNING | UNLOADING | DISCONNECT | KILL | REOPEN
+
+DirectivesDeclaration ::= IncludeDeclaration | ImportDeclaration
+
+IncludeDeclaration ::= '#' include STRING
+
+ImportDeclaration ::= '#' import STRING
+
+GlobalModifier ::= (global | world) Type IDENTIFIER':'IDENTIFIER';'
 
 NetType ::= net
 

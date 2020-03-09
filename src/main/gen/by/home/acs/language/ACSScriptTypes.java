@@ -14,13 +14,17 @@ public interface ACSScriptTypes {
   IElementType CASE_OPERATOR = new ACSScriptElementType("CASE_OPERATOR");
   IElementType CONDITIONAL_OPERATOR = new ACSScriptElementType("CONDITIONAL_OPERATOR");
   IElementType DEFINITION = new ACSScriptElementType("DEFINITION");
+  IElementType DIRECTIVES_DECLARATION = new ACSScriptElementType("DIRECTIVES_DECLARATION");
   IElementType DO_UNTIL_LOOP = new ACSScriptElementType("DO_UNTIL_LOOP");
   IElementType DO_WHILE_LOOP = new ACSScriptElementType("DO_WHILE_LOOP");
   IElementType FOR_LOOP = new ACSScriptElementType("FOR_LOOP");
   IElementType FUNCTION_BODY = new ACSScriptElementType("FUNCTION_BODY");
   IElementType FUNCTION_DEFINITION = new ACSScriptElementType("FUNCTION_DEFINITION");
   IElementType FUNCTION_INVOCATION = new ACSScriptElementType("FUNCTION_INVOCATION");
+  IElementType GLOBAL_MODIFIER = new ACSScriptElementType("GLOBAL_MODIFIER");
   IElementType IF_ELSE_STATEMENT = new ACSScriptElementType("IF_ELSE_STATEMENT");
+  IElementType IMPORT_DECLARATION = new ACSScriptElementType("IMPORT_DECLARATION");
+  IElementType INCLUDE_DECLARATION = new ACSScriptElementType("INCLUDE_DECLARATION");
   IElementType LOGICAL_TYPE = new ACSScriptElementType("LOGICAL_TYPE");
   IElementType LOOPS = new ACSScriptElementType("LOOPS");
   IElementType NET_TYPE = new ACSScriptElementType("NET_TYPE");
@@ -49,8 +53,11 @@ public interface ACSScriptTypes {
   IElementType FALSE = new ACSScriptTokenType("false");
   IElementType FOR = new ACSScriptTokenType("for");
   IElementType FUNCTION = new ACSScriptTokenType("function");
+  IElementType GLOBAL = new ACSScriptTokenType("global");
   IElementType IDENTIFIER = new ACSScriptTokenType("IDENTIFIER");
   IElementType IF = new ACSScriptTokenType("if");
+  IElementType IMPORT = new ACSScriptTokenType("import");
+  IElementType INCLUDE = new ACSScriptTokenType("include");
   IElementType INT = new ACSScriptTokenType("int");
   IElementType KILL = new ACSScriptTokenType("KILL");
   IElementType LIGHTNING = new ACSScriptTokenType("LIGHTNING");
@@ -69,6 +76,7 @@ public interface ACSScriptTypes {
   IElementType UNTIL = new ACSScriptTokenType("until");
   IElementType VOID = new ACSScriptTokenType("void");
   IElementType WHILE = new ACSScriptTokenType("while");
+  IElementType WORLD = new ACSScriptTokenType("world");
 
   class Factory {
     public static PsiElement createElement(ASTNode node) {
@@ -84,6 +92,9 @@ public interface ACSScriptTypes {
       }
       else if (type == DEFINITION) {
         return new ACSScriptDefinitionImpl(node);
+      }
+      else if (type == DIRECTIVES_DECLARATION) {
+        return new ACSScriptDirectivesDeclarationImpl(node);
       }
       else if (type == DO_UNTIL_LOOP) {
         return new ACSScriptDoUntilLoopImpl(node);
@@ -103,8 +114,17 @@ public interface ACSScriptTypes {
       else if (type == FUNCTION_INVOCATION) {
         return new ACSScriptFunctionInvocationImpl(node);
       }
+      else if (type == GLOBAL_MODIFIER) {
+        return new ACSScriptGlobalModifierImpl(node);
+      }
       else if (type == IF_ELSE_STATEMENT) {
         return new ACSScriptIfElseStatementImpl(node);
+      }
+      else if (type == IMPORT_DECLARATION) {
+        return new ACSScriptImportDeclarationImpl(node);
+      }
+      else if (type == INCLUDE_DECLARATION) {
+        return new ACSScriptIncludeDeclarationImpl(node);
       }
       else if (type == LOGICAL_TYPE) {
         return new ACSScriptLogicalTypeImpl(node);

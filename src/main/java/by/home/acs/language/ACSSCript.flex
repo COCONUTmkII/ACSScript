@@ -25,6 +25,10 @@ WHITE_SPACE=[ \t\n\x0B\f\r]+
   // In here, we match keywords. So if a keyword is found, this returns a token which corresponds to that keyword.
   // These tokens are generated using the `Ballerina.bnf` file and located in the ACSScruptTypes `class`.
   // These tokens are Parser uses these return values to match token squence to a parser rule.
+  "include"          { return ACSScriptTypes.INCLUDE;}
+  "import"           { return ACSScriptTypes.IMPORT;}
+  "global"           { return ACSScriptTypes.GLOBAL;}
+  "world"            { return ACSScriptTypes.WORLD;}
   "Script"           { return ACSScriptTypes.SCRIPT;}
   "function"         { return ACSScriptTypes.FUNCTION; }
   "void"             { return ACSScriptTypes.VOID;}

@@ -16,6 +16,10 @@ public class ACSScriptSyntaxAttributeKeySupplier {
     private static final Map<IElementType, Supplier<TextAttributesKey[]>> IElements;
     static {
         final Map<IElementType, Supplier<TextAttributesKey[]>> elements = new ConcurrentHashMap<>();
+        elements.put(ACSScriptTypes.INCLUDE, () -> new TextAttributesKey[]{KEY});
+        elements.put(ACSScriptTypes.IMPORT, () -> new TextAttributesKey[]{KEY});
+        elements.put(ACSScriptTypes.WORLD, () -> new TextAttributesKey[]{KEY});
+        elements.put(ACSScriptTypes.GLOBAL, () -> new TextAttributesKey[]{KEY});
         elements.put(ACSScriptTypes.OPEN, () -> new TextAttributesKey[]{SCRIPT_TYPE});
         elements.put(ACSScriptTypes.DEATH, () -> new TextAttributesKey[]{SCRIPT_TYPE});
         elements.put(ACSScriptTypes.ENTER, () -> new TextAttributesKey[]{SCRIPT_TYPE});

@@ -163,14 +163,27 @@ public class ACSScriptParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // FunctionDefinition|ScriptDefinition
+  // FunctionDefinition | ScriptDefinition | DirectivesDeclaration | GlobalModifier
   public static boolean Definition(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "Definition")) return false;
-    if (!nextTokenIs(b, "<definition>", FUNCTION, SCRIPT)) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, DEFINITION, "<definition>");
     r = FunctionDefinition(b, l + 1);
     if (!r) r = ScriptDefinition(b, l + 1);
+    if (!r) r = DirectivesDeclaration(b, l + 1);
+    if (!r) r = GlobalModifier(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // IncludeDeclaration | ImportDeclaration
+  public static boolean DirectivesDeclaration(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "DirectivesDeclaration")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, DIRECTIVES_DECLARATION, "<directives declaration>");
+    r = IncludeDeclaration(b, l + 1);
+    if (!r) r = ImportDeclaration(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
@@ -241,6 +254,32 @@ public class ACSScriptParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // (global | world) Type IDENTIFIER':'IDENTIFIER';'
+  public static boolean GlobalModifier(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "GlobalModifier")) return false;
+    if (!nextTokenIs(b, "<global modifier>", GLOBAL, WORLD)) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, GLOBAL_MODIFIER, "<global modifier>");
+    r = GlobalModifier_0(b, l + 1);
+    r = r && Type(b, l + 1);
+    r = r && consumeToken(b, IDENTIFIER);
+    r = r && consumeToken(b, ":");
+    r = r && consumeToken(b, IDENTIFIER);
+    r = r && consumeToken(b, ";");
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // global | world
+  private static boolean GlobalModifier_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "GlobalModifier_0")) return false;
+    boolean r;
+    r = consumeToken(b, GLOBAL);
+    if (!r) r = consumeToken(b, WORLD);
+    return r;
+  }
+
+  /* ********************************************************** */
   // if '(' LogicalType ')' '{' FunctionBody '}' (else ('{' FunctionBody '}' | IfElseStatement) )?
   public static boolean IfElseStatement(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "IfElseStatement")) return false;
@@ -297,6 +336,30 @@ public class ACSScriptParser implements PsiParser, LightPsiParser {
     r = r && FunctionBody(b, l + 1);
     r = r && consumeToken(b, "}");
     exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // '#' import STRING
+  public static boolean ImportDeclaration(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "ImportDeclaration")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, IMPORT_DECLARATION, "<import declaration>");
+    r = consumeToken(b, "#");
+    r = r && consumeTokens(b, 0, IMPORT, STRING);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // '#' include STRING
+  public static boolean IncludeDeclaration(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "IncludeDeclaration")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, INCLUDE_DECLARATION, "<include declaration>");
+    r = consumeToken(b, "#");
+    r = r && consumeTokens(b, 0, INCLUDE, STRING);
+    exit_section_(b, l, m, r, false, null);
     return r;
   }
 

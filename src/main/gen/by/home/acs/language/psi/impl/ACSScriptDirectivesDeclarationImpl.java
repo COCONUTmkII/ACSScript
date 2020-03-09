@@ -11,14 +11,14 @@ import static by.home.acs.language.ACSScriptTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import by.home.acs.language.psi.*;
 
-public class ACSScriptDefinitionImpl extends ASTWrapperPsiElement implements ACSScriptDefinition {
+public class ACSScriptDirectivesDeclarationImpl extends ASTWrapperPsiElement implements ACSScriptDirectivesDeclaration {
 
-  public ACSScriptDefinitionImpl(@NotNull ASTNode node) {
+  public ACSScriptDirectivesDeclarationImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull ACSScriptVisitor visitor) {
-    visitor.visitDefinition(this);
+    visitor.visitDirectivesDeclaration(this);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
@@ -28,26 +28,14 @@ public class ACSScriptDefinitionImpl extends ASTWrapperPsiElement implements ACS
 
   @Override
   @Nullable
-  public ACSScriptDirectivesDeclaration getDirectivesDeclaration() {
-    return findChildByClass(ACSScriptDirectivesDeclaration.class);
+  public ACSScriptImportDeclaration getImportDeclaration() {
+    return findChildByClass(ACSScriptImportDeclaration.class);
   }
 
   @Override
   @Nullable
-  public ACSScriptFunctionDefinition getFunctionDefinition() {
-    return findChildByClass(ACSScriptFunctionDefinition.class);
-  }
-
-  @Override
-  @Nullable
-  public ACSScriptGlobalModifier getGlobalModifier() {
-    return findChildByClass(ACSScriptGlobalModifier.class);
-  }
-
-  @Override
-  @Nullable
-  public ACSScriptScriptDefinition getScriptDefinition() {
-    return findChildByClass(ACSScriptScriptDefinition.class);
+  public ACSScriptIncludeDeclaration getIncludeDeclaration() {
+    return findChildByClass(ACSScriptIncludeDeclaration.class);
   }
 
 }

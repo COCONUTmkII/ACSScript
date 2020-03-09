@@ -30,4 +30,6 @@ public final class ACSScriptTextAttributeKeyValue {
 
     public static final TextAttributesKey SCRIPT_TYPE =
             createTextAttributesKey("SIMPLE_SCRIPT_TYPE", DefaultLanguageHighlighterColors.METADATA);
+
+
 }
