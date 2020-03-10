@@ -18,7 +18,9 @@ NUMBER= [1-9][0-9]*
 STRING= \"(.[^\"]*)\"
 // If some character sequence is matched to this regex, it will be treated as a WHITE_SPACE.
 WHITE_SPACE=[ \t\n\x0B\f\r]+
-
+END_LINE_COMMENT=("//")[^\r\n]*
+BIG_COMMENT=("/*")[^\r\n]("*/")*
+MULTIPLE_LINE_COMMENT="/*"( [^*] | (\*+[^*/]) )*\*+\/
 // Initial state. We can specify mutiple states for more complex grammars. This corresponds to `modes` in ANTLR grammar.
 %%
 <YYINITIAL> {
@@ -65,6 +67,8 @@ WHITE_SPACE=[ \t\n\x0B\f\r]+
                                             // identifier is encountered.
   {WHITE_SPACE}      { return TokenType.WHITE_SPACE; } // This indicates that a character sequence which matches to the rule
                                              // whitespace is encountered.
+  {END_LINE_COMMENT} { return ACSScriptTypes.COMMENT;}
+  {MULTIPLE_LINE_COMMENT}   {return ACSScriptTypes.COMMENT;}
   {NUMBER}           { return ACSScriptTypes.NUMBER;}
   {STRING}           { return ACSScriptTypes.STRING;}
 }
