@@ -8,7 +8,6 @@ import javax.swing.*;
 
 public class ACSScriptType extends LanguageFileType {
     public static final ACSScriptType INSTANCE = new ACSScriptType();
-
     private ACSScriptType() {
         super(ACSScriptLanguage.INSTANCE);
     }

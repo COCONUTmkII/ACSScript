@@ -53,9 +53,11 @@ Statement ::= VariableDefinition | AssignmentStatement | FunctionInvocation | Co
 
 CaseOperator ::=   case IDENTIFIER ':'  (FunctionInvocation | VariableDefinition)?  (break ';')? CaseOperator? (default ':' FunctionInvocation)?
 
-VariableDefinition ::= Type IDENTIFIER (';' | ('=' ((FunctionInvocation) | VariableInitialization ))?)
+VariableDefinition ::= Type IDENTIFIER (';' | ('=' (FunctionInvocation | VariableInitialization | Operator)))
 
-VariableInitialization ::= (NUMBER | STRING | LogicalType) ';' // Classify initialization directly to each type
+VariableInitialization ::= (NUMBER | STRING | LogicalType)  ';' // Classify initialization directly to each type
+
+Operator ::=  IDENTIFIER ('=' | '+' | '-' | '*' | '/' | '%' | '&' | '|' | '^' | '~' | '<<' | '>>' | '==' | '!=' | '>' | '<' | '>=' | '<=' | '&&' | '||' | '!' | '+=' | '++' | '-=' | '--' | '*=' | '/=' | '%=' | '&=' | '|=' | '^=' | '<<=' | '>>=') IDENTIFIER? NUMBER? STRING?';'
 
 Loops ::= forLoop | whileLoop | untilLoop | doWhileLoop | doUntilLoop
 

@@ -28,6 +28,7 @@ public interface ACSScriptTypes {
   IElementType LOGICAL_TYPE = new ACSScriptElementType("LOGICAL_TYPE");
   IElementType LOOPS = new ACSScriptElementType("LOOPS");
   IElementType NET_TYPE = new ACSScriptElementType("NET_TYPE");
+  IElementType OPERATOR = new ACSScriptElementType("OPERATOR");
   IElementType RETURN_OPERATOR = new ACSScriptElementType("RETURN_OPERATOR");
   IElementType SCRIPT_DEFINITION = new ACSScriptElementType("SCRIPT_DEFINITION");
   IElementType SCRIPT_TYPE = new ACSScriptElementType("SCRIPT_TYPE");
@@ -134,6 +135,9 @@ public interface ACSScriptTypes {
       }
       else if (type == NET_TYPE) {
         return new ACSScriptNetTypeImpl(node);
+      }
+      else if (type == OPERATOR) {
+        return new ACSScriptOperatorImpl(node);
       }
       else if (type == RETURN_OPERATOR) {
         return new ACSScriptReturnOperatorImpl(node);

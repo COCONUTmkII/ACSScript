@@ -404,6 +404,88 @@ public class ACSScriptParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // IDENTIFIER ('=' | '+' | '-' | '*' | '/' | '%' | '&' | '|' | '^' | '~' | '<<' | '>>' | '==' | '!=' | '>' | '<' | '>=' |
+  //              '<=' | '&&' | '||' | '!' | '+=' | '++' | '-=' | '--' | '*=' | '/=' | '%=' | '&=' | '|=' | '^=' | '<<=' | '>>=') IDENTIFIER? NUMBER? STRING?';'
+  public static boolean Operator(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "Operator")) return false;
+    if (!nextTokenIs(b, IDENTIFIER)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, IDENTIFIER);
+    r = r && Operator_1(b, l + 1);
+    r = r && Operator_2(b, l + 1);
+    r = r && Operator_3(b, l + 1);
+    r = r && Operator_4(b, l + 1);
+    r = r && consumeToken(b, ";");
+    exit_section_(b, m, OPERATOR, r);
+    return r;
+  }
+
+  // '=' | '+' | '-' | '*' | '/' | '%' | '&' | '|' | '^' | '~' | '<<' | '>>' | '==' | '!=' | '>' | '<' | '>=' |
+  //              '<=' | '&&' | '||' | '!' | '+=' | '++' | '-=' | '--' | '*=' | '/=' | '%=' | '&=' | '|=' | '^=' | '<<=' | '>>='
+  private static boolean Operator_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "Operator_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, "=");
+    if (!r) r = consumeToken(b, "+");
+    if (!r) r = consumeToken(b, "-");
+    if (!r) r = consumeToken(b, "*");
+    if (!r) r = consumeToken(b, "/");
+    if (!r) r = consumeToken(b, "%");
+    if (!r) r = consumeToken(b, "&");
+    if (!r) r = consumeToken(b, "|");
+    if (!r) r = consumeToken(b, "^");
+    if (!r) r = consumeToken(b, "~");
+    if (!r) r = consumeToken(b, "<<");
+    if (!r) r = consumeToken(b, ">>");
+    if (!r) r = consumeToken(b, "==");
+    if (!r) r = consumeToken(b, "!=");
+    if (!r) r = consumeToken(b, ">");
+    if (!r) r = consumeToken(b, "<");
+    if (!r) r = consumeToken(b, ">=");
+    if (!r) r = consumeToken(b, "<=");
+    if (!r) r = consumeToken(b, "&&");
+    if (!r) r = consumeToken(b, "||");
+    if (!r) r = consumeToken(b, "!");
+    if (!r) r = consumeToken(b, "+=");
+    if (!r) r = consumeToken(b, "++");
+    if (!r) r = consumeToken(b, "-=");
+    if (!r) r = consumeToken(b, "--");
+    if (!r) r = consumeToken(b, "*=");
+    if (!r) r = consumeToken(b, "/=");
+    if (!r) r = consumeToken(b, "%=");
+    if (!r) r = consumeToken(b, "&=");
+    if (!r) r = consumeToken(b, "|=");
+    if (!r) r = consumeToken(b, "^=");
+    if (!r) r = consumeToken(b, "<<=");
+    if (!r) r = consumeToken(b, ">>=");
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // IDENTIFIER?
+  private static boolean Operator_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "Operator_2")) return false;
+    consumeToken(b, IDENTIFIER);
+    return true;
+  }
+
+  // NUMBER?
+  private static boolean Operator_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "Operator_3")) return false;
+    consumeToken(b, NUMBER);
+    return true;
+  }
+
+  // STRING?
+  private static boolean Operator_4(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "Operator_4")) return false;
+    consumeToken(b, STRING);
+    return true;
+  }
+
+  /* ********************************************************** */
   // return ';' | return IDENTIFIER ';'
   public static boolean ReturnOperator(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ReturnOperator")) return false;
@@ -611,7 +693,7 @@ public class ACSScriptParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // Type IDENTIFIER (';' | ('=' ((FunctionInvocation) | VariableInitialization ))?)
+  // Type IDENTIFIER (';' | ('=' (FunctionInvocation | VariableInitialization | Operator)))
   public static boolean VariableDefinition(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "VariableDefinition")) return false;
     boolean r;
@@ -623,7 +705,7 @@ public class ACSScriptParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // ';' | ('=' ((FunctionInvocation) | VariableInitialization ))?
+  // ';' | ('=' (FunctionInvocation | VariableInitialization | Operator))
   private static boolean VariableDefinition_2(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "VariableDefinition_2")) return false;
     boolean r;
@@ -634,47 +716,29 @@ public class ACSScriptParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // ('=' ((FunctionInvocation) | VariableInitialization ))?
+  // '=' (FunctionInvocation | VariableInitialization | Operator)
   private static boolean VariableDefinition_2_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "VariableDefinition_2_1")) return false;
-    VariableDefinition_2_1_0(b, l + 1);
-    return true;
-  }
-
-  // '=' ((FunctionInvocation) | VariableInitialization )
-  private static boolean VariableDefinition_2_1_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "VariableDefinition_2_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, "=");
-    r = r && VariableDefinition_2_1_0_1(b, l + 1);
+    r = r && VariableDefinition_2_1_1(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // (FunctionInvocation) | VariableInitialization
-  private static boolean VariableDefinition_2_1_0_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "VariableDefinition_2_1_0_1")) return false;
+  // FunctionInvocation | VariableInitialization | Operator
+  private static boolean VariableDefinition_2_1_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "VariableDefinition_2_1_1")) return false;
     boolean r;
-    Marker m = enter_section_(b);
-    r = VariableDefinition_2_1_0_1_0(b, l + 1);
-    if (!r) r = VariableInitialization(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // (FunctionInvocation)
-  private static boolean VariableDefinition_2_1_0_1_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "VariableDefinition_2_1_0_1_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
     r = FunctionInvocation(b, l + 1);
-    exit_section_(b, m, null, r);
+    if (!r) r = VariableInitialization(b, l + 1);
+    if (!r) r = Operator(b, l + 1);
     return r;
   }
 
   /* ********************************************************** */
-  // (NUMBER | STRING | LogicalType) ';'
+  // (NUMBER | STRING | LogicalType)  ';'
   public static boolean VariableInitialization(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "VariableInitialization")) return false;
     boolean r;

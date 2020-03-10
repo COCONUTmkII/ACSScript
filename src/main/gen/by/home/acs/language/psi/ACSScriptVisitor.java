@@ -67,6 +67,10 @@ public class ACSScriptVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitOperator(@NotNull ACSScriptOperator o) {
+    visitPsiElement(o);
+  }
+
   public void visitReturnOperator(@NotNull ACSScriptReturnOperator o) {
     visitPsiElement(o);
   }

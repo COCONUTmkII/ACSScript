@@ -10,6 +10,9 @@ public interface ACSScriptVariableDefinition extends PsiElement {
   @Nullable
   ACSScriptFunctionInvocation getFunctionInvocation();
 
+  @Nullable
+  ACSScriptOperator getOperator();
+
   @NotNull
   ACSScriptType getType();
 

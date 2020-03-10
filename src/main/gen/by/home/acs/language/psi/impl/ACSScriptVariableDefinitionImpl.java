@@ -33,6 +33,12 @@ public class ACSScriptVariableDefinitionImpl extends ASTWrapperPsiElement implem
   }
 
   @Override
+  @Nullable
+  public ACSScriptOperator getOperator() {
+    return findChildByClass(ACSScriptOperator.class);
+  }
+
+  @Override
   @NotNull
   public ACSScriptType getType() {
     return findNotNullChildByClass(ACSScriptType.class);
