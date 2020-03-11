@@ -7,11 +7,11 @@ import com.intellij.psi.PsiElement;
 
 public interface ACSScriptScriptDefinition extends PsiElement {
 
-  @NotNull
-  ACSScriptFunctionBody getFunctionBody();
-
   @Nullable
   ACSScriptNetType getNetType();
+
+  @NotNull
+  ACSScriptScriptBody getScriptBody();
 
   @Nullable
   ACSScriptScriptType getScriptType();

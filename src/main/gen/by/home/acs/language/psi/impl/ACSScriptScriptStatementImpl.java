@@ -11,14 +11,14 @@ import static by.home.acs.language.ACSScriptTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import by.home.acs.language.psi.*;
 
-public class ACSScriptScriptDefinitionImpl extends ASTWrapperPsiElement implements ACSScriptScriptDefinition {
+public class ACSScriptScriptStatementImpl extends ASTWrapperPsiElement implements ACSScriptScriptStatement {
 
-  public ACSScriptScriptDefinitionImpl(@NotNull ASTNode node) {
+  public ACSScriptScriptStatementImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull ACSScriptVisitor visitor) {
-    visitor.visitScriptDefinition(this);
+    visitor.visitScriptStatement(this);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
@@ -28,32 +28,32 @@ public class ACSScriptScriptDefinitionImpl extends ASTWrapperPsiElement implemen
 
   @Override
   @Nullable
-  public ACSScriptNetType getNetType() {
-    return findChildByClass(ACSScriptNetType.class);
-  }
-
-  @Override
-  @NotNull
-  public ACSScriptScriptBody getScriptBody() {
-    return findNotNullChildByClass(ACSScriptScriptBody.class);
+  public ACSScriptAssignmentStatement getAssignmentStatement() {
+    return findChildByClass(ACSScriptAssignmentStatement.class);
   }
 
   @Override
   @Nullable
-  public ACSScriptScriptType getScriptType() {
-    return findChildByClass(ACSScriptScriptType.class);
+  public ACSScriptConditionalOperator getConditionalOperator() {
+    return findChildByClass(ACSScriptConditionalOperator.class);
   }
 
   @Override
   @Nullable
-  public ACSScriptType getType() {
-    return findChildByClass(ACSScriptType.class);
+  public ACSScriptFunctionInvocation getFunctionInvocation() {
+    return findChildByClass(ACSScriptFunctionInvocation.class);
   }
 
   @Override
   @Nullable
-  public ACSScriptVoidType getVoidType() {
-    return findChildByClass(ACSScriptVoidType.class);
+  public ACSScriptLoops getLoops() {
+    return findChildByClass(ACSScriptLoops.class);
+  }
+
+  @Override
+  @Nullable
+  public ACSScriptVariableDefinition getVariableDefinition() {
+    return findChildByClass(ACSScriptVariableDefinition.class);
   }
 
 }

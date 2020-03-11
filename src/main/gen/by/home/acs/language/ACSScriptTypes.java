@@ -30,7 +30,9 @@ public interface ACSScriptTypes {
   IElementType NET_TYPE = new ACSScriptElementType("NET_TYPE");
   IElementType OPERATOR = new ACSScriptElementType("OPERATOR");
   IElementType RETURN_OPERATOR = new ACSScriptElementType("RETURN_OPERATOR");
+  IElementType SCRIPT_BODY = new ACSScriptElementType("SCRIPT_BODY");
   IElementType SCRIPT_DEFINITION = new ACSScriptElementType("SCRIPT_DEFINITION");
+  IElementType SCRIPT_STATEMENT = new ACSScriptElementType("SCRIPT_STATEMENT");
   IElementType SCRIPT_TYPE = new ACSScriptElementType("SCRIPT_TYPE");
   IElementType STATEMENT = new ACSScriptElementType("STATEMENT");
   IElementType SWITCH_STATEMENT = new ACSScriptElementType("SWITCH_STATEMENT");
@@ -142,8 +144,14 @@ public interface ACSScriptTypes {
       else if (type == RETURN_OPERATOR) {
         return new ACSScriptReturnOperatorImpl(node);
       }
+      else if (type == SCRIPT_BODY) {
+        return new ACSScriptScriptBodyImpl(node);
+      }
       else if (type == SCRIPT_DEFINITION) {
         return new ACSScriptScriptDefinitionImpl(node);
+      }
+      else if (type == SCRIPT_STATEMENT) {
+        return new ACSScriptScriptStatementImpl(node);
       }
       else if (type == SCRIPT_TYPE) {
         return new ACSScriptScriptTypeImpl(node);
