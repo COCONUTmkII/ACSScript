@@ -10,9 +10,13 @@ import by.home.acs.language.psi.impl.*;
 
 public interface ACSScriptTypes {
 
+  IElementType ARRAY_INITIALIZER = new ACSScriptElementType("ARRAY_INITIALIZER");
+  IElementType ARRAY_INITIALIZERS = new ACSScriptElementType("ARRAY_INITIALIZERS");
+  IElementType ARRAY_TYPE = new ACSScriptElementType("ARRAY_TYPE");
   IElementType ASSIGNMENT_STATEMENT = new ACSScriptElementType("ASSIGNMENT_STATEMENT");
   IElementType CASE_OPERATOR = new ACSScriptElementType("CASE_OPERATOR");
   IElementType CONDITIONAL_OPERATOR = new ACSScriptElementType("CONDITIONAL_OPERATOR");
+  IElementType DEFINE_DECLARATION = new ACSScriptElementType("DEFINE_DECLARATION");
   IElementType DEFINITION = new ACSScriptElementType("DEFINITION");
   IElementType DIRECTIVES_DECLARATION = new ACSScriptElementType("DIRECTIVES_DECLARATION");
   IElementType DO_UNTIL_LOOP = new ACSScriptElementType("DO_UNTIL_LOOP");
@@ -49,6 +53,7 @@ public interface ACSScriptTypes {
   IElementType COMMENT = new ACSScriptTokenType("COMMENT");
   IElementType DEATH = new ACSScriptTokenType("DEATH");
   IElementType DEFAULT = new ACSScriptTokenType("default");
+  IElementType DEFINE = new ACSScriptTokenType("define");
   IElementType DISCONNECT = new ACSScriptTokenType("DISCONNECT");
   IElementType DO = new ACSScriptTokenType("do");
   IElementType ELSE = new ACSScriptTokenType("else");
@@ -84,7 +89,16 @@ public interface ACSScriptTypes {
   class Factory {
     public static PsiElement createElement(ASTNode node) {
       IElementType type = node.getElementType();
-      if (type == ASSIGNMENT_STATEMENT) {
+      if (type == ARRAY_INITIALIZER) {
+        return new ACSScriptArrayInitializerImpl(node);
+      }
+      else if (type == ARRAY_INITIALIZERS) {
+        return new ACSScriptArrayInitializersImpl(node);
+      }
+      else if (type == ARRAY_TYPE) {
+        return new ACSScriptArrayTypeImpl(node);
+      }
+      else if (type == ASSIGNMENT_STATEMENT) {
         return new ACSScriptAssignmentStatementImpl(node);
       }
       else if (type == CASE_OPERATOR) {
@@ -92,6 +106,9 @@ public interface ACSScriptTypes {
       }
       else if (type == CONDITIONAL_OPERATOR) {
         return new ACSScriptConditionalOperatorImpl(node);
+      }
+      else if (type == DEFINE_DECLARATION) {
+        return new ACSScriptDefineDeclarationImpl(node);
       }
       else if (type == DEFINITION) {
         return new ACSScriptDefinitionImpl(node);

@@ -8,12 +8,15 @@ import com.intellij.psi.PsiElement;
 public interface ACSScriptVariableDefinition extends PsiElement {
 
   @Nullable
+  ACSScriptArrayType getArrayType();
+
+  @Nullable
   ACSScriptFunctionInvocation getFunctionInvocation();
 
   @Nullable
   ACSScriptOperator getOperator();
 
-  @NotNull
+  @Nullable
   ACSScriptType getType();
 
   @Nullable

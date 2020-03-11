@@ -8,6 +8,9 @@ import com.intellij.psi.PsiElement;
 public interface ACSScriptDirectivesDeclaration extends PsiElement {
 
   @Nullable
+  ACSScriptDefineDeclaration getDefineDeclaration();
+
+  @Nullable
   ACSScriptImportDeclaration getImportDeclaration();
 
   @Nullable

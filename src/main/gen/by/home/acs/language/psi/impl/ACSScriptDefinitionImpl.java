@@ -50,4 +50,10 @@ public class ACSScriptDefinitionImpl extends ASTWrapperPsiElement implements ACS
     return findChildByClass(ACSScriptScriptDefinition.class);
   }
 
+  @Override
+  @Nullable
+  public ACSScriptVariableDefinition getVariableDefinition() {
+    return findChildByClass(ACSScriptVariableDefinition.class);
+  }
+
 }

@@ -5,12 +5,6 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface ACSScriptVariableInitialization extends PsiElement {
-
-  @Nullable
-  ACSScriptArrayInitializer getArrayInitializer();
-
-  @Nullable
-  ACSScriptLogicalType getLogicalType();
+public interface ACSScriptDefineDeclaration extends PsiElement {
 
 }

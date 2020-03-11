@@ -14,6 +14,9 @@ public interface ACSScriptCaseOperator extends PsiElement {
   List<ACSScriptFunctionInvocation> getFunctionInvocationList();
 
   @Nullable
+  ACSScriptSwitchStatement getSwitchStatement();
+
+  @Nullable
   ACSScriptVariableDefinition getVariableDefinition();
 
 }

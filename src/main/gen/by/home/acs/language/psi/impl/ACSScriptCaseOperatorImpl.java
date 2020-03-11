@@ -40,6 +40,12 @@ public class ACSScriptCaseOperatorImpl extends ASTWrapperPsiElement implements A
 
   @Override
   @Nullable
+  public ACSScriptSwitchStatement getSwitchStatement() {
+    return findChildByClass(ACSScriptSwitchStatement.class);
+  }
+
+  @Override
+  @Nullable
   public ACSScriptVariableDefinition getVariableDefinition() {
     return findChildByClass(ACSScriptVariableDefinition.class);
   }

@@ -29,6 +29,7 @@ MULTIPLE_LINE_COMMENT="/*"( [^*] | (\*+[^*/]) )*\*+\/
   // These tokens are Parser uses these return values to match token squence to a parser rule.
   "include"          { return ACSScriptTypes.INCLUDE;}
   "import"           { return ACSScriptTypes.IMPORT;}
+  "define"           { return ACSScriptTypes.DEFINE;}
   "global"           { return ACSScriptTypes.GLOBAL;}
   "world"            { return ACSScriptTypes.WORLD;}
   "Script"           { return ACSScriptTypes.SCRIPT;}

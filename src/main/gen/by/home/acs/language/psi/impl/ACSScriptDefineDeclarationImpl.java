@@ -11,37 +11,19 @@ import static by.home.acs.language.ACSScriptTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import by.home.acs.language.psi.*;
 
-public class ACSScriptDirectivesDeclarationImpl extends ASTWrapperPsiElement implements ACSScriptDirectivesDeclaration {
+public class ACSScriptDefineDeclarationImpl extends ASTWrapperPsiElement implements ACSScriptDefineDeclaration {
 
-  public ACSScriptDirectivesDeclarationImpl(@NotNull ASTNode node) {
+  public ACSScriptDefineDeclarationImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull ACSScriptVisitor visitor) {
-    visitor.visitDirectivesDeclaration(this);
+    visitor.visitDefineDeclaration(this);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof ACSScriptVisitor) accept((ACSScriptVisitor)visitor);
     else super.accept(visitor);
-  }
-
-  @Override
-  @Nullable
-  public ACSScriptDefineDeclaration getDefineDeclaration() {
-    return findChildByClass(ACSScriptDefineDeclaration.class);
-  }
-
-  @Override
-  @Nullable
-  public ACSScriptImportDeclaration getImportDeclaration() {
-    return findChildByClass(ACSScriptImportDeclaration.class);
-  }
-
-  @Override
-  @Nullable
-  public ACSScriptIncludeDeclaration getIncludeDeclaration() {
-    return findChildByClass(ACSScriptIncludeDeclaration.class);
   }
 
 }

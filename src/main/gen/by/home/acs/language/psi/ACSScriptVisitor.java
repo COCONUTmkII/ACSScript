@@ -7,6 +7,18 @@ import com.intellij.psi.PsiElement;
 
 public class ACSScriptVisitor extends PsiElementVisitor {
 
+  public void visitArrayInitializer(@NotNull ACSScriptArrayInitializer o) {
+    visitPsiElement(o);
+  }
+
+  public void visitArrayInitializers(@NotNull ACSScriptArrayInitializers o) {
+    visitPsiElement(o);
+  }
+
+  public void visitArrayType(@NotNull ACSScriptArrayType o) {
+    visitPsiElement(o);
+  }
+
   public void visitAssignmentStatement(@NotNull ACSScriptAssignmentStatement o) {
     visitPsiElement(o);
   }
@@ -16,6 +28,10 @@ public class ACSScriptVisitor extends PsiElementVisitor {
   }
 
   public void visitConditionalOperator(@NotNull ACSScriptConditionalOperator o) {
+    visitPsiElement(o);
+  }
+
+  public void visitDefineDeclaration(@NotNull ACSScriptDefineDeclaration o) {
     visitPsiElement(o);
   }
 

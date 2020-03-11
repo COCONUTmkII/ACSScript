@@ -19,4 +19,7 @@ public interface ACSScriptDefinition extends PsiElement {
   @Nullable
   ACSScriptScriptDefinition getScriptDefinition();
 
+  @Nullable
+  ACSScriptVariableDefinition getVariableDefinition();
+
 }

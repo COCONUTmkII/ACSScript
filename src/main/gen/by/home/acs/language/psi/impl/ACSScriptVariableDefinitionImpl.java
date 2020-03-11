@@ -28,6 +28,12 @@ public class ACSScriptVariableDefinitionImpl extends ASTWrapperPsiElement implem
 
   @Override
   @Nullable
+  public ACSScriptArrayType getArrayType() {
+    return findChildByClass(ACSScriptArrayType.class);
+  }
+
+  @Override
+  @Nullable
   public ACSScriptFunctionInvocation getFunctionInvocation() {
     return findChildByClass(ACSScriptFunctionInvocation.class);
   }
@@ -39,9 +45,9 @@ public class ACSScriptVariableDefinitionImpl extends ASTWrapperPsiElement implem
   }
 
   @Override
-  @NotNull
+  @Nullable
   public ACSScriptType getType() {
-    return findNotNullChildByClass(ACSScriptType.class);
+    return findChildByClass(ACSScriptType.class);
   }
 
   @Override

@@ -27,7 +27,7 @@
 
 ACSScriptFile ::= (COMMENT|Definition*)
 
-Definition ::= (FunctionDefinition | ScriptDefinition | DirectivesDeclaration | GlobalModifier)
+Definition ::= (FunctionDefinition | ScriptDefinition | DirectivesDeclaration | GlobalModifier | VariableDefinition)
 
 FunctionDefinition ::= function (VoidType | Type) IDENTIFIER '(' ')'  '{' FunctionBody '}'
 
@@ -35,11 +35,13 @@ ScriptDefinition ::= SCRIPT (NUMBER | STRING) (ScriptType)? ('(' Type IDENTIFIER
 
 ScriptType ::= OPEN | ENTER | RETURN | RESPAWN | DEATH | LIGHTNING | UNLOADING | DISCONNECT | KILL | REOPEN
 
-DirectivesDeclaration ::= IncludeDeclaration | ImportDeclaration
+DirectivesDeclaration ::= IncludeDeclaration | ImportDeclaration | DefineDeclaration
 
 IncludeDeclaration ::= '#' include STRING
 
 ImportDeclaration ::= '#' import STRING
+
+DefineDeclaration ::= '#' define IDENTIFIER IDENTIFIER  // need to add operator support here too and numbers
 
 GlobalModifier ::= (global | world) Type IDENTIFIER':'IDENTIFIER';'
 
@@ -55,11 +57,11 @@ ScriptBody ::= ScriptStatement*
 
 ScriptStatement ::= VariableDefinition | AssignmentStatement | FunctionInvocation | ConditionalOperator | Loops
 
-CaseOperator ::=   case (IDENTIFIER | NUMBER | STRING) ':'  (FunctionInvocation | VariableDefinition)?  (break ';')? CaseOperator? (default ':' FunctionInvocation)?
+CaseOperator ::=   case (IDENTIFIER | NUMBER | STRING) ':'  (FunctionInvocation | VariableDefinition)? (SwitchStatement)?  (break ';')? CaseOperator? (default ':' FunctionInvocation)?
 
-VariableDefinition ::= Type IDENTIFIER (';' | ('=' (FunctionInvocation | VariableInitialization | Operator)))
+VariableDefinition ::= (ArrayType | Type) IDENTIFIER (';' | ('=' (FunctionInvocation | VariableInitialization | Operator)))
 
-VariableInitialization ::= (NUMBER | STRING | LogicalType)  ';' // Classify initialization directly to each type
+VariableInitialization ::= (NUMBER | STRING | LogicalType | ArrayInitializer)  ';' // Classify initialization directly to each type
 
 Operator ::=  IDENTIFIER ('=' | '+' | '-' | '*' | '/' | '%' | '&' | '|' | '^' | '~' | '<<' | '>>' | '==' | '!=' | '>' | '<' | '>=' | '<=' | '&&' | '||' | '!' | '+=' | '++' | '-=' | '--' | '*=' | '/=' | '%=' | '&=' | '|=' | '^=' | '<<=' | '>>=') IDENTIFIER? NUMBER? STRING?';'
 
@@ -75,7 +77,13 @@ doWhileLoop ::= do '{' Statement? '}' while '(' LogicalType ')' ';'
 
 doUntilLoop ::= do '{' Statement? '}' until '(' LogicalType ')' ';'
 
-Type ::= int | str | bool
+Type ::= (int | str | bool)
+
+ArrayType ::= (Type) '[' ']'
+
+ArrayInitializer ::= '{' ArrayInitializers? '}'
+
+ArrayInitializers ::= (NUMBER | STRING) (',' ArrayInitializers)?
 
 LogicalType ::= true | false
 

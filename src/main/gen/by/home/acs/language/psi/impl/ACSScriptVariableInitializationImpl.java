@@ -28,6 +28,12 @@ public class ACSScriptVariableInitializationImpl extends ASTWrapperPsiElement im
 
   @Override
   @Nullable
+  public ACSScriptArrayInitializer getArrayInitializer() {
+    return findChildByClass(ACSScriptArrayInitializer.class);
+  }
+
+  @Override
+  @Nullable
   public ACSScriptLogicalType getLogicalType() {
     return findChildByClass(ACSScriptLogicalType.class);
   }
