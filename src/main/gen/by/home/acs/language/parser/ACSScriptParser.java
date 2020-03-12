@@ -262,13 +262,14 @@ public class ACSScriptParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // IfElseStatement | SwitchStatement
+  // IfThenStatement | IfThenElseStatement |  SwitchStatement
   public static boolean ConditionalOperator(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ConditionalOperator")) return false;
     if (!nextTokenIs(b, "<conditional operator>", IF, SWITCH)) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, CONDITIONAL_OPERATOR, "<conditional operator>");
-    r = IfElseStatement(b, l + 1);
+    r = IfThenStatement(b, l + 1);
+    if (!r) r = IfThenElseStatement(b, l + 1);
     if (!r) r = SwitchStatement(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
@@ -302,7 +303,7 @@ public class ACSScriptParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // IncludeDeclaration | ImportDeclaration | DefineDeclaration
+  // IncludeDeclaration | ImportDeclaration | DefineDeclaration | LibraryDeclaration
   public static boolean DirectivesDeclaration(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "DirectivesDeclaration")) return false;
     boolean r;
@@ -310,6 +311,7 @@ public class ACSScriptParser implements PsiParser, LightPsiParser {
     r = IncludeDeclaration(b, l + 1);
     if (!r) r = ImportDeclaration(b, l + 1);
     if (!r) r = DefineDeclaration(b, l + 1);
+    if (!r) r = LibraryDeclaration(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
@@ -406,9 +408,9 @@ public class ACSScriptParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // if '(' LogicalType ')' '{' FunctionBody '}' (else ('{' FunctionBody '}' | IfElseStatement) )?
-  public static boolean IfElseStatement(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "IfElseStatement")) return false;
+  // if '(' LogicalType ')' '{' FunctionBody '}' (else ('{' FunctionBody '}' | IfThenElseStatement) )?
+  public static boolean IfThenElseStatement(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "IfThenElseStatement")) return false;
     if (!nextTokenIs(b, IF)) return false;
     boolean r;
     Marker m = enter_section_(b);
@@ -419,49 +421,65 @@ public class ACSScriptParser implements PsiParser, LightPsiParser {
     r = r && consumeToken(b, "{");
     r = r && FunctionBody(b, l + 1);
     r = r && consumeToken(b, "}");
-    r = r && IfElseStatement_7(b, l + 1);
-    exit_section_(b, m, IF_ELSE_STATEMENT, r);
+    r = r && IfThenElseStatement_7(b, l + 1);
+    exit_section_(b, m, IF_THEN_ELSE_STATEMENT, r);
     return r;
   }
 
-  // (else ('{' FunctionBody '}' | IfElseStatement) )?
-  private static boolean IfElseStatement_7(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "IfElseStatement_7")) return false;
-    IfElseStatement_7_0(b, l + 1);
+  // (else ('{' FunctionBody '}' | IfThenElseStatement) )?
+  private static boolean IfThenElseStatement_7(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "IfThenElseStatement_7")) return false;
+    IfThenElseStatement_7_0(b, l + 1);
     return true;
   }
 
-  // else ('{' FunctionBody '}' | IfElseStatement)
-  private static boolean IfElseStatement_7_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "IfElseStatement_7_0")) return false;
+  // else ('{' FunctionBody '}' | IfThenElseStatement)
+  private static boolean IfThenElseStatement_7_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "IfThenElseStatement_7_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, ELSE);
-    r = r && IfElseStatement_7_0_1(b, l + 1);
+    r = r && IfThenElseStatement_7_0_1(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // '{' FunctionBody '}' | IfElseStatement
-  private static boolean IfElseStatement_7_0_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "IfElseStatement_7_0_1")) return false;
+  // '{' FunctionBody '}' | IfThenElseStatement
+  private static boolean IfThenElseStatement_7_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "IfThenElseStatement_7_0_1")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = IfElseStatement_7_0_1_0(b, l + 1);
-    if (!r) r = IfElseStatement(b, l + 1);
+    r = IfThenElseStatement_7_0_1_0(b, l + 1);
+    if (!r) r = IfThenElseStatement(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
   // '{' FunctionBody '}'
-  private static boolean IfElseStatement_7_0_1_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "IfElseStatement_7_0_1_0")) return false;
+  private static boolean IfThenElseStatement_7_0_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "IfThenElseStatement_7_0_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, "{");
     r = r && FunctionBody(b, l + 1);
     r = r && consumeToken(b, "}");
     exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // if '(' LogicalType ')' Statement
+  public static boolean IfThenStatement(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "IfThenStatement")) return false;
+    if (!nextTokenIs(b, IF)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, IF);
+    r = r && consumeToken(b, "(");
+    r = r && LogicalType(b, l + 1);
+    r = r && consumeToken(b, ")");
+    r = r && Statement(b, l + 1);
+    exit_section_(b, m, IF_THEN_STATEMENT, r);
     return r;
   }
 
@@ -485,6 +503,18 @@ public class ACSScriptParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b, l, _NONE_, INCLUDE_DECLARATION, "<include declaration>");
     r = consumeToken(b, "#");
     r = r && consumeTokens(b, 0, INCLUDE, STRING);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // '#' library STRING
+  public static boolean LibraryDeclaration(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "LibraryDeclaration")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, LIBRARY_DECLARATION, "<library declaration>");
+    r = consumeToken(b, "#");
+    r = r && consumeTokens(b, 0, LIBRARY, STRING);
     exit_section_(b, l, m, r, false, null);
     return r;
   }

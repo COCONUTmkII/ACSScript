@@ -19,6 +19,7 @@ public class ACSScriptSyntaxAttributeKeySupplier {
         elements.put(ACSScriptTypes.INCLUDE, () -> new TextAttributesKey[]{KEY});
         elements.put(ACSScriptTypes.IMPORT, () -> new TextAttributesKey[]{KEY});
         elements.put(ACSScriptTypes.DEFINE, () -> new TextAttributesKey[]{KEY});
+        elements.put(ACSScriptTypes.LIBRARY, () -> new TextAttributesKey[]{KEY});
         elements.put(ACSScriptTypes.WORLD, () -> new TextAttributesKey[]{KEY});
         elements.put(ACSScriptTypes.GLOBAL, () -> new TextAttributesKey[]{KEY});
         elements.put(ACSScriptTypes.OPEN, () -> new TextAttributesKey[]{SCRIPT_TYPE});
@@ -26,7 +27,7 @@ public class ACSScriptSyntaxAttributeKeySupplier {
         elements.put(ACSScriptTypes.ENTER, () -> new TextAttributesKey[]{SCRIPT_TYPE});
         elements.put(ACSScriptTypes.DISCONNECT, () -> new TextAttributesKey[]{SCRIPT_TYPE});
         elements.put(ACSScriptTypes.REOPEN, () -> new TextAttributesKey[]{SCRIPT_TYPE});
-        elements.put(ACSScriptTypes.RETURN, () -> new TextAttributesKey[]{SCRIPT_TYPE});
+        elements.put(ACSScriptTypes.RETURN, () -> new TextAttributesKey[]{KEY});
         elements.put(ACSScriptTypes.RESPAWN, () -> new TextAttributesKey[]{SCRIPT_TYPE});
         elements.put(ACSScriptTypes.UNLOADING, () -> new TextAttributesKey[]{SCRIPT_TYPE});
         elements.put(ACSScriptTypes.SCRIPT, () -> new TextAttributesKey[]{KEY});

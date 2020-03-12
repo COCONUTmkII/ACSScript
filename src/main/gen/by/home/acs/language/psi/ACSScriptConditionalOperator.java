@@ -8,7 +8,10 @@ import com.intellij.psi.PsiElement;
 public interface ACSScriptConditionalOperator extends PsiElement {
 
   @Nullable
-  ACSScriptIfElseStatement getIfElseStatement();
+  ACSScriptIfThenElseStatement getIfThenElseStatement();
+
+  @Nullable
+  ACSScriptIfThenStatement getIfThenStatement();
 
   @Nullable
   ACSScriptSwitchStatement getSwitchStatement();

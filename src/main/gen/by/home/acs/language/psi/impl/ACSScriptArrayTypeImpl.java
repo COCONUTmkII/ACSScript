@@ -11,14 +11,14 @@ import static by.home.acs.language.ACSScriptTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import by.home.acs.language.psi.*;
 
-public class ACSScriptIfElseStatementImpl extends ASTWrapperPsiElement implements ACSScriptIfElseStatement {
+public class ACSScriptArrayTypeImpl extends ASTWrapperPsiElement implements ACSScriptArrayType {
 
-  public ACSScriptIfElseStatementImpl(@NotNull ASTNode node) {
+  public ACSScriptArrayTypeImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull ACSScriptVisitor visitor) {
-    visitor.visitIfElseStatement(this);
+    visitor.visitArrayType(this);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
@@ -28,20 +28,8 @@ public class ACSScriptIfElseStatementImpl extends ASTWrapperPsiElement implement
 
   @Override
   @NotNull
-  public List<ACSScriptFunctionBody> getFunctionBodyList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, ACSScriptFunctionBody.class);
-  }
-
-  @Override
-  @Nullable
-  public ACSScriptIfElseStatement getIfElseStatement() {
-    return findChildByClass(ACSScriptIfElseStatement.class);
-  }
-
-  @Override
-  @NotNull
-  public ACSScriptLogicalType getLogicalType() {
-    return findNotNullChildByClass(ACSScriptLogicalType.class);
+  public ACSScriptType getType() {
+    return findNotNullChildByClass(ACSScriptType.class);
   }
 
 }

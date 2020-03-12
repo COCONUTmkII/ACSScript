@@ -16,4 +16,7 @@ public interface ACSScriptDirectivesDeclaration extends PsiElement {
   @Nullable
   ACSScriptIncludeDeclaration getIncludeDeclaration();
 
+  @Nullable
+  ACSScriptLibraryDeclaration getLibraryDeclaration();
+
 }

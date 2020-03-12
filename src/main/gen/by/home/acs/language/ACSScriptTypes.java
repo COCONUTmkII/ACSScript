@@ -26,9 +26,11 @@ public interface ACSScriptTypes {
   IElementType FUNCTION_DEFINITION = new ACSScriptElementType("FUNCTION_DEFINITION");
   IElementType FUNCTION_INVOCATION = new ACSScriptElementType("FUNCTION_INVOCATION");
   IElementType GLOBAL_MODIFIER = new ACSScriptElementType("GLOBAL_MODIFIER");
-  IElementType IF_ELSE_STATEMENT = new ACSScriptElementType("IF_ELSE_STATEMENT");
+  IElementType IF_THEN_ELSE_STATEMENT = new ACSScriptElementType("IF_THEN_ELSE_STATEMENT");
+  IElementType IF_THEN_STATEMENT = new ACSScriptElementType("IF_THEN_STATEMENT");
   IElementType IMPORT_DECLARATION = new ACSScriptElementType("IMPORT_DECLARATION");
   IElementType INCLUDE_DECLARATION = new ACSScriptElementType("INCLUDE_DECLARATION");
+  IElementType LIBRARY_DECLARATION = new ACSScriptElementType("LIBRARY_DECLARATION");
   IElementType LOGICAL_TYPE = new ACSScriptElementType("LOGICAL_TYPE");
   IElementType LOOPS = new ACSScriptElementType("LOOPS");
   IElementType NET_TYPE = new ACSScriptElementType("NET_TYPE");
@@ -68,6 +70,7 @@ public interface ACSScriptTypes {
   IElementType INCLUDE = new ACSScriptTokenType("include");
   IElementType INT = new ACSScriptTokenType("int");
   IElementType KILL = new ACSScriptTokenType("KILL");
+  IElementType LIBRARY = new ACSScriptTokenType("library");
   IElementType LIGHTNING = new ACSScriptTokenType("LIGHTNING");
   IElementType NET = new ACSScriptTokenType("net");
   IElementType NUMBER = new ACSScriptTokenType("NUMBER");
@@ -137,14 +140,20 @@ public interface ACSScriptTypes {
       else if (type == GLOBAL_MODIFIER) {
         return new ACSScriptGlobalModifierImpl(node);
       }
-      else if (type == IF_ELSE_STATEMENT) {
-        return new ACSScriptIfElseStatementImpl(node);
+      else if (type == IF_THEN_ELSE_STATEMENT) {
+        return new ACSScriptIfThenElseStatementImpl(node);
+      }
+      else if (type == IF_THEN_STATEMENT) {
+        return new ACSScriptIfThenStatementImpl(node);
       }
       else if (type == IMPORT_DECLARATION) {
         return new ACSScriptImportDeclarationImpl(node);
       }
       else if (type == INCLUDE_DECLARATION) {
         return new ACSScriptIncludeDeclarationImpl(node);
+      }
+      else if (type == LIBRARY_DECLARATION) {
+        return new ACSScriptLibraryDeclarationImpl(node);
       }
       else if (type == LOGICAL_TYPE) {
         return new ACSScriptLogicalTypeImpl(node);

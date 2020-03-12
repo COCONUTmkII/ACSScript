@@ -44,4 +44,10 @@ public class ACSScriptDirectivesDeclarationImpl extends ASTWrapperPsiElement imp
     return findChildByClass(ACSScriptIncludeDeclaration.class);
   }
 
+  @Override
+  @Nullable
+  public ACSScriptLibraryDeclaration getLibraryDeclaration() {
+    return findChildByClass(ACSScriptLibraryDeclaration.class);
+  }
+
 }

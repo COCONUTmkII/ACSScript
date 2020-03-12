@@ -35,13 +35,15 @@ ScriptDefinition ::= SCRIPT (NUMBER | STRING) (ScriptType)? ('(' Type IDENTIFIER
 
 ScriptType ::= OPEN | ENTER | RETURN | RESPAWN | DEATH | LIGHTNING | UNLOADING | DISCONNECT | KILL | REOPEN
 
-DirectivesDeclaration ::= IncludeDeclaration | ImportDeclaration | DefineDeclaration
+DirectivesDeclaration ::= IncludeDeclaration | ImportDeclaration | DefineDeclaration | LibraryDeclaration
 
 IncludeDeclaration ::= '#' include STRING
 
 ImportDeclaration ::= '#' import STRING
 
 DefineDeclaration ::= '#' define IDENTIFIER IDENTIFIER  // need to add operator support here too and numbers
+
+LibraryDeclaration ::= '#' library STRING
 
 GlobalModifier ::= (global | world) Type IDENTIFIER':'IDENTIFIER';'
 
@@ -93,9 +95,11 @@ AssignmentStatement ::= IDENTIFIER '=' FunctionInvocation
 
 FunctionInvocation ::= IDENTIFIER '(' ')' ';' ReturnOperator?
 
-ConditionalOperator ::= IfElseStatement | SwitchStatement
+ConditionalOperator ::= IfThenStatement | IfThenElseStatement |  SwitchStatement
 
-IfElseStatement ::= if '(' LogicalType ')' '{' FunctionBody '}' (else ('{' FunctionBody '}' | IfElseStatement) )?
+IfThenStatement ::= if '(' LogicalType ')' Statement
+
+IfThenElseStatement ::= if '(' LogicalType ')' '{' FunctionBody '}' (else ('{' FunctionBody '}' | IfThenElseStatement) )?
 
 SwitchStatement ::= switch '(' (IDENTIFIER | NUMBER) ')' '{' CaseOperator '}'
 

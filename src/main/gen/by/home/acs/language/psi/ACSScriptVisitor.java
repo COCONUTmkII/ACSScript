@@ -59,7 +59,11 @@ public class ACSScriptVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitIfElseStatement(@NotNull ACSScriptIfElseStatement o) {
+  public void visitIfThenElseStatement(@NotNull ACSScriptIfThenElseStatement o) {
+    visitPsiElement(o);
+  }
+
+  public void visitIfThenStatement(@NotNull ACSScriptIfThenStatement o) {
     visitPsiElement(o);
   }
 
@@ -68,6 +72,10 @@ public class ACSScriptVisitor extends PsiElementVisitor {
   }
 
   public void visitIncludeDeclaration(@NotNull ACSScriptIncludeDeclaration o) {
+    visitPsiElement(o);
+  }
+
+  public void visitLibraryDeclaration(@NotNull ACSScriptLibraryDeclaration o) {
     visitPsiElement(o);
   }
 

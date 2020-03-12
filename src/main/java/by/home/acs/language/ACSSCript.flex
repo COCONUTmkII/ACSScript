@@ -30,6 +30,7 @@ MULTIPLE_LINE_COMMENT="/*"( [^*] | (\*+[^*/]) )*\*+\/
   "include"          { return ACSScriptTypes.INCLUDE;}
   "import"           { return ACSScriptTypes.IMPORT;}
   "define"           { return ACSScriptTypes.DEFINE;}
+  "library"          { return ACSScriptTypes.LIBRARY;}
   "global"           { return ACSScriptTypes.GLOBAL;}
   "world"            { return ACSScriptTypes.WORLD;}
   "Script"           { return ACSScriptTypes.SCRIPT;}

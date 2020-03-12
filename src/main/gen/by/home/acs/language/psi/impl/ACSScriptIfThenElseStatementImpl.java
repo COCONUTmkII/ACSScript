@@ -11,19 +11,25 @@ import static by.home.acs.language.ACSScriptTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import by.home.acs.language.psi.*;
 
-public class ACSScriptConditionalOperatorImpl extends ASTWrapperPsiElement implements ACSScriptConditionalOperator {
+public class ACSScriptIfThenElseStatementImpl extends ASTWrapperPsiElement implements ACSScriptIfThenElseStatement {
 
-  public ACSScriptConditionalOperatorImpl(@NotNull ASTNode node) {
+  public ACSScriptIfThenElseStatementImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull ACSScriptVisitor visitor) {
-    visitor.visitConditionalOperator(this);
+    visitor.visitIfThenElseStatement(this);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof ACSScriptVisitor) accept((ACSScriptVisitor)visitor);
     else super.accept(visitor);
+  }
+
+  @Override
+  @NotNull
+  public List<ACSScriptFunctionBody> getFunctionBodyList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, ACSScriptFunctionBody.class);
   }
 
   @Override
@@ -33,15 +39,9 @@ public class ACSScriptConditionalOperatorImpl extends ASTWrapperPsiElement imple
   }
 
   @Override
-  @Nullable
-  public ACSScriptIfThenStatement getIfThenStatement() {
-    return findChildByClass(ACSScriptIfThenStatement.class);
-  }
-
-  @Override
-  @Nullable
-  public ACSScriptSwitchStatement getSwitchStatement() {
-    return findChildByClass(ACSScriptSwitchStatement.class);
+  @NotNull
+  public ACSScriptLogicalType getLogicalType() {
+    return findNotNullChildByClass(ACSScriptLogicalType.class);
   }
 
 }
