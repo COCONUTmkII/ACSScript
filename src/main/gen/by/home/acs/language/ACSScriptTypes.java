@@ -41,6 +41,7 @@ public interface ACSScriptTypes {
   IElementType SCRIPT_STATEMENT = new ACSScriptElementType("SCRIPT_STATEMENT");
   IElementType SCRIPT_TYPE = new ACSScriptElementType("SCRIPT_TYPE");
   IElementType STATEMENT = new ACSScriptElementType("STATEMENT");
+  IElementType STATIC_MODIFIER = new ACSScriptElementType("STATIC_MODIFIER");
   IElementType SWITCH_STATEMENT = new ACSScriptElementType("SWITCH_STATEMENT");
   IElementType TYPE = new ACSScriptElementType("TYPE");
   IElementType UNTIL_LOOP = new ACSScriptElementType("UNTIL_LOOP");
@@ -69,6 +70,7 @@ public interface ACSScriptTypes {
   IElementType IMPORT = new ACSScriptTokenType("import");
   IElementType INCLUDE = new ACSScriptTokenType("include");
   IElementType INT = new ACSScriptTokenType("int");
+  IElementType INTEGER = new ACSScriptTokenType("INTEGER");
   IElementType KILL = new ACSScriptTokenType("KILL");
   IElementType LIBRARY = new ACSScriptTokenType("library");
   IElementType LIGHTNING = new ACSScriptTokenType("LIGHTNING");
@@ -79,6 +81,7 @@ public interface ACSScriptTypes {
   IElementType RESPAWN = new ACSScriptTokenType("RESPAWN");
   IElementType RETURN = new ACSScriptTokenType("RETURN");
   IElementType SCRIPT = new ACSScriptTokenType("SCRIPT");
+  IElementType STATIC = new ACSScriptTokenType("static");
   IElementType STR = new ACSScriptTokenType("str");
   IElementType STRING = new ACSScriptTokenType("STRING");
   IElementType SWITCH = new ACSScriptTokenType("switch");
@@ -184,6 +187,9 @@ public interface ACSScriptTypes {
       }
       else if (type == STATEMENT) {
         return new ACSScriptStatementImpl(node);
+      }
+      else if (type == STATIC_MODIFIER) {
+        return new ACSScriptStaticModifierImpl(node);
       }
       else if (type == SWITCH_STATEMENT) {
         return new ACSScriptSwitchStatementImpl(node);

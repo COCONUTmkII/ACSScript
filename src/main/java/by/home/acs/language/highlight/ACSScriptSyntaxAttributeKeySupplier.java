@@ -1,6 +1,5 @@
 package by.home.acs.language.highlight;
 
-
 import by.home.acs.language.ACSScriptTypes;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.psi.tree.IElementType;
@@ -22,6 +21,7 @@ public class ACSScriptSyntaxAttributeKeySupplier {
         elements.put(ACSScriptTypes.LIBRARY, () -> new TextAttributesKey[]{KEY});
         elements.put(ACSScriptTypes.WORLD, () -> new TextAttributesKey[]{KEY});
         elements.put(ACSScriptTypes.GLOBAL, () -> new TextAttributesKey[]{KEY});
+        elements.put(ACSScriptTypes.STATIC, () -> new TextAttributesKey[]{KEY});
         elements.put(ACSScriptTypes.OPEN, () -> new TextAttributesKey[]{SCRIPT_TYPE});
         elements.put(ACSScriptTypes.DEATH, () -> new TextAttributesKey[]{SCRIPT_TYPE});
         elements.put(ACSScriptTypes.ENTER, () -> new TextAttributesKey[]{SCRIPT_TYPE});
@@ -40,6 +40,7 @@ public class ACSScriptSyntaxAttributeKeySupplier {
         elements.put(ACSScriptTypes.IDENTIFIER, () -> new TextAttributesKey[]{IDENTIFIER});
         elements.put(ACSScriptTypes.VOID, () -> new TextAttributesKey[]{KEY});
         elements.put(ACSScriptTypes.NUMBER, () -> new TextAttributesKey[]{INT_VALUE});
+        //elements.put(ACSScriptTypes.INTEGER, () -> new TextAttributesKey[]{INT_VALUE});
         elements.put(ACSScriptTypes.TRUE, () -> new TextAttributesKey[]{KEY});
         elements.put(ACSScriptTypes.FALSE, () -> new TextAttributesKey[]{KEY});
         elements.put(ACSScriptTypes.BREAK, () -> new TextAttributesKey[]{KEY});

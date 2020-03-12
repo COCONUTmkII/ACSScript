@@ -17,6 +17,9 @@ public interface ACSScriptVariableDefinition extends PsiElement {
   ACSScriptOperator getOperator();
 
   @Nullable
+  ACSScriptStaticModifier getStaticModifier();
+
+  @Nullable
   ACSScriptType getType();
 
   @Nullable

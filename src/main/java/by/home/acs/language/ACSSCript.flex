@@ -16,10 +16,10 @@ import com.intellij.psi.tree.IElementType;
 IDENTIFIER= [a-zA-Z_][a-zA-Z0-9_]*
 NUMBER= [1-9][0-9]*
 STRING= \"(.[^\"]*)\"
+INTEGER=(0|(\-)?[1-9]{1}[0-9]{0,8}|(\+)?[1-3]{1}[0-9]{1,9}|(\-)?[4]{1}([0-1]{1}[0-9]{8}|[2]{1}([0-8]{1}[0-9]{7}|[9]{1}([0-3]{1}[0-9]{6}|[4]{1}([0-8]{1}[0-9]{5}|[9]{1}([0-5]{1}[0-9]{4}|[6]{1}([0-6]{1}[0-9]{3}|[7]{1}([0-1]{1}[0-9]{2}|[2]{1}([0-8]{1}[0-9]{1}|[9]{1}[0-5]{1})))))))))
 // If some character sequence is matched to this regex, it will be treated as a WHITE_SPACE.
 WHITE_SPACE=[ \t\n\x0B\f\r]+
 END_LINE_COMMENT=("//")[^\r\n]*
-BIG_COMMENT=("/*")[^\r\n]("*/")*
 MULTIPLE_LINE_COMMENT="/*"( [^*] | (\*+[^*/]) )*\*+\/
 // Initial state. We can specify mutiple states for more complex grammars. This corresponds to `modes` in ANTLR grammar.
 %%
@@ -32,9 +32,10 @@ MULTIPLE_LINE_COMMENT="/*"( [^*] | (\*+[^*/]) )*\*+\/
   "define"           { return ACSScriptTypes.DEFINE;}
   "library"          { return ACSScriptTypes.LIBRARY;}
   "global"           { return ACSScriptTypes.GLOBAL;}
+  "static"           { return ACSScriptTypes.STATIC;}
   "world"            { return ACSScriptTypes.WORLD;}
   "Script"           { return ACSScriptTypes.SCRIPT;}
-  "function"         { return ACSScriptTypes.FUNCTION; }
+  "function"         { return ACSScriptTypes.FUNCTION;}
   "void"             { return ACSScriptTypes.VOID;}
   "int"              { return ACSScriptTypes.INT; }
   "str"              { return ACSScriptTypes.STR; }
@@ -73,6 +74,7 @@ MULTIPLE_LINE_COMMENT="/*"( [^*] | (\*+[^*/]) )*\*+\/
   {MULTIPLE_LINE_COMMENT}   {return ACSScriptTypes.COMMENT;}
   {NUMBER}           { return ACSScriptTypes.NUMBER;}
   {STRING}           { return ACSScriptTypes.STRING;}
+  {INTEGER}          { return ACSScriptTypes.INTEGER;}
 }
 
 // If the character sequence does not match any of the above rules, we return BAD_CHARACTER which indicates that

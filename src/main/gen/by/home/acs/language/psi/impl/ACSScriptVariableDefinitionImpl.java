@@ -46,6 +46,12 @@ public class ACSScriptVariableDefinitionImpl extends ASTWrapperPsiElement implem
 
   @Override
   @Nullable
+  public ACSScriptStaticModifier getStaticModifier() {
+    return findChildByClass(ACSScriptStaticModifier.class);
+  }
+
+  @Override
+  @Nullable
   public ACSScriptType getType() {
     return findChildByClass(ACSScriptType.class);
   }

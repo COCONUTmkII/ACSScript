@@ -119,6 +119,10 @@ public class ACSScriptVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitStaticModifier(@NotNull ACSScriptStaticModifier o) {
+    visitPsiElement(o);
+  }
+
   public void visitSwitchStatement(@NotNull ACSScriptSwitchStatement o) {
     visitPsiElement(o);
   }
