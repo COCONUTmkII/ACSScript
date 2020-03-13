@@ -79,10 +79,10 @@ public class ACSScriptParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // (NUMBER | STRING) (',' ArrayInitializers)?
+  // (INTEGER | STRING) (',' ArrayInitializers)?
   public static boolean ArrayInitializers(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ArrayInitializers")) return false;
-    if (!nextTokenIs(b, "<array initializers>", NUMBER, STRING)) return false;
+    if (!nextTokenIs(b, "<array initializers>", INTEGER, STRING)) return false;
     boolean r;
     Marker m = enter_section_(b, l, _COLLAPSE_, ARRAY_INITIALIZERS, "<array initializers>");
     r = ArrayInitializers_0(b, l + 1);
@@ -91,11 +91,11 @@ public class ACSScriptParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // NUMBER | STRING
+  // INTEGER | STRING
   private static boolean ArrayInitializers_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ArrayInitializers_0")) return false;
     boolean r;
-    r = consumeToken(b, NUMBER);
+    r = consumeToken(b, INTEGER);
     if (!r) r = consumeToken(b, STRING);
     return r;
   }
