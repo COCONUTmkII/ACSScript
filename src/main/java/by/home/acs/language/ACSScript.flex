@@ -14,22 +14,14 @@ import com.intellij.psi.tree.IElementType;
 %unicode
 
 IDENTIFIER= [a-zA-Z_][a-zA-Z0-9_]*
-//INTEGER= -(([0-9]{1,9}|1[0-9]{9}|2(0[0-9]{8}|1([0-3][0-9]{7}|4([0-6][0-9]{6}|7([0-3][0-9]{5}|4([0-7][0-9]{4}|8([0-2][0-9]{3}|3([0-5][0-9]{2}|6([0-3][0-9]|4[0-7]))))))))) | ([0-9]{1,9}|1[0-9]{9}|2(0[0-9]{8}|1([0-3][0-9]{7}|4([0-6][0-9]{6}|7([0-3][0-9]{5}|4([0-7][0-9]{4}|8([0-2][0-9]{3}|3([0-5][0-9]{2}|6([0-3][0-9]|4[0-8]))))))))))
-NUMBER= ([1-9]|[1-8][0-9]|9[0-9]|[1-8][0-9]{2}|9[0-8][0-9]|99[0-9]|[1-8][0-9]{3}|9[0-8][0-9]{2}|99[0-8][0-9]|999[0-9]|[12][0-9]{4}|3[01][0-9]{3}|32[0-6][0-9]{2}|327[0-5][0-9]|3276[0-7])
-INTEGER = ([0-9]|[1-8][0-9]|9[0-9]|[1-8][0-9]{2}|9[0-8][0-9]|99[0-9]|[1-8][0-9]{3}|9[0-8][0-9]{2}|99[0-8][0-9]|999[0-9]|[1-8][0-9]{4}|9[0-8][0-9]{3}|99[0-8][0-9]{2}|999[0-8][0-9]|9999[0-9]|[1-8][0-9]{5}|9[0-8][0-9]{4}|99[0-8][0-9]{3}|999[0-8][0-9]{2}|9999[0-8][0-9]|99999[0-9]|[1-8][0-9]{6}|9[0-8][0-9]{5}|99[0-8][0-9]{4}|999[0-8][0-9]{3}|9999[0-8][0-9]{2}|99999[0-8][0-9]|999999[0-9]|[1-8][0-9]{7}|9[0-8][0-9]{6}|99[0-8][0-9]{5}|999[0-8][0-9]{4}|9999[0-8][0-9]{3}|99999[0-8][0-9]{2}|999999[0-8][0-9]|9999999[0-9]|[1-8][0-9]{8}|9[0-8][0-9]{7}|99[0-8][0-9]{6}|999[0-8][0-9]{5}|9999[0-8][0-9]{4}|99999[0-8][0-9]{3}|999999[0-8][0-9]{2}|9999999[0-8][0-9]|99999999[0-9]|1[0-9]{9}|20[0-9]{8}|21[0-3][0-9]{7}|214[0-6][0-9]{6}|2147[0-3][0-9]{5}|21474[0-7][0-9]{4}|214748[0-2][0-9]{3}|2147483[0-5][0-9]{2}|21474836[0-3][0-9]|214748364[0-7])
-
 STRING= \"(.[^\"]*)\"
-
-// If some character sequence is matched to this regex, it will be treated as a WHITE_SPACE.
+NUMBER = -?[0-9]+
 WHITE_SPACE=[ \t\n\x0B\f\r]+
 END_LINE_COMMENT=("//")[^\r\n]*
 MULTIPLE_LINE_COMMENT="/*"( [^*] | (\*+[^*/]) )*\*+\/
-// Initial state. We can specify mutiple states for more complex grammars. This corresponds to `modes` in ANTLR grammar.
+
 %%
 <YYINITIAL> {
-  // In here, we match keywords. So if a keyword is found, this returns a token which corresponds to that keyword.
-  // These tokens are generated using the `Ballerina.bnf` file and located in the ACSScruptTypes `class`.
-  // These tokens are Parser uses these return values to match token squence to a parser rule.
   "include"          { return ACSScriptTypes.INCLUDE;}
   "import"           { return ACSScriptTypes.IMPORT;}
   "define"           { return ACSScriptTypes.DEFINE;}
@@ -68,17 +60,12 @@ MULTIPLE_LINE_COMMENT="/*"( [^*] | (\*+[^*/]) )*\*+\/
   "else"             { return ACSScriptTypes.ELSE;}
   "return"           { return ACSScriptTypes.RETURN;}
 
-  // In here, we check for character sequences which matches regular expressions which we defined above.
-  {IDENTIFIER}       { return ACSScriptTypes.IDENTIFIER; } // This indicates that a character sequence which matches to the rule
-                                            // identifier is encountered.
-  {WHITE_SPACE}      { return TokenType.WHITE_SPACE; } // This indicates that a character sequence which matches to the rule
-                                             // whitespace is encountered.
+  {IDENTIFIER}       { return ACSScriptTypes.IDENTIFIER; }
+  {WHITE_SPACE}      { return TokenType.WHITE_SPACE; }
   {END_LINE_COMMENT} { return ACSScriptTypes.COMMENT;}
   {MULTIPLE_LINE_COMMENT}   {return ACSScriptTypes.COMMENT;}
   {NUMBER}           { return ACSScriptTypes.NUMBER;}
-  {INTEGER}          { return ACSScriptTypes.INTEGER;}
   {STRING}           { return ACSScriptTypes.STRING;}
-
 }
 
 // If the character sequence does not match any of the above rules, we return BAD_CHARACTER which indicates that

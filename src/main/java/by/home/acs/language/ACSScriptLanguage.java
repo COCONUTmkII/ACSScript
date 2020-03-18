@@ -8,4 +8,6 @@ public class ACSScriptLanguage extends Language {
     private ACSScriptLanguage(){
         super("ACSScript");
     }
+
+    char a = 1;
 }
