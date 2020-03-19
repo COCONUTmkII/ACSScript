@@ -9,5 +9,5 @@ public class ACSScriptLanguage extends Language {
         super("ACSScript");
     }
 
-    char a = 1;
+    char a = '1';
 }

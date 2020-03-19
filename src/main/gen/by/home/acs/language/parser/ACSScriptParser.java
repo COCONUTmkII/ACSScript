@@ -1017,7 +1017,7 @@ public class ACSScriptParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // ( STRING | EmptyString | LogicalType | ArrayInitializer | NUMBER) ';'
+  // ( STRING | CHARACTER | EmptyString | LogicalType | ArrayInitializer | NUMBER) ';'
   public static boolean VariableInitialization(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "VariableInitialization")) return false;
     boolean r;
@@ -1028,11 +1028,12 @@ public class ACSScriptParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // STRING | EmptyString | LogicalType | ArrayInitializer | NUMBER
+  // STRING | CHARACTER | EmptyString | LogicalType | ArrayInitializer | NUMBER
   private static boolean VariableInitialization_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "VariableInitialization_0")) return false;
     boolean r;
     r = consumeToken(b, STRING);
+    if (!r) r = consumeToken(b, CHARACTER);
     if (!r) r = EmptyString(b, l + 1);
     if (!r) r = LogicalType(b, l + 1);
     if (!r) r = ArrayInitializer(b, l + 1);

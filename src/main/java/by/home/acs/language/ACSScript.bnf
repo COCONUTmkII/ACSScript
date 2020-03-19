@@ -21,7 +21,7 @@
         WHITE_SPACE = 'regexp:\s+'
         NUMBER = '-?[0-9]+'
         STRING = 'regexp:^"(.*?)"'
-        CHARACTER = 'regexp:'
+        CHARACTER
     ]
 }
 
@@ -67,7 +67,7 @@ AssignmentStatement ::= IDENTIFIER '=' (FunctionInvocation)
 
 VariableDefinition ::= StaticModifier? (ArrayType | Type) IDENTIFIER (';' | ('=' (FunctionInvocation | VariableInitialization | Operator)))
 
-VariableInitialization ::= ( STRING | EmptyString | LogicalType | ArrayInitializer | NUMBER) ';'
+VariableInitialization ::= ( STRING | CHARACTER | EmptyString | LogicalType | ArrayInitializer | NUMBER) ';'
 
 Operator ::=  IDENTIFIER ('=' | '+' | '-' | '*' | '/' | '%' | '&' | '|' | '^' | '~' | '<<' | '>>' | '==' | '!=' | '>' | '<' | '>=' | '<=' | '&&' | '||' | '!' | '+=' | '++' | '-=' | '--' | '*=' | '/=' | '%=' | '&=' | '|=' | '^=' | '<<=' | '>>=') IDENTIFIER? NUMBER? STRING?';' // never used yet
 

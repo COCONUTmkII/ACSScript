@@ -57,6 +57,7 @@ public interface ACSScriptTypes {
   IElementType BOOL = new ACSScriptTokenType("bool");
   IElementType BREAK = new ACSScriptTokenType("break");
   IElementType CASE = new ACSScriptTokenType("case");
+  IElementType CHARACTER = new ACSScriptTokenType("CHARACTER");
   IElementType COMMENT = new ACSScriptTokenType("COMMENT");
   IElementType DEATH = new ACSScriptTokenType("DEATH");
   IElementType DEFAULT = new ACSScriptTokenType("default");
