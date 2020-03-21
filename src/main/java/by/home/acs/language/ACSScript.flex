@@ -14,12 +14,13 @@ import com.intellij.psi.tree.IElementType;
 %unicode
 
 IDENTIFIER= [a-zA-Z_][a-zA-Z0-9_]*
-STRING= \"(.[^\"]*)\"
+STRING= \"([^\\\"]|\\.)*\"
 CHARACTER = (\')([^\\'\n]|(\\n) | (\\t) | (\\0) | (\\{2}) | (\\u[0-9]{4}))(\')
 NUMBER = -?[0-9]+
 WHITE_SPACE=[ \t\n\x0B\f\r]+
 END_LINE_COMMENT=("//")[^\r\n]*
 MULTIPLE_LINE_COMMENT="/*"( [^*] | (\*+[^*/]) )*\*+\/
+FLOAT = -?\d+(\.\d+)?
 
 %%
 <YYINITIAL> {
@@ -68,6 +69,7 @@ MULTIPLE_LINE_COMMENT="/*"( [^*] | (\*+[^*/]) )*\*+\/
   {NUMBER}            { return ACSScriptTypes.NUMBER;}
   {STRING}            { return ACSScriptTypes.STRING;}
   {CHARACTER}         { return ACSScriptTypes.CHARACTER;}
+  {FLOAT}             { return ACSScriptTypes.FLOAT;}
 }
 
 // If the character sequence does not match any of the above rules, we return BAD_CHARACTER which indicates that

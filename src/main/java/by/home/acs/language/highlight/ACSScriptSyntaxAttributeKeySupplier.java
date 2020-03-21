@@ -41,6 +41,7 @@ public class ACSScriptSyntaxAttributeKeySupplier {
         elements.put(ACSScriptTypes.IDENTIFIER, () -> new TextAttributesKey[]{IDENTIFIER});
         elements.put(ACSScriptTypes.VOID, () -> new TextAttributesKey[]{KEY});
         elements.put(ACSScriptTypes.NUMBER, () -> new TextAttributesKey[]{INT_VALUE});
+        elements.put(ACSScriptTypes.FLOAT, () -> new TextAttributesKey[]{INT_VALUE});
         elements.put(ACSScriptTypes.TRUE, () -> new TextAttributesKey[]{KEY});
         elements.put(ACSScriptTypes.FALSE, () -> new TextAttributesKey[]{KEY});
         elements.put(ACSScriptTypes.BREAK, () -> new TextAttributesKey[]{KEY});

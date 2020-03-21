@@ -22,6 +22,7 @@
         NUMBER = '-?[0-9]+'
         STRING = 'regexp:^"(.*?)"'
         CHARACTER
+        FLOAT = 'regexp:^[+-]?\d+(\.\d+)?$'
     ]
 }
 
@@ -67,7 +68,7 @@ AssignmentStatement ::= IDENTIFIER '=' (FunctionInvocation)
 
 VariableDefinition ::= StaticModifier? (ArrayType | Type) IDENTIFIER (';' | ('=' (FunctionInvocation | VariableInitialization | Operator)))
 
-VariableInitialization ::= ( STRING | CHARACTER | EmptyString | LogicalType | ArrayInitializer | NUMBER) ';'
+VariableInitialization ::= ( STRING | CHARACTER | EmptyString | LogicalType | ArrayInitializer | NUMBER | FLOAT) ';'
 
 Operator ::=  IDENTIFIER ('=' | '+' | '-' | '*' | '/' | '%' | '&' | '|' | '^' | '~' | '<<' | '>>' | '==' | '!=' | '>' | '<' | '>=' | '<=' | '&&' | '||' | '!' | '+=' | '++' | '-=' | '--' | '*=' | '/=' | '%=' | '&=' | '|=' | '^=' | '<<=' | '>>=') IDENTIFIER? NUMBER? STRING?';' // never used yet
 
