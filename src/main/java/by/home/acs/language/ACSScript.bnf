@@ -56,11 +56,11 @@ VoidType ::= void
 
 FunctionBody ::= Statement*
 
-Statement ::= VariableDefinition | AssignmentStatement | FunctionInvocation | ConditionalOperator | Loops | ReturnOperator
+Statement ::= VariableDefinition | AssignmentStatement | FunctionInvocation | ControlFlowStatement | Loops | ReturnOperator
 
 ScriptBody ::= ScriptStatement*
 
-ScriptStatement ::= VariableDefinition | VariableInitialization | AssignmentStatement | FunctionInvocation | ConditionalOperator | Loops
+ScriptStatement ::= VariableDefinition | VariableInitialization | AssignmentStatement | FunctionInvocation | ControlFlowStatement | Loops
 
 CaseOperator ::=   case (IDENTIFIER | NUMBER | STRING) ':'  (FunctionInvocation | VariableDefinition)? (SwitchStatement)?  (break ';')? CaseOperator? (default ':' FunctionInvocation)?
 
@@ -70,7 +70,17 @@ VariableDefinition ::= StaticModifier? (ArrayType | Type) IDENTIFIER (';' | ('='
 
 VariableInitialization ::= ( STRING | CHARACTER | EmptyString | LogicalType | ArrayInitializer | NUMBER | FLOAT) ';'
 
-Operator ::=  IDENTIFIER ('=' | '+' | '-' | '*' | '/' | '%' | '&' | '|' | '^' | '~' | '<<' | '>>' | '==' | '!=' | '>' | '<' | '>=' | '<=' | '&&' | '||' | '!' | '+=' | '++' | '-=' | '--' | '*=' | '/=' | '%=' | '&=' | '|=' | '^=' | '<<=' | '>>=') IDENTIFIER? NUMBER? STRING?';' // never used yet
+Operator ::= AssignmentOperator | RelationalOperator | ArithmeticOperator | LogicalOperator | BitwiseOperator
+
+AssignmentOperator ::= '=' | '*=' | '/=' | '%=' | '+=' | '-=' | '<<=' | '>>=' | '&=' | '^=' | '|='
+
+RelationalOperator ::= '>' | '<' | '==' | '!=' | '>=' | '<='
+
+ArithmeticOperator ::= '+' | '-' | '/' | '%' | '*' | '++' | '--'
+
+LogicalOperator ::= '&&' | '||' | '!'
+
+BitwiseOperator ::= '&' | '|' | '^' | '~' | '<<' | '>>'
 
 Loops ::= forLoop | whileLoop | untilLoop | doWhileLoop | doUntilLoop
 
@@ -106,7 +116,7 @@ ReturnOperator ::= return ';' | return IDENTIFIER ';' // Use something else but 
 
 FunctionInvocation ::= IDENTIFIER '(' ')' ';' ReturnOperator?
 
-ConditionalOperator ::= IfThenStatement | IfThenElseStatement |  SwitchStatement
+ControlFlowStatement ::= IfThenStatement | IfThenElseStatement |  SwitchStatement
 
 IfThenStatement ::= if '(' LogicalType ')' Statement
 
