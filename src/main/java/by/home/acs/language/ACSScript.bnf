@@ -32,7 +32,7 @@ Definition ::= (FunctionDefinition | ScriptDefinition | DirectivesDeclaration | 
 
 FunctionDefinition ::= function (VoidType | Type) IDENTIFIER '(' ')'  '{' FunctionBody '}'
 
-ScriptDefinition ::= SCRIPT ( STRING | NUMBER) (ScriptType)? ('(' Type IDENTIFIER')' | '(' VoidType ')')?  (NetType)? '{' ScriptBody '}'
+ScriptDefinition ::= SCRIPT (( STRING | NUMBER) (ScriptType)? ('(' Type IDENTIFIER')' | '(' VoidType ')')?  (NetType)? '{' ScriptBody '}')  | NUMBER {methods=[getScript getScriptNumberValue]}
 
 ScriptType ::= OPEN | ENTER | RETURN | RESPAWN | DEATH | LIGHTNING | UNLOADING | DISCONNECT | KILL | REOPEN
 
@@ -42,7 +42,7 @@ IncludeDeclaration ::= '#' include STRING
 
 ImportDeclaration ::= '#' import STRING
 
-DefineDeclaration ::= '#' define IDENTIFIER IDENTIFIER  //TODO need to add operator support here with numbers
+DefineDeclaration ::= '#' define IDENTIFIER  IDENTIFIER (Operator (IDENTIFIER | NUMBER))?
 
 LibraryDeclaration ::= '#' library STRING
 
@@ -70,17 +70,17 @@ VariableDefinition ::= StaticModifier? (ArrayType | Type) IDENTIFIER (';' | ('='
 
 VariableInitialization ::= ( STRING | CHARACTER | EmptyString | LogicalType | ArrayInitializer | NUMBER | FLOAT) ';'
 
-Operator ::= AssignmentOperator | RelationalOperator | ArithmeticOperator | LogicalOperator | BitwiseOperator
+Operator ::= (AssignmentOperator | RelationalOperator | ArithmeticOperator | LogicalOperator | BitwiseOperator)
 
-AssignmentOperator ::= '=' | '*=' | '/=' | '%=' | '+=' | '-=' | '<<=' | '>>=' | '&=' | '^=' | '|='
+AssignmentOperator ::= ('=' | '*=' | '/=' | '%=' | '+=' | '-=' | '<<=' | '>>=' | '&=' | '^=' | '|=')
 
-RelationalOperator ::= '>' | '<' | '==' | '!=' | '>=' | '<='
+RelationalOperator ::= ('>' | '<' | '==' | '!=' | '>=' | '<=')
 
-ArithmeticOperator ::= '+' | '-' | '/' | '%' | '*' | '++' | '--'
+ArithmeticOperator ::= ( '++' | '--' | '+' | '-' | '/' | '%' | '*' )
 
-LogicalOperator ::= '&&' | '||' | '!'
+LogicalOperator ::= ('&&' | '||' | '!')
 
-BitwiseOperator ::= '&' | '|' | '^' | '~' | '<<' | '>>'
+BitwiseOperator ::= ('&' | '|' | '^' | '~' | '<<' | '>>')
 
 Loops ::= forLoop | whileLoop | untilLoop | doWhileLoop | doUntilLoop
 

@@ -18,6 +18,7 @@
                                implementationClass="by.home.acs.language.ACSScriptFileDefinition"/>
         <lang.syntaxHighlighterFactory language="ACSScript"
                                        implementationClass="by.home.acs.language.highlight.ACSScriptSyntaxHighlightFactory"/>
+        <annotator language="ACSScript" implementationClass="by.home.acs.language.annotator.ACSScriptAnnotator"/>
         <!-- Add your extensions here -->
     </extensions>
 
