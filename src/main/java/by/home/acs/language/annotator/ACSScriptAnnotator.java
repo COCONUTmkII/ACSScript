@@ -11,9 +11,7 @@ import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiLiteralValue;
 import org.jetbrains.annotations.NotNull;
-
 import java.util.List;
-
 import static by.home.acs.language.annotator.ACSScriptAnnotatorPrefix.*;
 
 public class ACSScriptAnnotator implements Annotator {

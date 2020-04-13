@@ -32,7 +32,11 @@ Definition ::= (FunctionDefinition | ScriptDefinition | DirectivesDeclaration | 
 
 FunctionDefinition ::= function (VoidType | Type) IDENTIFIER '(' ')'  '{' FunctionBody '}'
 
-ScriptDefinition ::= SCRIPT (( STRING | NUMBER) (ScriptType)? ('(' Type IDENTIFIER')' | '(' VoidType ')')?  (NetType)? '{' ScriptBody '}')  | NUMBER {methods=[getScript getScriptNumberValue]}
+ScriptDefinition ::= SCRIPT (( STRING | NUMBER) (ScriptType)? ('(' Type IDENTIFIER')' | '(' VoidType ')')?  (NetType)? '{' ScriptBody '}')
+       /*| SCRIPT {
+       mixin="by.home.acs.language.helper.ACSScriptNamedElementImpl"
+       implements="by.home.acs.language.helper.ACSScriptNamedElement"
+       methods=[getScript getScriptNumberValue getScriptWord setScriptWord getScriptIdentifier]}*/
 
 ScriptType ::= OPEN | ENTER | RETURN | RESPAWN | DEATH | LIGHTNING | UNLOADING | DISCONNECT | KILL | REOPEN
 

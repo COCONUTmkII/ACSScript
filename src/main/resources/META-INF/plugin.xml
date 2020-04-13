@@ -10,6 +10,9 @@
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
          on how to target different products -->
     <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.lang</depends>
+    <depends>com.intellij.modules.java</depends>
+
 
     <extensions defaultExtensionNs="com.intellij">
         <fileType name="ACS Script file" implementationClass="by.home.acs.language.ACSScriptType"
@@ -19,6 +22,8 @@
         <lang.syntaxHighlighterFactory language="ACSScript"
                                        implementationClass="by.home.acs.language.highlight.ACSScriptSyntaxHighlightFactory"/>
         <annotator language="ACSScript" implementationClass="by.home.acs.language.annotator.ACSScriptAnnotator"/>
+
+        <completion.contributor language="ACSScript" implementationClass="by.home.acs.language.completion.ACSScriptCompletionContributor"/>
         <!-- Add your extensions here -->
     </extensions>
 
