@@ -23,7 +23,8 @@
                                        implementationClass="by.home.acs.language.highlight.ACSScriptSyntaxHighlightFactory"/>
         <annotator language="ACSScript" implementationClass="by.home.acs.language.annotator.ACSScriptAnnotator"/>
 
-        <completion.contributor language="ACSScript" implementationClass="by.home.acs.language.completion.ACSScriptCompletionContributor"/>
+        <completion.contributor language="ACSScript" implementationClass="by.home.acs.language.completion.ACSBasicKeywordCompletionContributor"/>
+        <completion.contributor language="ACSScript" implementationClass="by.home.acs.language.completion.ACSDirectivesCompletionContributor"/>
         <!-- Add your extensions here -->
     </extensions>
 
