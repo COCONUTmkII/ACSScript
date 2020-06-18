@@ -24,6 +24,7 @@
         <annotator language="ACSScript" implementationClass="by.home.acs.language.annotator.ACSScriptAnnotator"/>
 
         <completion.contributor language="ACSScript" implementationClass="by.home.acs.language.completion.ACSScriptCompletionContributor"/>
+        <completion.contributor language="ACSScript" implementationClass="by.home.acs.language.completion.ACSVariableCompletionContributor"/>
         <!-- Add your extensions here -->
     </extensions>
 

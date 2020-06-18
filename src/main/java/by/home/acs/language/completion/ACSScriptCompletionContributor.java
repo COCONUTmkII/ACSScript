@@ -15,6 +15,7 @@ public class ACSScriptCompletionContributor extends CompletionContributor {
                                           @NotNull ProcessingContext context,
                                           @NotNull CompletionResultSet result) {
                 result.addElement(LookupElementBuilder.create("script"));
+                result.addElement(LookupElementBuilder.create("function"));
             }
         });
     }
