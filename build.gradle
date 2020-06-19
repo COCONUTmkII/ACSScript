@@ -27,6 +27,10 @@ patchPluginXml {
       <em>most HTML tags may be used</em>"""
 }
 
+test {
+    systemProperty "idea.home.path", "/home/coconutmkii/snap/intellij-idea-community"
+}
+
 sourceSets {
     main {
         java {
