@@ -42,15 +42,15 @@ ScriptType ::= OPEN | ENTER | RETURN | RESPAWN | DEATH | LIGHTNING | UNLOADING |
 
 DirectivesDeclaration ::= IncludeDeclaration | ImportDeclaration | DefineDeclaration | LibraryDeclaration
 
-IncludeDeclaration ::= '#' include STRING
+IncludeDeclaration ::= PoundSymbol include STRING
 
-ImportDeclaration ::= '#' import STRING
+ImportDeclaration ::= PoundSymbol import STRING
 
-DefineDeclaration ::= '#' define IDENTIFIER  IDENTIFIER (Operator (IDENTIFIER | NUMBER))?
+DefineDeclaration ::= PoundSymbol define IDENTIFIER  IDENTIFIER (Operator (IDENTIFIER | NUMBER))?
 
-LibraryDeclaration ::= '#' library STRING
+LibraryDeclaration ::= PoundSymbol library STRING
 
-GlobalModifier ::= (global | world) Type IDENTIFIER':'IDENTIFIER';'
+GlobalModifier ::= (global | world) Type IDENTIFIER ColonSymbol IDENTIFIER SemicolonSymbol
 
 StaticModifier ::= static
 
@@ -66,13 +66,13 @@ ScriptBody ::= ScriptStatement*
 
 ScriptStatement ::= VariableDefinition | VariableInitialization | AssignmentStatement | FunctionInvocation | ControlFlowStatement | Loops
 
-CaseOperator ::=   case (IDENTIFIER | NUMBER | STRING) ':'  (FunctionInvocation | VariableDefinition)? (SwitchStatement)?  (break ';')? CaseOperator? (default ':' FunctionInvocation)?
+CaseOperator ::=   case (IDENTIFIER | NUMBER | STRING) ColonSymbol  (FunctionInvocation | VariableDefinition)? (SwitchStatement)?  (break SemicolonSymbol)? CaseOperator? (default ColonSymbol FunctionInvocation)?
 
-AssignmentStatement ::= IDENTIFIER '=' (FunctionInvocation)
+AssignmentStatement ::= IDENTIFIER EqualsSymbol (FunctionInvocation)
 
-VariableDefinition ::= StaticModifier? (ArrayType | Type) IDENTIFIER (';' | ('=' (FunctionInvocation | VariableInitialization | Operator)))
+VariableDefinition ::= StaticModifier? (ArrayType | Type) IDENTIFIER (SemicolonSymbol | (EqualsSymbol (FunctionInvocation | VariableInitialization | Operator)))
 
-VariableInitialization ::= ( STRING | CHARACTER | EmptyString | LogicalType | ArrayInitializer | NUMBER | FLOAT) ';'
+VariableInitialization ::= ( STRING | CHARACTER | EmptyString | LogicalType | ArrayInitializer | NUMBER | FLOAT) SemicolonSymbol
 
 Operator ::= (AssignmentOperator | RelationalOperator | ArithmeticOperator | LogicalOperator | BitwiseOperator)
 
@@ -88,15 +88,15 @@ BitwiseOperator ::= ('&' | '|' | '^' | '~' | '<<' | '>>')
 
 Loops ::= forLoop | whileLoop | untilLoop | doWhileLoop | doUntilLoop
 
-forLoop ::= for '(' IDENTIFIER ';' LogicalType ';' IDENTIFIER ')' '{' Statement '}' // not finished yet cuz need to fix operators
+forLoop ::= for OpenBracket IDENTIFIER SemicolonSymbol LogicalType SemicolonSymbol IDENTIFIER CloseBracket OpenBrace Statement CloseBrace // not finished yet cuz need to fix operators
 
-whileLoop ::= while '(' LogicalType ')' '{' Statement? '}'
+whileLoop ::= while OpenBracket LogicalType CloseBracket OpenBrace Statement? CloseBrace
 
-untilLoop ::= until '(' LogicalType ')' '{' Statement? '}'
+untilLoop ::= until OpenBracket LogicalType CloseBracket OpenBrace Statement? CloseBrace
 
-doWhileLoop ::= do '{' Statement? '}' while '(' LogicalType ')' ';'
+doWhileLoop ::= do OpenBrace Statement? CloseBrace while OpenBracket LogicalType CloseBracket SemicolonSymbol
 
-doUntilLoop ::= do '{' Statement? '}' until '(' LogicalType ')' ';'
+doUntilLoop ::= do OpenBrace Statement? CloseBrace until OpenBracket LogicalType CloseBracket SemicolonSymbol
 
 Type ::= (IntType | StringType | BoolType)
 
@@ -108,25 +108,50 @@ StringType ::= str
 
 EmptyString ::= '""'
 
-ArrayType ::= (Type) '[' ']'
+ArrayType ::= (Type) OpenSquareBracket CloseSquareBracket
 
-ArrayInitializer ::= '{' ArrayInitializers? '}'
+ArrayInitializer ::= OpenBrace ArrayInitializers? CloseBrace
 
-ArrayInitializers ::= (NUMBER | STRING) (',' ArrayInitializers)?
+ArrayInitializers ::= (NUMBER | STRING) (CommaSymbol ArrayInitializers)?
 
 LogicalType ::= true | false
 
-ReturnOperator ::= return ';' | return IDENTIFIER ';' // Use something else but IDENTIFIER later
+ReturnOperator ::= return SemicolonSymbol | return IDENTIFIER SemicolonSymbol // Use something else but IDENTIFIER later
 
-FunctionInvocation ::= IDENTIFIER '(' ')' ';' ReturnOperator?
+FunctionInvocation ::= IDENTIFIER OpenBracket CloseBracket SemicolonSymbol ReturnOperator? // TODO need to change this because of possible parameters inside
 
 ControlFlowStatement ::= IfThenStatement | IfThenElseStatement |  SwitchStatement
 
-IfThenStatement ::= if '(' LogicalType ')' Statement
+IfThenStatement ::= if OpenBracket LogicalType CloseBracket Statement
 
-IfThenElseStatement ::= if '(' LogicalType ')' '{' FunctionBody '}' (else ('{' FunctionBody '}' | IfThenElseStatement) )?
+IfThenElseStatement ::= if OpenBracket LogicalType OpenBracket OpenBrace FunctionBody CloseBrace (else (OpenBrace FunctionBody CloseBrace | IfThenElseStatement) )?
 
-SwitchStatement ::= switch '(' (IDENTIFIER | NUMBER) ')' '{' CaseOperator '}'
+SwitchStatement ::= switch OpenBracket (IDENTIFIER | NUMBER) CloseBracket OpenBrace CaseOperator CloseBrace
 
+/*
+    Key symbol's
+ */
 
+EqualsSymbol ::= '='
 
+DotSymbol ::= '.' //not used
+
+CommaSymbol ::= ','
+
+OpenBrace ::= '{'
+
+CloseBrace ::= '}'
+
+OpenBracket ::= '('
+
+CloseBracket ::= ')'
+
+PoundSymbol ::= '#'
+
+SemicolonSymbol ::= ';'
+
+ColonSymbol ::= ':'
+
+OpenSquareBracket ::= '['
+
+CloseSquareBracket ::= ']'

@@ -1,11 +1,6 @@
 package by.home.acs.language.completion;
 
 import by.home.acs.language.ACSScriptLanguage;
-import by.home.acs.language.ACSScriptType;
-import by.home.acs.language.ACSScriptTypes;
-import by.home.acs.language.psi.ACSScriptScriptDefinition;
-import by.home.acs.language.psi.ACSScriptScriptStatement;
-import by.home.acs.language.psi.impl.ACSScriptScriptDefinitionImpl;
 import com.intellij.codeInsight.completion.*;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.patterns.PlatformPatterns;
