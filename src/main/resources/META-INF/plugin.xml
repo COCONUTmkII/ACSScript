@@ -25,7 +25,9 @@
 
         <completion.contributor language="ACSScript" implementationClass="by.home.acs.language.completion.ACSScriptCompletionContributor"/>
         <completion.contributor language="ACSScript" implementationClass="by.home.acs.language.completion.ACSVariableCompletionContributor"/>
+        <completion.contributor language="ACSScript" implementationClass="by.home.acs.language.completion.ACSScriptTypeCompletionContributor"/>
         <!-- Add your extensions here -->
+        <lang.findUsagesProvider language="ACSScript" implementationClass="by.home.acs.language.usage.ACSScriptUsageProvider"/>
     </extensions>
 
     <actions>
