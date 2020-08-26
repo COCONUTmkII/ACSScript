@@ -23,7 +23,7 @@ public class ACSScriptAnnotator implements Annotator {
         String value  = psiLiteralValue.getValue() instanceof String ? (String) psiLiteralValue.getValue() : null;
         if ((value == null) || !value.startsWith(SCRIPT_UPPERCASE_PREFIX)) return;
 
-                TextRange prefixRange = TextRange.from(element.getTextRange().getStartOffset(), SCRIPT_UPPERCASE_PREFIX.length() + 1);
+        TextRange prefixRange = TextRange.from(element.getTextRange().getStartOffset(), SCRIPT_UPPERCASE_PREFIX.length() + 1);
         TextRange scriptTypeRange = TextRange.from(prefixRange.getEndOffset(), SCRIPT_UPPERCASE_PREFIX.length());
         TextRange scriptNumberRange = new TextRange(scriptTypeRange.getEndOffset(), element.getTextRange().getEndOffset() - 1);
 

@@ -28,6 +28,7 @@
         <completion.contributor language="ACSScript" implementationClass="by.home.acs.language.completion.ACSScriptTypeCompletionContributor"/>
         <!-- Add your extensions here -->
         <lang.findUsagesProvider language="ACSScript" implementationClass="by.home.acs.language.usage.ACSScriptUsageProvider"/>
+        <lang.refactoringSupport language="ACSScript" implementationClass="by.home.acs.language.refactor.ACSScriptRefactoringSupportProvider"/>
     </extensions>
 
     <actions>

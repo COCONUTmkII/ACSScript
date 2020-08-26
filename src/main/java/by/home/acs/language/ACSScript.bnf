@@ -33,7 +33,7 @@ Definition ::= (FunctionDefinition | ScriptDefinition | DirectivesDeclaration | 
 FunctionDefinition ::= function (VoidType | Type) IDENTIFIER OpenBracket CloseBracket  OpenBrace FunctionBody CloseBrace
 
 ScriptDefinition ::= SCRIPT (( STRING | NUMBER) (ScriptType)? (OpenBracket Type IDENTIFIER CloseBracket | OpenBracket VoidType CloseBracket)?  (NetType)? OpenBrace ScriptBody CloseBrace)
-       /*| SCRIPT {
+       /*{
        mixin="by.home.acs.language.helper.ACSScriptNamedElementImpl"
        implements="by.home.acs.language.helper.ACSScriptNamedElement"
        methods=[getScript getScriptNumberValue getScriptWord setScriptWord getScriptIdentifier]}*/

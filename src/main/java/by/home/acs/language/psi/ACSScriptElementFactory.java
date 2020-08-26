@@ -1,15 +1,14 @@
-package by.home.acs.language.helper;
+package by.home.acs.language.psi;
 
+import by.home.acs.language.ACSScriptFileDefinition;
 import by.home.acs.language.ACSScriptType;
-import by.home.acs.language.psi.ACSScriptFile;
-import by.home.acs.language.psi.ACSScriptScriptDefinition;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiFileFactory;
 
 public class ACSScriptElementFactory {
-    public static ACSScriptScriptDefinition createScript(Project project, String name) { // rename name if it works
+    public static ACSScriptDefinition createScript(Project project, String name) { // rename name if it works
         final ACSScriptFile file = createACSFile(project, name);
-        return (ACSScriptScriptDefinition) file.getFirstChild();
+        return (ACSScriptDefinition) file.getFirstChild();
     }
 
     public static ACSScriptFile createACSFile(Project project, String text) {
