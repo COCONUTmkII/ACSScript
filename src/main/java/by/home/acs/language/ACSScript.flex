@@ -34,8 +34,6 @@ POUND_SYMBOL = "#"
 SEMICOLON_SYMBOL = ";"
 COLON_SYMBOL = ":"
 
-
-
 %%
 <YYINITIAL> {
   "include"             { return ACSScriptTypes.INCLUDE;}
@@ -45,8 +43,8 @@ COLON_SYMBOL = ":"
   "global"              { return ACSScriptTypes.GLOBAL;}
   "static"              { return ACSScriptTypes.STATIC;}
   "world"               { return ACSScriptTypes.WORLD;}
-  "Script" | "script"   { return ACSScriptTypes.SCRIPT;}
-  "function"            { return ACSScriptTypes.FUNCTION;}
+  "Script" | "script"   { return ACSScriptTypes.SCRIPT_IDENTIFIER;}
+  "function"            { return ACSScriptTypes.FUNCTION_IDENTIFIER;}
   "void"                { return ACSScriptTypes.VOID;}
   "int"                 { return ACSScriptTypes.INT; }
   "str"                 { return ACSScriptTypes.STR; }

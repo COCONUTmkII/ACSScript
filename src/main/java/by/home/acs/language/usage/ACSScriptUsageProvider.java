@@ -2,7 +2,7 @@ package by.home.acs.language.usage;
 
 import by.home.acs.language.ACSScriptLexerAdapter;
 import by.home.acs.language.ACSScriptTypes;
-import by.home.acs.language.psi.ACSScriptDefinition;
+import by.home.acs.language.psi.ACSScriptScriptDefinition;
 import com.intellij.lang.cacheBuilder.DefaultWordsScanner;
 import com.intellij.lang.cacheBuilder.WordsScanner;
 import com.intellij.lang.findUsages.FindUsagesProvider;
@@ -19,6 +19,7 @@ public class ACSScriptUsageProvider implements FindUsagesProvider {
         return new DefaultWordsScanner(new ACSScriptLexerAdapter(),
                 TokenSet.create(ACSScriptTypes.DEFINITION),
                 TokenSet.create(ACSScriptTypes.COMMENT),
+                TokenSet.create(ACSScriptTypes.IDENTIFIER),
                 TokenSet.EMPTY);
     }
 
@@ -36,8 +37,8 @@ public class ACSScriptUsageProvider implements FindUsagesProvider {
     @NotNull
     @Override
     public String getType(@NotNull PsiElement element) {
-        if (element instanceof ACSScriptDefinition) {
-            return "ACS Script File";
+        if (element instanceof ACSScriptScriptDefinition) {
+            return "element";
         } else {
             return "";
         }
@@ -46,7 +47,7 @@ public class ACSScriptUsageProvider implements FindUsagesProvider {
     @NotNull
     @Override
     public String getDescriptiveName(@NotNull PsiElement element) {
-        if (element instanceof ACSScriptDefinition) {
+        if (element instanceof ACSScriptScriptDefinition) {
             return element.getText();
         } else {
             return "";
@@ -56,8 +57,8 @@ public class ACSScriptUsageProvider implements FindUsagesProvider {
     @NotNull
     @Override
     public String getNodeText(@NotNull PsiElement element, boolean useFullName) {
-        if (element instanceof ACSScriptDefinition) {
-            return element.getText(); //TODO Must Create Good Annotator here.
+        if (element instanceof ACSScriptScriptDefinition) {
+            return element.getText();
         } else {
             return "";
         }
