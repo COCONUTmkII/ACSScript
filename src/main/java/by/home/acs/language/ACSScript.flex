@@ -21,55 +21,79 @@ WHITE_SPACE=[ \t\n\x0B\f\r]+
 END_LINE_COMMENT=("//")[^\r\n]*
 MULTIPLE_LINE_COMMENT="/*"( [^*] | (\*+[^*/]) )*\*+\/
 FLOAT = -?\d+(\.\d+)?
+EQUALS_SYMBOL = "="
+DOT_SYMBOL = "."
+COMMA_SYMBOL = ","
+OPEN_BRACE = "{"
+CLOSE_BRACE = "}"
+OPEN_BRACKET = "("
+CLOSE_BRACKET = ")"
+OPEN_SQUARE_BRACKET = "["
+CLOSE_SQUARE_BRACKET = "]"
+POUND_SYMBOL = "#"
+SEMICOLON_SYMBOL = ";"
+COLON_SYMBOL = ":"
 
 %%
 <YYINITIAL> {
-  "include"           { return ACSScriptTypes.INCLUDE;}
-  "import"            { return ACSScriptTypes.IMPORT;}
-  "define"            { return ACSScriptTypes.DEFINE;}
-  "library"           { return ACSScriptTypes.LIBRARY;}
-  "global"            { return ACSScriptTypes.GLOBAL;}
-  "static"            { return ACSScriptTypes.STATIC;}
-  "world"             { return ACSScriptTypes.WORLD;}
-  "Script" | "script" { return ACSScriptTypes.SCRIPT;}
-  "function"          { return ACSScriptTypes.FUNCTION;}
-  "void"              { return ACSScriptTypes.VOID;}
-  "int"               { return ACSScriptTypes.INT; }
-  "str"               { return ACSScriptTypes.STR; }
-  "bool"              { return ACSScriptTypes.BOOL;}
-  "OPEN"              { return ACSScriptTypes.OPEN;}
-  "ENTER"             { return ACSScriptTypes.ENTER;}
-  "RETURN"            { return ACSScriptTypes.RETURN;}
-  "RESPAWN"           { return ACSScriptTypes.RESPAWN;}
-  "DEATH"             { return ACSScriptTypes.DEATH;}
-  "LIGHTNING"         { return ACSScriptTypes.LIGHTNING;}
-  "UNLOADING"         { return ACSScriptTypes.UNLOADING;}
-  "DISCONNECT"        { return ACSScriptTypes.DISCONNECT;}
-  "KILL"              { return ACSScriptTypes.KILL;}
-  "REOPEN"            { return ACSScriptTypes.REOPEN;}
-  "net" | "NET"       { return ACSScriptTypes.NET;}
-  "true"              { return ACSScriptTypes.TRUE;}
-  "false"             { return ACSScriptTypes.FALSE;}
-  "switch"            { return ACSScriptTypes.SWITCH;}
-  "case"              { return ACSScriptTypes.CASE;}
-  "for"               { return ACSScriptTypes.FOR;}
-  "while"             { return ACSScriptTypes.WHILE;}
-  "until"             { return ACSScriptTypes.UNTIL;}
-  "do"                { return ACSScriptTypes.DO;}
-  "break"             { return ACSScriptTypes.BREAK;}
-  "default"           { return ACSScriptTypes.DEFAULT;}
-  "if"                {  return ACSScriptTypes.IF;}
-  "else"              { return ACSScriptTypes.ELSE;}
-  "return"            { return ACSScriptTypes.RETURN;}
+  "include"             { return ACSScriptTypes.INCLUDE;}
+  "import"              { return ACSScriptTypes.IMPORT;}
+  "define"              { return ACSScriptTypes.DEFINE;}
+  "library"             { return ACSScriptTypes.LIBRARY;}
+  "global"              { return ACSScriptTypes.GLOBAL;}
+  "static"              { return ACSScriptTypes.STATIC;}
+  "world"               { return ACSScriptTypes.WORLD;}
+  "Script" | "script"   { return ACSScriptTypes.SCRIPT_IDENTIFIER;}
+  "function"            { return ACSScriptTypes.FUNCTION_IDENTIFIER;}
+  "void"                { return ACSScriptTypes.VOID;}
+  "int"                 { return ACSScriptTypes.INT; }
+  "str"                 { return ACSScriptTypes.STR; }
+  "bool"                { return ACSScriptTypes.BOOL;}
+  "OPEN"                { return ACSScriptTypes.OPEN;}
+  "ENTER"               { return ACSScriptTypes.ENTER;}
+  "RETURN"              { return ACSScriptTypes.RETURN;}
+  "RESPAWN"             { return ACSScriptTypes.RESPAWN;}
+  "DEATH"               { return ACSScriptTypes.DEATH;}
+  "LIGHTNING"           { return ACSScriptTypes.LIGHTNING;}
+  "UNLOADING"           { return ACSScriptTypes.UNLOADING;}
+  "DISCONNECT"          { return ACSScriptTypes.DISCONNECT;}
+  "KILL"                { return ACSScriptTypes.KILL;}
+  "REOPEN"              { return ACSScriptTypes.REOPEN;}
+  "net" | "NET"         { return ACSScriptTypes.NET;}
+  "true"                { return ACSScriptTypes.TRUE;}
+  "false"               { return ACSScriptTypes.FALSE;}
+  "switch"              { return ACSScriptTypes.SWITCH;}
+  "case"                { return ACSScriptTypes.CASE;}
+  "for"                 { return ACSScriptTypes.FOR;}
+  "while"               { return ACSScriptTypes.WHILE;}
+  "until"               { return ACSScriptTypes.UNTIL;}
+  "do"                  { return ACSScriptTypes.DO;}
+  "break"               { return ACSScriptTypes.BREAK;}
+  "default"             { return ACSScriptTypes.DEFAULT;}
+  "if"                  {  return ACSScriptTypes.IF;}
+  "else"                { return ACSScriptTypes.ELSE;}
+  "return"              { return ACSScriptTypes.RETURN;}
 
-  {IDENTIFIER}        { return ACSScriptTypes.IDENTIFIER; }
-  {WHITE_SPACE}       { return TokenType.WHITE_SPACE; }
-  {END_LINE_COMMENT}  { return ACSScriptTypes.COMMENT;}
+  {IDENTIFIER}          { return ACSScriptTypes.IDENTIFIER; }
+  {WHITE_SPACE}         { return TokenType.WHITE_SPACE; }
+  {END_LINE_COMMENT}    { return ACSScriptTypes.COMMENT;}
   {MULTIPLE_LINE_COMMENT}   {return ACSScriptTypes.COMMENT;}
-  {NUMBER}            { return ACSScriptTypes.NUMBER;}
-  {STRING}            { return ACSScriptTypes.STRING;}
-  {CHARACTER}         { return ACSScriptTypes.CHARACTER;}
-  {FLOAT}             { return ACSScriptTypes.FLOAT;}
+  {NUMBER}              { return ACSScriptTypes.NUMBER;}
+  {STRING}              { return ACSScriptTypes.STRING;}
+  {CHARACTER}           { return ACSScriptTypes.CHARACTER;}
+  {FLOAT}               { return ACSScriptTypes.FLOAT;}
+  {EQUALS_SYMBOL}       { return ACSScriptTypes.EQUALS_SYMBOL;}
+  {DOT_SYMBOL}          { return ACSScriptTypes.DOT_SYMBOL;}
+  {COMMA_SYMBOL}        { return ACSScriptTypes.COMMA_SYMBOL;}
+  {OPEN_BRACE}          { return ACSScriptTypes.OPEN_BRACE;}
+  {CLOSE_BRACE}         { return ACSScriptTypes.CLOSE_BRACE;}
+  {OPEN_BRACKET}        { return ACSScriptTypes.OPEN_BRACKET;}
+  {CLOSE_BRACKET}       { return ACSScriptTypes.CLOSE_BRACKET;}
+  {OPEN_SQUARE_BRACKET} { return ACSScriptTypes.OPEN_SQUARE_BRACKET;}
+  {CLOSE_SQUARE_BRACKET} { return ACSScriptTypes.CLOSE_SQUARE_BRACKET;}
+  {POUND_SYMBOL}        {return ACSScriptTypes.POUND_SYMBOL;}
+  {SEMICOLON_SYMBOL}    {return ACSScriptTypes.SEMICOLON_SYMBOL;}
+  {COLON_SYMBOL}        {return ACSScriptTypes.COLON_SYMBOL;}
 }
 
 // If the character sequence does not match any of the above rules, we return BAD_CHARACTER which indicates that

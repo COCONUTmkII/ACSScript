@@ -1,5 +1,6 @@
 package by.home.acs.language;
 
+import by.home.acs.language.psi.ACSScriptDefinition;
 import by.home.acs.language.psi.ACSScriptFile;
 import by.home.acs.language.psi.ACSScriptScriptDefinition;
 import com.intellij.openapi.project.Project;
@@ -13,19 +14,17 @@ import java.util.Collections;
 import java.util.List;
 import java.util.ArrayList;
 
-
 public class ACSUtil {
-    // I have no IDEA what am I writing...
-    public static List<ACSScriptScriptDefinition> findScript(Project project, String number) {
-        List<ACSScriptScriptDefinition> result = new ArrayList<>();
+    public static List<ACSScriptDefinition> findScript(Project project, String number) {
+        List<ACSScriptDefinition> result = new ArrayList<>();
         Collection<VirtualFile> virtualFiles =
                 FileTypeIndex.getFiles(ACSScriptType.INSTANCE, GlobalSearchScope.allScope(project));
         for (VirtualFile virtualFile : virtualFiles) {
             ACSScriptFile acsFile = (ACSScriptFile) PsiManager.getInstance(project).findFile(virtualFile);
             if (acsFile != null) {
-                ACSScriptScriptDefinition[] scriptWord = PsiTreeUtil.getChildrenOfType(acsFile, ACSScriptScriptDefinition.class);
+                ACSScriptDefinition[] scriptWord = PsiTreeUtil.getChildrenOfType(acsFile, ACSScriptDefinition.class);
                 if (scriptWord != null) {
-                    for (ACSScriptScriptDefinition acs : scriptWord) {
+                    for (ACSScriptDefinition acs : scriptWord) {
                         if (number.equals(acs.getText())) {
                             result.add(acs);
                         }
@@ -36,7 +35,23 @@ public class ACSUtil {
         return result;
     }
 
-    public static List<ACSScriptScriptDefinition> findScript(Project project) {
+    public static List<ACSScriptDefinition> findScript(Project project) {
+        List<ACSScriptDefinition> result = new ArrayList<>();
+        Collection<VirtualFile> virtualFiles =
+                FileTypeIndex.getFiles(ACSScriptType.INSTANCE, GlobalSearchScope.allScope(project));
+        for (VirtualFile virtualFile : virtualFiles) {
+            ACSScriptFile acsFile = (ACSScriptFile) PsiManager.getInstance(project).findFile(virtualFile);
+            if (acsFile != null) {
+                ACSScriptDefinition[] scriptWord = PsiTreeUtil.getChildrenOfType(acsFile, ACSScriptDefinition.class);
+                if (scriptWord != null) {
+                    Collections.addAll(result, scriptWord);
+                }
+            }
+        }
+        return result;
+    }
+
+    /*public static List<ACSScriptScriptDefinition> findIdentifiers(Project project, String identifier) {
         List<ACSScriptScriptDefinition> result = new ArrayList<>();
         Collection<VirtualFile> virtualFiles =
                 FileTypeIndex.getFiles(ACSScriptType.INSTANCE, GlobalSearchScope.allScope(project));
@@ -50,5 +65,5 @@ public class ACSUtil {
             }
         }
         return result;
-    }
+    }*/
 }

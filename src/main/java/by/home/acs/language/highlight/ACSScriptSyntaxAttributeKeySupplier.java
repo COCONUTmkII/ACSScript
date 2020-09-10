@@ -31,8 +31,8 @@ public class ACSScriptSyntaxAttributeKeySupplier {
         elements.put(ACSScriptTypes.EMPTY_STRING, () -> new TextAttributesKey[]{STRING_VALUE});
         elements.put(ACSScriptTypes.RESPAWN, () -> new TextAttributesKey[]{SCRIPT_TYPE});
         elements.put(ACSScriptTypes.UNLOADING, () -> new TextAttributesKey[]{SCRIPT_TYPE});
-        elements.put(ACSScriptTypes.SCRIPT, () -> new TextAttributesKey[]{KEY});
-        elements.put(ACSScriptTypes.FUNCTION, () -> new TextAttributesKey[]{KEY});
+        elements.put(ACSScriptTypes.SCRIPT_IDENTIFIER, () -> new TextAttributesKey[]{KEY});
+        elements.put(ACSScriptTypes.FUNCTION_IDENTIFIER, () -> new TextAttributesKey[]{KEY});
         elements.put(ACSScriptTypes.STR, () -> new TextAttributesKey[]{KEY});
         elements.put(ACSScriptTypes.INT, () -> new TextAttributesKey[]{KEY});
         elements.put(ACSScriptTypes.STRING, () -> new TextAttributesKey[]{STRING_VALUE});

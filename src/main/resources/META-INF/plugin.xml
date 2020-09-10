@@ -22,10 +22,16 @@
         <lang.syntaxHighlighterFactory language="ACSScript"
                                        implementationClass="by.home.acs.language.highlight.ACSScriptSyntaxHighlightFactory"/>
         <annotator language="ACSScript" implementationClass="by.home.acs.language.annotator.ACSScriptAnnotator"/>
-
-        <completion.contributor language="ACSScript" implementationClass="by.home.acs.language.completion.ACSBasicKeywordCompletionContributor"/>
-        <completion.contributor language="ACSScript" implementationClass="by.home.acs.language.completion.ACSDirectivesCompletionContributor"/>
+        <annotator language="ACSScript" implementationClass="by.home.acs.language.annotator.ACSScriptNumberAnnotator"/>
+        <completion.contributor language="ACSScript" implementationClass="by.home.acs.language.completion.ACSScriptCompletionContributor"/>
+        <completion.contributor language="ACSScript" implementationClass="by.home.acs.language.completion.ACSVariableCompletionContributor"/>
+        <completion.contributor language="ACSScript" implementationClass="by.home.acs.language.completion.ACSScriptTypeCompletionContributor"/>
+        <completion.contributor language="ACSScript" implementationClass="by.home.acs.language.completion.ACSScriptDirectiveCompletionContributor"/>
         <!-- Add your extensions here -->
+        <lang.findUsagesProvider language="ACSScript" implementationClass="by.home.acs.language.usage.ACSScriptUsageProvider"/>
+        <lang.refactoringSupport language="ACSScript" implementationClass="by.home.acs.language.refactor.ACSScriptRefactoringSupportProvider"/>
+        <lang.refactoringSupport language="ACSScript" implementationClass="by.home.acs.language.refactor.ACSTestRefactoring"/>
+        <psi.referenceContributor implementation="by.home.acs.language.reference.ACSScriptReferenceContributor"/>
     </extensions>
 
     <actions>
