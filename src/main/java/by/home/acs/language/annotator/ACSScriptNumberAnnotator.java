@@ -16,6 +16,7 @@ import static by.home.acs.language.annotator.ACSScriptAnnotatorPrefix.SCRIPT_LOW
 
 public class ACSScriptNumberAnnotator implements Annotator {
     private boolean testOne = false;
+    private boolean testTwo = false;
     private final TextRange textRange
             = TextRange.from(SCRIPT_LOWERCASE_PREFIX.length(), SCRIPT_LOWERCASE_PREFIX.length() + 1);
     @Override
@@ -29,7 +30,7 @@ public class ACSScriptNumberAnnotator implements Annotator {
                     continue;
                 }
                 if (i.equals(ACSScriptTypes.NUMBER)) {
-                    boolean testTwo = true;
+                    testTwo = true;
                     if (testOne && testTwo) {
                         ASTNode node = element.getNode();
                         checkScriptNumberRange(node, holder);
@@ -38,7 +39,7 @@ public class ACSScriptNumberAnnotator implements Annotator {
                     }
                 }
             }
-        } catch (NullPointerException e) {
+        } catch (NullPointerException | NumberFormatException e) {
             e.getCause();
         }
     }
@@ -52,7 +53,7 @@ public class ACSScriptNumberAnnotator implements Annotator {
         }
     }
 
-    private void createScriptNumberAnnotation(@NotNull AnnotationHolder holder, boolean isNotValid) {
+    private void createScriptNumberAnnotation(@NotNull AnnotationHolder holder, boolean isNotValid) throws NumberFormatException{
         if (isNotValid) {
             Annotation annotation = holder.createErrorAnnotation(textRange, "Script number must be > 0 or < 32768");
             annotation.setTextAttributes(ACSScriptTextAttributeKeyValue.BAD_CHARACTER);
