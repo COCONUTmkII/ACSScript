@@ -31,17 +31,18 @@ ACSScriptFile ::= (COMMENT|Definition*)
 Definition ::= (FunctionDefinition | ScriptDefinition | DirectivesDeclaration | GlobalModifier | VariableDefinition)
 
 
-FunctionDefinition ::= FunctionIdentifier (VoidType | Type) IDENTIFIER OpenBracket CloseBracket  OpenBrace FunctionBody CloseBrace
+FunctionDefinition ::= FunctionIdentifier FunctionReturnType IDENTIFIER ((FunctionParameterWithVoid) | FunctionParameter) FunctionBody //IDENTIFIER OpenBracket CloseBracket  OpenBrace FunctionBody CloseBrace
 
-ScriptDefinition ::= ScriptIdentifier (( STRING | NUM) (ScriptType)? (OpenBracket Type IDENTIFIER CloseBracket | OpenBracket VoidType CloseBracket)?  (NetType)? OpenBrace ScriptBody CloseBrace)
+ScriptDefinition ::= ScriptIdentifier ScriptName ((ScriptParameterWithVoid NetType?) | (ScriptType NetType?)  | (ScriptParameter NetType?)) ScriptBody
 {
        mixin="by.home.acs.language.helper.ACSScriptNamedElementImpl"
        implements="by.home.acs.language.helper.ACSScriptNamedElement"
        methods=[getNameIdentifier  getName setName getScript getScriptNumberValue getIdentifier]
 }
 
-ScriptType ::= OPEN | ENTER | RETURN | RESPAWN | DEATH | LIGHTNING | UNLOADING | DISCONNECT | KILL | REOPEN
-
+/**
+    Directives statement
+ */
 DirectivesDeclaration ::= IncludeDeclaration | ImportDeclaration | DefineDeclaration | LibraryDeclaration
 
 IncludeDeclaration ::= PoundSymbol include STRING
@@ -52,6 +53,48 @@ DefineDeclaration ::= PoundSymbol define IDENTIFIER  IDENTIFIER (Operator (IDENT
 
 LibraryDeclaration ::= PoundSymbol library STRING
 
+/**
+    Script statements
+ */
+ScriptIdentifier ::= 'script'
+
+ScriptType ::= OPEN | ENTER | RETURN | RESPAWN | DEATH | LIGHTNING | UNLOADING | DISCONNECT | KILL | REOPEN
+
+ScriptName ::= STRING | NUM
+
+ScriptParameterWithVoid ::= OpenBracket VoidType CloseBracket //   (void)
+
+ScriptParameter ::= OpenBracket ScriptParameterList CloseBracket
+
+ScriptParameterList ::= ScriptFormalParameter (CommaSymbol ScriptFormalParameter)*
+
+ScriptFormalParameter ::= IntType IDENTIFIER
+
+ScriptBody ::= OpenBrace ScriptStatement* CloseBrace
+
+/**
+    Function statements
+ */
+FunctionIdentifier ::= 'function'
+
+FunctionInvocation ::= IDENTIFIER OpenBracket CloseBracket SemicolonSymbol ReturnOperator?
+
+FunctionReturnType ::= VoidType | Type
+
+FunctionParameterWithVoid ::= OpenBracket VoidType CloseBracket
+
+FunctionParameter ::= OpenBracket FunctionParameterList CloseBracket
+
+FunctionParameterList ::= FunctionFormalParameter (CommaSymbol FunctionFormalParameter)*
+
+FunctionFormalParameter ::= Type IDENTIFIER
+
+FunctionBody ::= OpenBrace Statement* CloseBrace
+
+/**
+
+ */
+
 GlobalModifier ::= (global | world) Type IDENTIFIER ColonSymbol IDENTIFIER SemicolonSymbol
 
 StaticModifier ::= static
@@ -60,11 +103,9 @@ NetType ::= net
 
 VoidType ::= void
 
-FunctionBody ::= Statement*
-
 Statement ::= VariableDefinition | AssignmentStatement | FunctionInvocation | ControlFlowStatement | Loops | ReturnOperator
 
-ScriptBody ::= ScriptStatement*
+//ScriptBody ::= ScriptStatement*
 
 ScriptStatement ::= VariableDefinition | VariableInitialization | AssignmentStatement | FunctionInvocation | ControlFlowStatement | Loops
 
@@ -120,7 +161,7 @@ LogicalType ::= true | false
 
 ReturnOperator ::= return SemicolonSymbol | return IDENTIFIER SemicolonSymbol // Use something else but IDENTIFIER later
 
-FunctionInvocation ::= IDENTIFIER OpenBracket CloseBracket SemicolonSymbol ReturnOperator? // TODO need to change this because of possible parameters inside
+
 
 ControlFlowStatement ::= IfThenStatement | IfThenElseStatement |  SwitchStatement
 
@@ -157,14 +198,5 @@ ColonSymbol ::= ':'
 OpenSquareBracket ::= '['
 
 CloseSquareBracket ::= ']'
-
-/*
-   Script and function identifiers
- */
-
-ScriptIdentifier ::= 'script'
-
-
-FunctionIdentifier ::= 'function'
 
 NUM ::= NUMBER
