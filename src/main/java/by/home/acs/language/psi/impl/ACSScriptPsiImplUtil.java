@@ -10,6 +10,7 @@ import com.intellij.psi.PsiElement;
 
 public class ACSScriptPsiImplUtil {
     public static String getScript (ACSScriptScriptDefinition scriptElement) {
+        System.out.println("privet");
         ASTNode scriptNode = scriptElement.getNode().findChildByType(ACSScriptTypes.SCRIPT_IDENTIFIER);
         if (scriptNode != null) {
             return scriptNode.getText().replaceAll("\\\\ ", "");

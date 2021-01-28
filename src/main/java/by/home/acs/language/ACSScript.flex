@@ -12,7 +12,11 @@ import com.intellij.psi.tree.IElementType;
 %function advance
 %type IElementType
 %unicode
+%eof{
+return;
+%eof}
 
+CRLF = \R
 IDENTIFIER= [a-zA-Z_][a-zA-Z0-9_]*
 STRING= \"([^\\\"]|\\.)*\"
 CHARACTER = (\')([^\\'\n]|(\\n) | (\\t) | (\\0) | (\\{2}) | (\\u[0-9]{4}))(\')
@@ -24,7 +28,7 @@ FLOAT = -?\d+(\.\d+)?
 EQUALS_SYMBOL = "="
 DOT_SYMBOL = "."
 COMMA_SYMBOL = ","
-OPEN_BRACE = "{"
+OPEN_BRACE =  "{"
 CLOSE_BRACE = "}"
 OPEN_BRACKET = "("
 CLOSE_BRACKET = ")"
@@ -33,9 +37,19 @@ CLOSE_SQUARE_BRACKET = "]"
 POUND_SYMBOL = "#"
 SEMICOLON_SYMBOL = ";"
 COLON_SYMBOL = ":"
+LITERAL = [a-zA-Z]+
+FIRST_VALUE_CHARACTER=[^ \s] | "\\"{CRLF} | "\\".    //remove this
+VALUE_CHARACTER=[^\s] | "\\"{CRLF} | "\\".           //remove this
+FUNCTION = "function"
+VOID = "void"
+INT = "int"
+STR = "str"
+BOOL = "bool"
 
+
+%states WAITING_VALUE, TEST_ONE_VALUE
+%xstate TEST_VALUE
 %%
-<YYINITIAL> {
   "include"             { return ACSScriptTypes.INCLUDE;}
   "import"              { return ACSScriptTypes.IMPORT;}
   "define"              { return ACSScriptTypes.DEFINE;}
@@ -44,11 +58,20 @@ COLON_SYMBOL = ":"
   "static"              { return ACSScriptTypes.STATIC;}
   "world"               { return ACSScriptTypes.WORLD;}
   "Script" | "script"   { return ACSScriptTypes.SCRIPT_IDENTIFIER;}
-  "function"            { return ACSScriptTypes.FUNCTION_IDENTIFIER;}
-  "void"                { return ACSScriptTypes.VOID;}
-  "int"                 { return ACSScriptTypes.INT; }
-  "str"                 { return ACSScriptTypes.STR; }
-  "bool"                { return ACSScriptTypes.BOOL;}
+      {VOID}                                                    {yybegin(YYINITIAL); return ACSScriptTypes.VOID_TYPE;}
+      {BOOL}                                                    {yybegin(YYINITIAL); return ACSScriptTypes.BOOL_TYPE;}
+      {INT}                                                     {yybegin(YYINITIAL); return ACSScriptTypes.INT_TYPE;}
+      {STR}                                                     {yybegin(YYINITIAL); return ACSScriptTypes.STRING_TYPE;}
+  {FUNCTION}+            {yybegin(WAITING_VALUE);  return ACSScriptTypes.FUNCTION_IDENTIFIER;}
+  <WAITING_VALUE>{WHITE_SPACE}+                                 {yybegin(WAITING_VALUE); return TokenType.WHITE_SPACE; }
+  <WAITING_VALUE> {FIRST_VALUE_CHARACTER}{VALUE_CHARACTER}*     {yybegin(YYINITIAL); return ACSScriptTypes.FUNCTION_RETURN_TYPE;}
+    ({CRLF}|{WHITE_SPACE})+                                     { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
+
+
+  //"void"                { return ACSScriptTypes.VOID_TYPE;}
+ // "int"                 { return ACSScriptTypes.INT_TYPE; }
+ // "str"                 { return ACSScriptTypes.STRING_TYPE;}
+  //"bool"                { return ACSScriptTypes.BOOL_TYPE;}
   "OPEN"                { return ACSScriptTypes.OPEN;}
   "ENTER"               { return ACSScriptTypes.ENTER;}
   "RETURN"              { return ACSScriptTypes.RETURN;}
@@ -75,7 +98,8 @@ COLON_SYMBOL = ":"
   "return"              { return ACSScriptTypes.RETURN;}
 
   {IDENTIFIER}          { return ACSScriptTypes.IDENTIFIER; }
-  {WHITE_SPACE}         { return TokenType.WHITE_SPACE; }
+  //{WHITE_SPACE}         { return TokenType.WHITE_SPACE; }
+  //{VOID}                { return ACSScriptTypes.VOID_TYPE;} not working tto highlight
   {END_LINE_COMMENT}    { return ACSScriptTypes.COMMENT;}
   {MULTIPLE_LINE_COMMENT}   {return ACSScriptTypes.COMMENT;}
   {NUMBER}              { return ACSScriptTypes.NUMBER;}
@@ -94,7 +118,7 @@ COLON_SYMBOL = ":"
   {POUND_SYMBOL}        {return ACSScriptTypes.POUND_SYMBOL;}
   {SEMICOLON_SYMBOL}    {return ACSScriptTypes.SEMICOLON_SYMBOL;}
   {COLON_SYMBOL}        {return ACSScriptTypes.COLON_SYMBOL;}
-}
+
 
 // If the character sequence does not match any of the above rules, we return BAD_CHARACTER which indicates that
 // there is an error in the character sequence. This is used to highlight errors.

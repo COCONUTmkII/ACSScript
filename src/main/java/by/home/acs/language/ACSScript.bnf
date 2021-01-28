@@ -101,7 +101,7 @@ StaticModifier ::= static
 
 NetType ::= net
 
-VoidType ::= void
+VoidType ::= 'void'
 
 Statement ::= VariableDefinition | AssignmentStatement | FunctionInvocation | ControlFlowStatement | Loops | ReturnOperator
 
@@ -143,11 +143,11 @@ doUntilLoop ::= do OpenBrace Statement? CloseBrace until OpenBracket LogicalType
 
 Type ::= (IntType | StringType | BoolType)
 
-BoolType ::= bool
+BoolType ::= 'bool'
 
-IntType ::= int
+IntType ::= 'int'
 
-StringType ::= str
+StringType ::= 'str'
 
 EmptyString ::= '""'
 
