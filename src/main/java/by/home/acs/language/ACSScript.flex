@@ -45,11 +45,12 @@ VOID = "void"
 INT = "int"
 STR = "str"
 BOOL = "bool"
-
+TEST_SIGNATURE = [a-zA-Z_][a-zA-Z0-9_]*\(
 
 %states WAITING_VALUE, TEST_ONE_VALUE
 %xstate TEST_VALUE
 %%
+
   "include"             { return ACSScriptTypes.INCLUDE;}
   "import"              { return ACSScriptTypes.IMPORT;}
   "define"              { return ACSScriptTypes.DEFINE;}
@@ -58,20 +59,22 @@ BOOL = "bool"
   "static"              { return ACSScriptTypes.STATIC;}
   "world"               { return ACSScriptTypes.WORLD;}
   "Script" | "script"   { return ACSScriptTypes.SCRIPT_IDENTIFIER;}
+     // {TEST_SIGNATURE}                                          {yybegin(YYINITIAL); return ACSScriptTypes.TEST_SIGNATURE;}
+      {OPEN_BRACKET}                                            {yybegin(YYINITIAL); return ACSScriptTypes.OPEN_BRACKET;}
+      {CLOSE_BRACKET}                                           {yybegin(YYINITIAL); return ACSScriptTypes.CLOSE_BRACKET;}
       {VOID}                                                    {yybegin(YYINITIAL); return ACSScriptTypes.VOID_TYPE;}
       {BOOL}                                                    {yybegin(YYINITIAL); return ACSScriptTypes.BOOL_TYPE;}
       {INT}                                                     {yybegin(YYINITIAL); return ACSScriptTypes.INT_TYPE;}
       {STR}                                                     {yybegin(YYINITIAL); return ACSScriptTypes.STRING_TYPE;}
-  {FUNCTION}+            {yybegin(WAITING_VALUE);  return ACSScriptTypes.FUNCTION_IDENTIFIER;}
-  <WAITING_VALUE>{WHITE_SPACE}+                                 {yybegin(WAITING_VALUE); return TokenType.WHITE_SPACE; }
-  <WAITING_VALUE> {FIRST_VALUE_CHARACTER}{VALUE_CHARACTER}*     {yybegin(YYINITIAL); return ACSScriptTypes.FUNCTION_RETURN_TYPE;}
-    ({CRLF}|{WHITE_SPACE})+                                     { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
+  {FUNCTION}+                                                   {yybegin(WAITING_VALUE);  return ACSScriptTypes.FUNCTION_IDENTIFIER;}
+  <WAITING_VALUE> {WHITE_SPACE}+                                {yybegin(WAITING_VALUE); return TokenType.WHITE_SPACE; }
+  <WAITING_VALUE> {FIRST_VALUE_CHARACTER}{VALUE_CHARACTER}*     {yybegin(TEST_VALUE); return ACSScriptTypes.FUNCTION_RETURN_TYPE;}
+      <TEST_VALUE> {WHITE_SPACE}+                                {yybegin(TEST_VALUE); return TokenType.WHITE_SPACE; }
+      <TEST_VALUE>  {TEST_SIGNATURE}                              {yybegin(YYINITIAL); return ACSScriptTypes.FUNCTION_PARAMETER;}
+      //<TEST_VALUE> {FIRST_VALUE_CHARACTER}{VALUE_CHARACTER}*   {yybegin(YYINITIAL); return ACSScriptTypes.TEST_SIGNATURE;}
+    ({CRLF}|{WHITE_SPACE})+                                     {yybegin(YYINITIAL); return TokenType.WHITE_SPACE;}
 
-
-  //"void"                { return ACSScriptTypes.VOID_TYPE;}
- // "int"                 { return ACSScriptTypes.INT_TYPE; }
- // "str"                 { return ACSScriptTypes.STRING_TYPE;}
-  //"bool"                { return ACSScriptTypes.BOOL_TYPE;}
+  "OPEN"                { return ACSScriptTypes.OPEN;}
   "OPEN"                { return ACSScriptTypes.OPEN;}
   "ENTER"               { return ACSScriptTypes.ENTER;}
   "RETURN"              { return ACSScriptTypes.RETURN;}
@@ -93,7 +96,7 @@ BOOL = "bool"
   "do"                  { return ACSScriptTypes.DO;}
   "break"               { return ACSScriptTypes.BREAK;}
   "default"             { return ACSScriptTypes.DEFAULT;}
-  "if"                  {  return ACSScriptTypes.IF;}
+  "if"                  { return ACSScriptTypes.IF;}
   "else"                { return ACSScriptTypes.ELSE;}
   "return"              { return ACSScriptTypes.RETURN;}
 
@@ -111,8 +114,8 @@ BOOL = "bool"
   {COMMA_SYMBOL}        { return ACSScriptTypes.COMMA_SYMBOL;}
   {OPEN_BRACE}          { return ACSScriptTypes.OPEN_BRACE;}
   {CLOSE_BRACE}         { return ACSScriptTypes.CLOSE_BRACE;}
-  {OPEN_BRACKET}        { return ACSScriptTypes.OPEN_BRACKET;}
-  {CLOSE_BRACKET}       { return ACSScriptTypes.CLOSE_BRACKET;}
+  //{OPEN_BRACKET}        { return ACSScriptTypes.OPEN_BRACKET;}
+//  {CLOSE_BRACKET}       { return ACSScriptTypes.CLOSE_BRACKET;}
   {OPEN_SQUARE_BRACKET} { return ACSScriptTypes.OPEN_SQUARE_BRACKET;}
   {CLOSE_SQUARE_BRACKET} { return ACSScriptTypes.CLOSE_SQUARE_BRACKET;}
   {POUND_SYMBOL}        {return ACSScriptTypes.POUND_SYMBOL;}

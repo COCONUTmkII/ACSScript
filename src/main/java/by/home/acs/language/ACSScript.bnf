@@ -23,6 +23,7 @@
         STRING = 'regexp:^"(.*?)"'
         CHARACTER
         FLOAT = 'regexp:^[+-]?\d+(\.\d+)?$'
+        //TEST_SIGNATURE = 'regexp:[a-zA-Z_][a-zA-Z0-9_]*\('
     ]
 }
 
@@ -31,7 +32,7 @@ ACSScriptFile ::= (COMMENT|Definition*)
 Definition ::= (FunctionDefinition | ScriptDefinition | DirectivesDeclaration | GlobalModifier | VariableDefinition)
 
 
-FunctionDefinition ::= FunctionIdentifier FunctionReturnType IDENTIFIER ((FunctionParameterWithVoid) | FunctionParameter) FunctionBody //IDENTIFIER OpenBracket CloseBracket  OpenBrace FunctionBody CloseBrace
+FunctionDefinition ::= FunctionIdentifier FunctionReturnType FunctionNameAndParams FunctionBody //IDENTIFIER OpenBracket CloseBracket  OpenBrace FunctionBody CloseBrace
 
 ScriptDefinition ::= ScriptIdentifier ScriptName ((ScriptParameterWithVoid NetType?) | (ScriptType NetType?)  | (ScriptParameter NetType?)) ScriptBody
 {
@@ -81,9 +82,12 @@ FunctionInvocation ::= IDENTIFIER OpenBracket CloseBracket SemicolonSymbol Retur
 
 FunctionReturnType ::= VoidType | Type
 
-FunctionParameterWithVoid ::= OpenBracket VoidType CloseBracket
+FunctionParameterWithVoid ::= VoidType
 
-FunctionParameter ::= OpenBracket FunctionParameterList CloseBracket
+FunctionNameAndParams ::= IDENTIFIER (FunctionParameter | FunctionParameterWithVoid)
+//FunctionParameter ::= OpenBracket FunctionParameterList CloseBracket
+
+FunctionParameter ::= OpenBracket (FunctionParameterWithVoid | FunctionParameterList) CloseBracket
 
 FunctionParameterList ::= FunctionFormalParameter (CommaSymbol FunctionFormalParameter)*
 
