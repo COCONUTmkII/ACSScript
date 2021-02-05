@@ -5,10 +5,19 @@ import by.home.acs.language.psi.ACSScriptDefinition;
 import com.intellij.lang.ASTNode;
 
 public class ACSPsiImplUtil {
+    public static String getFunctionKeyword(ACSScriptDefinition element) {
+        ASTNode functionKeywordNode = element.getNode().findChildByType(ACSScriptTypes.FUNCTION_RETURN_TYPE);
+        if (functionKeywordNode != null) {
+            return functionKeywordNode.getText();
+        } else {
+            return null;
+        }
+    }
+
     public static String getFunctionReturnType(ACSScriptDefinition element) {
-        ASTNode functionReturnTypeNode = element.getNode().findChildByType(ACSScriptTypes.FUNCTION_RETURN_TYPE);
-        if (functionReturnTypeNode != null) {
-            return functionReturnTypeNode.getText();
+        ASTNode functionReturnType = element.getNode().findChildByType(ACSScriptTypes.FUNCTION_RETURN_TYPE);
+        if (functionReturnType != null) {
+            return functionReturnType.getText();
         } else {
             return null;
         }

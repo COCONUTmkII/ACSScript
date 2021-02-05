@@ -40,7 +40,7 @@ private FileContainer ::= (COMMENT|Definition*)
 
 Definition ::= FunctionDefinition | ScriptDefinition
 
-private FunctionDefinition ::= FUNCTION FunctionReturnType IDENTIFIER OPEN_BRACKET FunctionParameter CLOSE_BRACKET OPEN_BRACE CLOSE_BRACE {methods=[getFunctionReturnType]}
+private FunctionDefinition ::= (FUNCTION FunctionReturnType IDENTIFIER OPEN_BRACKET FunctionParameter CLOSE_BRACKET OPEN_BRACE CLOSE_BRACE) {methods=[getFunctionKeyword getFunctionReturnType]}
         FunctionReturnType ::= VOID | INT | STR | BOOL
         FunctionParameter ::= VOID | FunctionParameterList
         FunctionParameterList ::= FunctionFormalParameter (COMMA FunctionFormalParameter)*
