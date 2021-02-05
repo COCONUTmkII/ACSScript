@@ -13,25 +13,46 @@
   tokenTypeClass="by.home.acs.language.psi.ACSScriptTokenType"
 
   psiImplUtilClass="by.home.acs.language.psi.impl.ACSScriptPsiImplUtil"
-}
-
-{
+    generate=[tokens="yes"]
     tokens = [
-        IDENTIFIER = 'regexp:[a-zA-Z_][a-zA-Z0-9_]*'
+        FUNCTION='function'
+        SCRIPT='script'
         WHITE_SPACE = 'regexp:\s+'
-        NUMBER = '-?[0-9]+'
+        NUMBER='regexp:(-?[0-9]+)'
         STRING = 'regexp:^"(.*?)"'
         CHARACTER
         FLOAT = 'regexp:^[+-]?\d+(\.\d+)?$'
+        VOID = 'void'
+        INT = 'int'
+        STR = 'str'
+        BOOl = 'bool'
+        OPEN_BRACKET = '('
+        CLOSE_BRACKET = ')'
+        OPEN_BRACE = '{'
+        CLOSE_BRACE = '}'
+        COMMA = ','
+        IDENTIFIER = 'regexp:[a-zA-Z_][a-zA-Z0-9_]*'
         //TEST_SIGNATURE = 'regexp:[a-zA-Z_][a-zA-Z0-9_]*\('
     ]
 }
 
-ACSScriptFile ::= (COMMENT|Definition*)
+ACSScriptFile ::= FileContainer
 
-Definition ::= (FunctionDefinition | ScriptDefinition | DirectivesDeclaration | GlobalModifier | VariableDefinition)
+private FileContainer ::= Definition
+
+Definition ::= FunctionDefinition | ScriptDefinition
+
+private FunctionDefinition ::= FUNCTION FunctionReturnType IDENTIFIER OPEN_BRACKET FunctionParameter CLOSE_BRACKET OPEN_BRACE CLOSE_BRACE{pin=1}
+        FunctionReturnType ::= VOID | INT | STR | BOOL
+        FunctionParameter ::= VOID | FunctionParameterList
+        FunctionParameterList ::= FunctionFormalParameter (COMMA FunctionFormalParameter)*
+        FunctionFormalParameter ::= Type IDENTIFIER
+        //FunctionBody ::= 'hello'
+        Type ::= INT | STR | BOOL
 
 
+private ScriptDefinition ::= SCRIPT NUMBER VOID OPEN_BRACKET VOID CLOSE_BRACKET {pin=2}
+/*
 FunctionDefinition ::= FunctionIdentifier FunctionReturnType FunctionNameAndParams FunctionBody //IDENTIFIER OpenBracket CloseBracket  OpenBrace FunctionBody CloseBrace
 
 ScriptDefinition ::= ScriptIdentifier ScriptName ((ScriptParameterWithVoid NetType?) | (ScriptType NetType?)  | (ScriptParameter NetType?)) ScriptBody
@@ -41,9 +62,11 @@ ScriptDefinition ::= ScriptIdentifier ScriptName ((ScriptParameterWithVoid NetTy
        methods=[getNameIdentifier  getName setName getScript getScriptNumberValue getIdentifier]
 }
 
+*/
 /**
     Directives statement
- */
+ *//*
+
 DirectivesDeclaration ::= IncludeDeclaration | ImportDeclaration | DefineDeclaration | LibraryDeclaration
 
 IncludeDeclaration ::= PoundSymbol include STRING
@@ -54,9 +77,11 @@ DefineDeclaration ::= PoundSymbol define IDENTIFIER  IDENTIFIER (Operator (IDENT
 
 LibraryDeclaration ::= PoundSymbol library STRING
 
+*/
 /**
     Script statements
- */
+ *//*
+
 ScriptIdentifier ::= 'script'
 
 ScriptType ::= OPEN | ENTER | RETURN | RESPAWN | DEATH | LIGHTNING | UNLOADING | DISCONNECT | KILL | REOPEN
@@ -73,9 +98,11 @@ ScriptFormalParameter ::= IntType IDENTIFIER
 
 ScriptBody ::= OpenBrace ScriptStatement* CloseBrace
 
+*/
 /**
     Function statements
- */
+ *//*
+
 FunctionIdentifier ::= 'function'
 
 FunctionInvocation ::= IDENTIFIER OpenBracket CloseBracket SemicolonSymbol ReturnOperator?
@@ -84,10 +111,10 @@ FunctionReturnType ::= VoidType | Type
 
 FunctionParameterWithVoid ::= VoidType
 
-FunctionNameAndParams ::= IDENTIFIER (FunctionParameter | FunctionParameterWithVoid)
+FunctionNameAndParams ::= IDENTIFIER OpenBracket FunctionParameter CloseBracket
 //FunctionParameter ::= OpenBracket FunctionParameterList CloseBracket
 
-FunctionParameter ::= OpenBracket (FunctionParameterWithVoid | FunctionParameterList) CloseBracket
+FunctionParameter ::=  FunctionParameterWithVoid | FunctionParameterList
 
 FunctionParameterList ::= FunctionFormalParameter (CommaSymbol FunctionFormalParameter)*
 
@@ -95,9 +122,11 @@ FunctionFormalParameter ::= Type IDENTIFIER
 
 FunctionBody ::= OpenBrace Statement* CloseBrace
 
+*/
 /**
 
- */
+ *//*
+
 
 GlobalModifier ::= (global | world) Type IDENTIFIER ColonSymbol IDENTIFIER SemicolonSymbol
 
@@ -175,9 +204,11 @@ IfThenElseStatement ::= if OpenBracket LogicalType OpenBracket OpenBrace Functio
 
 SwitchStatement ::= switch OpenBracket (IDENTIFIER | NUMBER) CloseBracket OpenBrace CaseOperator CloseBrace
 
+*/
 /*
     Key symbol's
- */
+ *//*
+
 
 EqualsSymbol ::= '='
 
@@ -203,4 +234,4 @@ OpenSquareBracket ::= '['
 
 CloseSquareBracket ::= ']'
 
-NUM ::= NUMBER
+NUM ::= NUMBER*/

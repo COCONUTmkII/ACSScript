@@ -45,7 +45,7 @@ VOID = "void"
 INT = "int"
 STR = "str"
 BOOL = "bool"
-TEST_SIGNATURE = [a-zA-Z_][a-zA-Z0-9_]*\(
+TEST_SIGNATURE = [a-zA-Z_][a-zA-Z0-9_]*[(]
 
 %states WAITING_VALUE, TEST_ONE_VALUE
 %xstate TEST_VALUE
@@ -59,19 +59,23 @@ TEST_SIGNATURE = [a-zA-Z_][a-zA-Z0-9_]*\(
   "static"              { return ACSScriptTypes.STATIC;}
   "world"               { return ACSScriptTypes.WORLD;}
   "Script" | "script"   { return ACSScriptTypes.SCRIPT_IDENTIFIER;}
+  {OPEN_BRACKET}                                            {yybegin(YYINITIAL); return ACSScriptTypes.OPEN_BRACKET;}
+  {CLOSE_BRACKET}                                           {yybegin(YYINITIAL); return ACSScriptTypes.CLOSE_BRACKET;}
      // {TEST_SIGNATURE}                                          {yybegin(YYINITIAL); return ACSScriptTypes.TEST_SIGNATURE;}
-      {OPEN_BRACKET}                                            {yybegin(YYINITIAL); return ACSScriptTypes.OPEN_BRACKET;}
-      {CLOSE_BRACKET}                                           {yybegin(YYINITIAL); return ACSScriptTypes.CLOSE_BRACKET;}
       {VOID}                                                    {yybegin(YYINITIAL); return ACSScriptTypes.VOID_TYPE;}
       {BOOL}                                                    {yybegin(YYINITIAL); return ACSScriptTypes.BOOL_TYPE;}
       {INT}                                                     {yybegin(YYINITIAL); return ACSScriptTypes.INT_TYPE;}
       {STR}                                                     {yybegin(YYINITIAL); return ACSScriptTypes.STRING_TYPE;}
-  {FUNCTION}+                                                   {yybegin(WAITING_VALUE);  return ACSScriptTypes.FUNCTION_IDENTIFIER;}
+  {FUNCTION}                                                   {yybegin(WAITING_VALUE);  return ACSScriptTypes.FUNCTION_IDENTIFIER;}
   <WAITING_VALUE> {WHITE_SPACE}+                                {yybegin(WAITING_VALUE); return TokenType.WHITE_SPACE; }
-  <WAITING_VALUE> {FIRST_VALUE_CHARACTER}{VALUE_CHARACTER}*     {yybegin(TEST_VALUE); return ACSScriptTypes.FUNCTION_RETURN_TYPE;}
-      <TEST_VALUE> {WHITE_SPACE}+                                {yybegin(TEST_VALUE); return TokenType.WHITE_SPACE; }
-      <TEST_VALUE>  {TEST_SIGNATURE}                              {yybegin(YYINITIAL); return ACSScriptTypes.FUNCTION_PARAMETER;}
-      //<TEST_VALUE> {FIRST_VALUE_CHARACTER}{VALUE_CHARACTER}*   {yybegin(YYINITIAL); return ACSScriptTypes.TEST_SIGNATURE;}
+  <WAITING_VALUE> {FIRST_VALUE_CHARACTER}{VALUE_CHARACTER}*     {yybegin(YYINITIAL); System.out.println("hello");return ACSScriptTypes.FUNCTION_RETURN_TYPE;}
+      //<TEST_ONE_VALUE> {WHITE_SPACE}+                                {yybegin(TEST_ONE_VALUE); System.out.println("SSSS");return TokenType.WHITE_SPACE; }
+      //<TEST_ONE_VALUE> {FIRST_VALUE_CHARACTER}{VALUE_CHARACTER}*     {yybegin(TEST_VALUE); System.out.println("pipa");return ACSScriptTypes.FUNCTION_NAME_AND_PARAMS;}
+       {IDENTIFIER}{OPEN_BRACKET}   {yybegin(YYINITIAL); System.out.println("hi"); return ACSScriptTypes.FUNCTION_PARAMETER;}
+      //<TEST_VALUE>                                {yybegin(YYINITIAL); return ACSScriptTypes.FUNCTION_PARAMETER;}
+/*    <TEST_VALUE> {IDENTIFIER}{OPEN_BRACKET}     {yybegin(YYINITIAL);
+      System.out.println("In TEST_ONE_VALUE");
+      return ACSScriptTypes.FUNCTION_PARAMETER;}*/
     ({CRLF}|{WHITE_SPACE})+                                     {yybegin(YYINITIAL); return TokenType.WHITE_SPACE;}
 
   "OPEN"                { return ACSScriptTypes.OPEN;}
@@ -100,7 +104,7 @@ TEST_SIGNATURE = [a-zA-Z_][a-zA-Z0-9_]*\(
   "else"                { return ACSScriptTypes.ELSE;}
   "return"              { return ACSScriptTypes.RETURN;}
 
-  {IDENTIFIER}          { return ACSScriptTypes.IDENTIFIER; }
+
   //{WHITE_SPACE}         { return TokenType.WHITE_SPACE; }
   //{VOID}                { return ACSScriptTypes.VOID_TYPE;} not working tto highlight
   {END_LINE_COMMENT}    { return ACSScriptTypes.COMMENT;}
@@ -121,7 +125,7 @@ TEST_SIGNATURE = [a-zA-Z_][a-zA-Z0-9_]*\(
   {POUND_SYMBOL}        {return ACSScriptTypes.POUND_SYMBOL;}
   {SEMICOLON_SYMBOL}    {return ACSScriptTypes.SEMICOLON_SYMBOL;}
   {COLON_SYMBOL}        {return ACSScriptTypes.COLON_SYMBOL;}
-
+  {IDENTIFIER}          { return ACSScriptTypes.IDENTIFIER; }
 
 // If the character sequence does not match any of the above rules, we return BAD_CHARACTER which indicates that
 // there is an error in the character sequence. This is used to highlight errors.

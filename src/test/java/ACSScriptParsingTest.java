@@ -1,4 +1,3 @@
-import by.home.acs.language.ACSScriptFileDefinition;
 import com.intellij.testFramework.ParsingTestCase;
 
 public class ACSScriptParsingTest extends ParsingTestCase {
