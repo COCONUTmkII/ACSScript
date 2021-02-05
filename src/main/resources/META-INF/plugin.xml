@@ -17,6 +17,11 @@
     <extensions defaultExtensionNs="com.intellij">
         <fileType name="ACS Script file" implementationClass="by.home.acs.language.ACSScriptType"
                   fieldName="INSTANCE" language="ACSScript" extensions="acs"/>
+        <lang.parserDefinition language="ACSScript"
+                               implementationClass="by.home.acs.language.ACSParserDefinition"/>
+        <lang.syntaxHighlighterFactory language="ACSScript"
+                                       implementationClass="by.home.acs.language.highlight.ACSSyntaxHighlightFactory"/>
+        <completion.contributor language="ACSScript" implementationClass="by.home.acs.language.completion.ACSFunctionReturnTypeCompletionContributor"/>
         <!--<lang.parserDefinition language="ACSScript"
                                implementationClass="by.home.acs.language.ACSScriptFileDefinition"/>
         <lang.syntaxHighlighterFactory language="ACSScript"

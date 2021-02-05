@@ -12,16 +12,14 @@
   elementTypeClass="by.home.acs.language.psi.ACSScriptElementType"
   tokenTypeClass="by.home.acs.language.psi.ACSScriptTokenType"
 
-  psiImplUtilClass="by.home.acs.language.psi.impl.ACSScriptPsiImplUtil"
+  psiImplUtilClass="by.home.acs.language.psi.impl.ACSPsiImplUtil"
     generate=[tokens="yes"]
     tokens = [
         FUNCTION='function'
         SCRIPT='script'
         WHITE_SPACE = 'regexp:\s+'
         NUMBER='regexp:(-?[0-9]+)'
-        STRING = 'regexp:^"(.*?)"'
-        CHARACTER
-        FLOAT = 'regexp:^[+-]?\d+(\.\d+)?$'
+        STRING = 'regexp:\"([^\\\"]|\\.)*\"'
         VOID = 'void'
         INT = 'int'
         STR = 'str'
@@ -38,18 +36,17 @@
 
 ACSScriptFile ::= FileContainer
 
-private FileContainer ::= Definition
+private FileContainer ::= (COMMENT|Definition*)
 
 Definition ::= FunctionDefinition | ScriptDefinition
 
-private FunctionDefinition ::= FUNCTION FunctionReturnType IDENTIFIER OPEN_BRACKET FunctionParameter CLOSE_BRACKET OPEN_BRACE CLOSE_BRACE{pin=1}
+private FunctionDefinition ::= FUNCTION FunctionReturnType IDENTIFIER OPEN_BRACKET FunctionParameter CLOSE_BRACKET OPEN_BRACE CLOSE_BRACE {methods=[getFunctionReturnType]}
         FunctionReturnType ::= VOID | INT | STR | BOOL
         FunctionParameter ::= VOID | FunctionParameterList
         FunctionParameterList ::= FunctionFormalParameter (COMMA FunctionFormalParameter)*
         FunctionFormalParameter ::= Type IDENTIFIER
         //FunctionBody ::= 'hello'
         Type ::= INT | STR | BOOL
-
 
 private ScriptDefinition ::= SCRIPT NUMBER VOID OPEN_BRACKET VOID CLOSE_BRACKET {pin=2}
 /*
