@@ -34,7 +34,7 @@ IDENTIFIER=[a-zA-Z_][a-zA-Z0-9_]*
 
 %%
 <YYINITIAL> {
-  //{WHITE_SPACE}      { return WHITE_SPACE; }
+  {WHITE_SPACE}      { return WHITE_SPACE; }
 
   "function"         { return FUNCTION; }
   "script"           { return SCRIPT; }

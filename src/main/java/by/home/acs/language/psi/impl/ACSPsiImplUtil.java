@@ -6,7 +6,7 @@ import com.intellij.lang.ASTNode;
 
 public class ACSPsiImplUtil {
     public static String getFunctionKeyword(ACSScriptDefinition element) {
-        ASTNode functionKeywordNode = element.getNode().findChildByType(ACSScriptTypes.FUNCTION_RETURN_TYPE);
+        ASTNode functionKeywordNode = element.getNode().findChildByType(ACSScriptTypes.FUNCTION);
         if (functionKeywordNode != null) {
             return functionKeywordNode.getText();
         } else {
@@ -14,7 +14,7 @@ public class ACSPsiImplUtil {
         }
     }
 
-    public static String getFunctionReturnType(ACSScriptDefinition element) {
+    public static String getFunctionStatementReturnType(ACSScriptDefinition element) {
         ASTNode functionReturnType = element.getNode().findChildByType(ACSScriptTypes.FUNCTION_RETURN_TYPE);
         if (functionReturnType != null) {
             return functionReturnType.getText();

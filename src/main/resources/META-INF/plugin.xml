@@ -22,6 +22,8 @@
         <lang.syntaxHighlighterFactory language="ACSScript"
                                        implementationClass="by.home.acs.language.highlight.ACSSyntaxHighlightFactory"/>
         <completion.contributor language="ACSScript" implementationClass="by.home.acs.language.completion.ACSFunctionReturnTypeCompletionContributor"/>
+        <completion.contributor language="ACSScript" implementationClass="by.home.acs.language.completion.DebugContributor"/>
+        
         <!--<lang.parserDefinition language="ACSScript"
                                implementationClass="by.home.acs.language.ACSScriptFileDefinition"/>
         <lang.syntaxHighlighterFactory language="ACSScript"

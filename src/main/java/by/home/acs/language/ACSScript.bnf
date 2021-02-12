@@ -38,14 +38,18 @@ ACSScriptFile ::= FileContainer
 
 private FileContainer ::= (COMMENT|Definition*)
 
-Definition ::= FunctionDefinition | ScriptDefinition
+Definition ::= FunctionDefinition | ScriptDefinition {methods=[getFunctionKeyword getFunctionStatementReturnType]} {pin=1}
 
-private FunctionDefinition ::= (FUNCTION FunctionReturnType IDENTIFIER OPEN_BRACKET FunctionParameter CLOSE_BRACKET OPEN_BRACE CLOSE_BRACE) {methods=[getFunctionKeyword getFunctionReturnType]}
+private FunctionDefinition ::= (FUNCTION FunctionReturnType IDENTIFIER  FunctionParameter   FunctionBlock )
+        private test_rule ::= !('}' | FunctionBlock)
         FunctionReturnType ::= VOID | INT | STR | BOOL
-        FunctionParameter ::= VOID | FunctionParameterList
-        FunctionParameterList ::= FunctionFormalParameter (COMMA FunctionFormalParameter)*
+        FunctionParameter ::= OPEN_BRACKET (VOID | FunctionParameterList) CLOSE_BRACKET
+        FunctionParameterList ::= FunctionFormalParameter  (COMMA FunctionFormalParameter)*
         FunctionFormalParameter ::= Type IDENTIFIER
-        //FunctionBody ::= 'hello'
+        FunctionBlock ::= OPEN_BRACE FunctionBody CLOSE_BRACE
+        FunctionBody ::= Statement*
+        private Statement ::= VariableDefinition ';'
+        VariableDefinition ::= Type IDENTIFIER '=' NUMBER
         Type ::= INT | STR | BOOL
 
 private ScriptDefinition ::= SCRIPT NUMBER VOID OPEN_BRACKET VOID CLOSE_BRACKET {pin=2}
