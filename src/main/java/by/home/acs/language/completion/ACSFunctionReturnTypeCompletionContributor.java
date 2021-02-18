@@ -11,13 +11,15 @@ import com.intellij.util.ProcessingContext;
 import org.jetbrains.annotations.NotNull;
 
 public class ACSFunctionReturnTypeCompletionContributor extends CompletionContributor {
-     public ACSFunctionReturnTypeCompletionContributor() {
+    public ACSFunctionReturnTypeCompletionContributor() {
         extend(CompletionType.BASIC, PlatformPatterns.psiElement(ACSScriptTypes.FUNCTION_RETURN_TYPE),
                 new CompletionProvider<CompletionParameters>() {
                     @Override
                     protected void addCompletions(@NotNull CompletionParameters parameters, @NotNull ProcessingContext context, @NotNull CompletionResultSet result) {
-                        result.addElement(LookupElementBuilder.create("function"));
-                        result.addElement(LookupElementBuilder.create("script"));
+                        result.addElement(LookupElementBuilder.create("int"));
+                        result.addElement(LookupElementBuilder.create("str"));
+                        result.addElement(LookupElementBuilder.create("bool"));
+                        result.addElement(LookupElementBuilder.create("void"));
                     }
                 });
     }

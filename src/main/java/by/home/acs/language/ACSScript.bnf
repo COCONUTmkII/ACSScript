@@ -40,9 +40,8 @@ private FileContainer ::= (COMMENT|Definition*)
 
 Definition ::= FunctionDefinition | ScriptDefinition {methods=[getFunctionKeyword getFunctionStatementReturnType]} {pin=1}
 
-private FunctionDefinition ::= (FUNCTION FunctionReturnType IDENTIFIER  FunctionParameter   FunctionBlock )
-        private test_rule ::= !('}' | FunctionBlock)
-        FunctionReturnType ::= VOID | INT | STR | BOOL
+private FunctionDefinition ::= (FUNCTION FunctionReturnType IDENTIFIER  FunctionParameter   FunctionBlock ) {pin=4}
+        FunctionReturnType ::= (VOID | INT | STR | BOOL)
         FunctionParameter ::= OPEN_BRACKET (VOID | FunctionParameterList) CLOSE_BRACKET
         FunctionParameterList ::= FunctionFormalParameter  (COMMA FunctionFormalParameter)*
         FunctionFormalParameter ::= Type IDENTIFIER

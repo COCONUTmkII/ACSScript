@@ -23,31 +23,40 @@ import static by.home.acs.language.ACSScriptTypes.*;
 %unicode
 
 EOL=\R
+IDENTIFIER=[a-zA-Z_][a-zA-Z0-9_]*
 WHITE_SPACE=\s+
-
+FUNCTION="function"
+OPEN_BRACKET="("
 WHITE_SPACE=[ \t\n\x0B\f\r]+
 NUMBER=(-?[0-9]+)
 STRING= \"([^\\\"]|\\.)*\"
 END_LINE_COMMENT=("//")[^\r\n]*
 MULTIPLE_LINE_COMMENT="/*"( [^*] | (\*+[^*/]) )*\*+\/
-IDENTIFIER=[a-zA-Z_][a-zA-Z0-9_]*
+FIRST_VALUE_CHARACTER=[^ \s] | "\\"{EOL} | "\\".    //remove this
+VALUE_CHARACTER=[^\s] | "\\"{EOL} | "\\".           //remove this
 
+
+
+%states WAITING_VALUE, TEST_VALUE
 %%
-<YYINITIAL> {
-  {WHITE_SPACE}      { return WHITE_SPACE; }
 
-  "function"         { return FUNCTION; }
-  "script"           { return SCRIPT; }
-  "void"             { return VOID; }
-  "int"              { return INT; }
-  "str"              { return STR; }
-  "bool"             { return BOOL; }
-  "("                { return OPEN_BRACKET; }
-  ")"                { return CLOSE_BRACKET; }
-  "{"                { return OPEN_BRACE; }
-  "}"                { return CLOSE_BRACE; }
-  ","                { return COMMA; }
-  "COMMENT"          { return COMMENT; }
+  {WHITE_SPACE}      { return WHITE_SPACE; }
+    "void"             { return VOID; }
+    "int"              { return INT; }
+    "str"              { return STR; }
+    "bool"             { return BOOL; }
+    "script"           { return SCRIPT; }
+    "("                { return OPEN_BRACKET; }
+    ")"                { return CLOSE_BRACKET; }
+    "{"                { return OPEN_BRACE; }
+    "}"                { return CLOSE_BRACE; }
+    ","                { return COMMA; }
+    "COMMENT"          { return COMMENT; }
+  {FUNCTION}+                                               {yybegin(WAITING_VALUE);  return FUNCTION;}
+    /*<WAITING_VALUE> {WHITE_SPACE}+                                {yybegin(WAITING_VALUE); return WHITE_SPACE; }*/
+    <WAITING_VALUE> {FIRST_VALUE_CHARACTER}{VALUE_CHARACTER}*     {yybegin(TEST_VALUE); return FUNCTION_RETURN_TYPE;}
+      <TEST_VALUE> {IDENTIFIER}{OPEN_BRACKET}                     {yybegin(YYINITIAL); return FUNCTION_PARAMETER;}
+    //FIXME need to fix identifier after function return type
 
   {WHITE_SPACE}      { return WHITE_SPACE; }
   {NUMBER}           { return NUMBER; }
@@ -55,7 +64,5 @@ IDENTIFIER=[a-zA-Z_][a-zA-Z0-9_]*
   {END_LINE_COMMENT} { return COMMENT;}
   {MULTIPLE_LINE_COMMENT} { return COMMENT;}
   {IDENTIFIER}       { return IDENTIFIER; }
-
-}
 
 [^] { return BAD_CHARACTER; }
