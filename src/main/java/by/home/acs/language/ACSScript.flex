@@ -5,7 +5,16 @@ import com.intellij.lexer.FlexLexer;
 import com.intellij.psi.TokenType;
 import com.intellij.psi.tree.IElementType;
 
+
+
 %%
+
+%{
+  public ACSScriptLexer() {
+    this((java.io.Reader)null);
+  }
+%}
+
 %public
 %class ACSScriptLexer
 %implements FlexLexer
@@ -60,19 +69,16 @@ TEST_SIGNATURE = [a-zA-Z_][a-zA-Z0-9_]*\(
   "world"               { return ACSScriptTypes.WORLD;}
   "Script" | "script"   { return ACSScriptTypes.SCRIPT_IDENTIFIER;}
      // {TEST_SIGNATURE}                                          {yybegin(YYINITIAL); return ACSScriptTypes.TEST_SIGNATURE;}
-      {OPEN_BRACKET}                                            {yybegin(YYINITIAL); return ACSScriptTypes.OPEN_BRACKET;}
-      {CLOSE_BRACKET}                                           {yybegin(YYINITIAL); return ACSScriptTypes.CLOSE_BRACKET;}
-      {VOID}                                                    {yybegin(YYINITIAL); return ACSScriptTypes.VOID_TYPE;}
-      {BOOL}                                                    {yybegin(YYINITIAL); return ACSScriptTypes.BOOL_TYPE;}
-      {INT}                                                     {yybegin(YYINITIAL); return ACSScriptTypes.INT_TYPE;}
-      {STR}                                                     {yybegin(YYINITIAL); return ACSScriptTypes.STRING_TYPE;}
-  {FUNCTION}+                                                   {yybegin(WAITING_VALUE);  return ACSScriptTypes.FUNCTION_IDENTIFIER;}
-  <WAITING_VALUE> {WHITE_SPACE}+                                {yybegin(WAITING_VALUE); return TokenType.WHITE_SPACE; }
-  <WAITING_VALUE> {FIRST_VALUE_CHARACTER}{VALUE_CHARACTER}*     {yybegin(TEST_VALUE); return ACSScriptTypes.FUNCTION_RETURN_TYPE;}
-      <TEST_VALUE> {WHITE_SPACE}+                                {yybegin(TEST_VALUE); return TokenType.WHITE_SPACE; }
-      <TEST_VALUE>  {TEST_SIGNATURE}                              {yybegin(YYINITIAL); return ACSScriptTypes.FUNCTION_PARAMETER;}
+  {OPEN_BRACKET}                                            {yybegin(YYINITIAL); return ACSScriptTypes.OPEN_BRACKET;}
+  {CLOSE_BRACKET}                                           {yybegin(YYINITIAL); return ACSScriptTypes.CLOSE_BRACKET;}
+  {VOID}                                                    {yybegin(YYINITIAL); return ACSScriptTypes.VOID;}
+  {BOOL}                                                    {yybegin(YYINITIAL); return ACSScriptTypes.BOOL;}
+  {INT}                                                     {yybegin(YYINITIAL); return ACSScriptTypes.INT;}
+  {STR}                                                     {yybegin(YYINITIAL); return ACSScriptTypes.STR;}
+  {FUNCTION}                                                {yybegin(YYINITIAL);  return ACSScriptTypes.FUNCTION;}
+
       //<TEST_VALUE> {FIRST_VALUE_CHARACTER}{VALUE_CHARACTER}*   {yybegin(YYINITIAL); return ACSScriptTypes.TEST_SIGNATURE;}
-    ({CRLF}|{WHITE_SPACE})+                                     {yybegin(YYINITIAL); return TokenType.WHITE_SPACE;}
+  ({CRLF}|{WHITE_SPACE})+                                     {yybegin(YYINITIAL); return TokenType.WHITE_SPACE;}
 
   "OPEN"                { return ACSScriptTypes.OPEN;}
   "OPEN"                { return ACSScriptTypes.OPEN;}
@@ -100,8 +106,8 @@ TEST_SIGNATURE = [a-zA-Z_][a-zA-Z0-9_]*\(
   "else"                { return ACSScriptTypes.ELSE;}
   "return"              { return ACSScriptTypes.RETURN;}
 
-  {IDENTIFIER}          { return ACSScriptTypes.IDENTIFIER; }
-  //{WHITE_SPACE}         { return TokenType.WHITE_SPACE; }
+
+  {WHITE_SPACE}+         { return TokenType.WHITE_SPACE; }
   //{VOID}                { return ACSScriptTypes.VOID_TYPE;} not working tto highlight
   {END_LINE_COMMENT}    { return ACSScriptTypes.COMMENT;}
   {MULTIPLE_LINE_COMMENT}   {return ACSScriptTypes.COMMENT;}
@@ -111,7 +117,7 @@ TEST_SIGNATURE = [a-zA-Z_][a-zA-Z0-9_]*\(
   {FLOAT}               { return ACSScriptTypes.FLOAT;}
   {EQUALS_SYMBOL}       { return ACSScriptTypes.EQUALS_SYMBOL;}
   {DOT_SYMBOL}          { return ACSScriptTypes.DOT_SYMBOL;}
-  {COMMA_SYMBOL}        { return ACSScriptTypes.COMMA_SYMBOL;}
+  {COMMA_SYMBOL}        { return ACSScriptTypes.COMMA;}
   {OPEN_BRACE}          { return ACSScriptTypes.OPEN_BRACE;}
   {CLOSE_BRACE}         { return ACSScriptTypes.CLOSE_BRACE;}
   //{OPEN_BRACKET}        { return ACSScriptTypes.OPEN_BRACKET;}
@@ -122,7 +128,7 @@ TEST_SIGNATURE = [a-zA-Z_][a-zA-Z0-9_]*\(
   {SEMICOLON_SYMBOL}    {return ACSScriptTypes.SEMICOLON_SYMBOL;}
   {COLON_SYMBOL}        {return ACSScriptTypes.COLON_SYMBOL;}
 
-
+  {IDENTIFIER}          { return ACSScriptTypes.IDENTIFIER; }
 // If the character sequence does not match any of the above rules, we return BAD_CHARACTER which indicates that
 // there is an error in the character sequence. This is used to highlight errors.
 [^] { return TokenType.BAD_CHARACTER; }

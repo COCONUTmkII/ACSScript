@@ -13,46 +13,49 @@
   tokenTypeClass="by.home.acs.language.psi.ACSScriptTokenType"
 
   psiImplUtilClass="by.home.acs.language.psi.impl.ACSScriptPsiImplUtil"
+  generate=[tokens="yes"]
+
+  tokens = [
+          FUNCTION='function'
+                  SCRIPT='script'
+                  WHITE_SPACE = 'regexp:\s+'
+                  NUMBER='regexp:(-?[0-9]+)'
+                  STRING = 'regexp:\"([^\\\"]|\\.)*\"'
+                  VOID = 'void'
+                  INT = 'int'
+                  STR = 'str'
+                  BOOl = 'bool'
+                  COMMA = ','
+                  IDENTIFIER = 'regexp:[a-zA-Z_][a-zA-Z0-9_]*'
+          //TEST_SIGNATURE = 'regexp:[a-zA-Z_][a-zA-Z0-9_]*\('
+      ]
 }
 
-{
-    tokens = [
-        IDENTIFIER = 'regexp:[a-zA-Z_][a-zA-Z0-9_]*'
-        WHITE_SPACE = 'regexp:\s+'
-        NUMBER = '-?[0-9]+'
-        STRING = 'regexp:^"(.*?)"'
-        CHARACTER
-        FLOAT = 'regexp:^[+-]?\d+(\.\d+)?$'
-        //TEST_SIGNATURE = 'regexp:[a-zA-Z_][a-zA-Z0-9_]*\('
-    ]
-}
 
-ACSScriptFile ::= (COMMENT|Definition*)
+ACSScriptFile ::= FileContainer
+
+private FileContainer ::= (COMMENT|Definition*)
 
 Definition ::= (FunctionDefinition | ScriptDefinition | DirectivesDeclaration | GlobalModifier | VariableDefinition)
+ {methods=[getFunctionKeyword getFunctionStatementReturnType]} {pin=1}
 
 
-FunctionDefinition ::= FunctionIdentifier FunctionReturnType FunctionNameAndParams FunctionBody //IDENTIFIER OpenBracket CloseBracket  OpenBrace FunctionBody CloseBrace
+private FunctionDefinition ::= FunctionIdentifier FunctionReturnType FunctionNameAndParams FunctionBody {pin=2} //IDENTIFIER OpenBracket CloseBracket  OpenBrace FunctionBody CloseBrace
 
 ScriptDefinition ::= ScriptIdentifier ScriptName ((ScriptParameterWithVoid NetType?) | (ScriptType NetType?)  | (ScriptParameter NetType?)) ScriptBody
-{
-       mixin="by.home.acs.language.helper.ACSScriptNamedElementImpl"
-       implements="by.home.acs.language.helper.ACSScriptNamedElement"
-       methods=[getNameIdentifier  getName setName getScript getScriptNumberValue getIdentifier]
-}
 
 /**
     Directives statement
  */
-DirectivesDeclaration ::= IncludeDeclaration | ImportDeclaration | DefineDeclaration | LibraryDeclaration
+DirectivesDeclaration ::= (IncludeDeclaration | ImportDeclaration | DefineDeclaration | LibraryDeclaration)
 
-IncludeDeclaration ::= PoundSymbol include STRING
+IncludeDeclaration ::= PoundSymbol include STRING {pin=2}
 
-ImportDeclaration ::= PoundSymbol import STRING
+ImportDeclaration ::= PoundSymbol import STRING {pin=2}
 
-DefineDeclaration ::= PoundSymbol define IDENTIFIER  IDENTIFIER (Operator (IDENTIFIER | NUMBER))?
+DefineDeclaration ::= PoundSymbol define IDENTIFIER  IDENTIFIER (Operator (IDENTIFIER | NUMBER))? {pin=2}
 
-LibraryDeclaration ::= PoundSymbol library STRING
+LibraryDeclaration ::= PoundSymbol library STRING {pin=2}
 
 /**
     Script statements
@@ -76,7 +79,7 @@ ScriptBody ::= OpenBrace ScriptStatement* CloseBrace
 /**
     Function statements
  */
-FunctionIdentifier ::= 'function'
+FunctionIdentifier ::= FUNCTION
 
 FunctionInvocation ::= IDENTIFIER OpenBracket CloseBracket SemicolonSymbol ReturnOperator?
 
@@ -84,10 +87,10 @@ FunctionReturnType ::= VoidType | Type
 
 FunctionParameterWithVoid ::= VoidType
 
-FunctionNameAndParams ::= IDENTIFIER (FunctionParameter | FunctionParameterWithVoid)
+FunctionNameAndParams ::= IDENTIFIER OpenBracket FunctionParameter CloseBracket
 //FunctionParameter ::= OpenBracket FunctionParameterList CloseBracket
 
-FunctionParameter ::= OpenBracket (FunctionParameterWithVoid | FunctionParameterList) CloseBracket
+FunctionParameter ::=  (FunctionParameterWithVoid | FunctionParameterList)
 
 FunctionParameterList ::= FunctionFormalParameter (CommaSymbol FunctionFormalParameter)*
 
@@ -105,9 +108,9 @@ StaticModifier ::= static
 
 NetType ::= net
 
-VoidType ::= 'void'
+VoidType ::= VOID
 
-Statement ::= VariableDefinition | AssignmentStatement | FunctionInvocation | ControlFlowStatement | Loops | ReturnOperator
+Statement ::= (VariableDefinition | AssignmentStatement | FunctionInvocation | ControlFlowStatement | Loops | ReturnOperator)
 
 //ScriptBody ::= ScriptStatement*
 
@@ -117,7 +120,7 @@ CaseOperator ::=   case (IDENTIFIER | NUMBER | STRING) ColonSymbol  (FunctionInv
 
 AssignmentStatement ::= IDENTIFIER EqualsSymbol (FunctionInvocation)
 
-VariableDefinition ::= StaticModifier? (ArrayType | Type) IDENTIFIER (SemicolonSymbol | (EqualsSymbol (FunctionInvocation | VariableInitialization | Operator)))
+VariableDefinition ::= StaticModifier? (Type) IDENTIFIER (SemicolonSymbol | (EqualsSymbol (FunctionInvocation | VariableInitialization | Operator))) {pin=2}
 
 VariableInitialization ::= ( STRING | CHARACTER | EmptyString | LogicalType | ArrayInitializer | NUMBER | FLOAT) SemicolonSymbol
 
@@ -147,11 +150,11 @@ doUntilLoop ::= do OpenBrace Statement? CloseBrace until OpenBracket LogicalType
 
 Type ::= (IntType | StringType | BoolType)
 
-BoolType ::= 'bool'
+BoolType ::= BOOL
 
-IntType ::= 'int'
+IntType ::= INT
 
-StringType ::= 'str'
+StringType ::= STR
 
 EmptyString ::= '""'
 
@@ -183,7 +186,7 @@ EqualsSymbol ::= '='
 
 DotSymbol ::= '.' //not used
 
-CommaSymbol ::= ','
+CommaSymbol ::= COMMA
 
 OpenBrace ::= '{'
 

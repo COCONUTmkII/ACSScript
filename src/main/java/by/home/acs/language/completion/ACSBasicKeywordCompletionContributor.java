@@ -21,6 +21,10 @@ public class ACSBasicKeywordCompletionContributor extends CompletionContributor 
                 System.out.println(element);
                 result.addElement(LookupElementBuilder.create("script"));
                 result.addElement(LookupElementBuilder.create("function"));
+                result.addElement(LookupElementBuilder.create("int"));
+                result.addElement(LookupElementBuilder.create("str"));
+                result.addElement(LookupElementBuilder.create("bool"));
+                result.addElement(LookupElementBuilder.create("void"));
             }
         });
     }

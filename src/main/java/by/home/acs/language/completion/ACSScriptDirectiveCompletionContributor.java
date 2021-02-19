@@ -14,6 +14,8 @@ public class ACSScriptDirectiveCompletionContributor extends CompletionContribut
                 result.addElement(LookupElementBuilder.create("include"));
                 result.addElement(LookupElementBuilder.create("library"));
                 result.addElement(LookupElementBuilder.create("import"));
+                result.addElement(LookupElementBuilder.create("define"));
+
             }
         });
     }
