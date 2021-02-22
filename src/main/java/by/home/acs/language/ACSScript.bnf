@@ -42,7 +42,7 @@ Definition ::= (FunctionDefinition | ScriptDefinition | DirectivesDeclaration | 
 
 private FunctionDefinition ::= FunctionIdentifier FunctionReturnType FunctionNameAndParams FunctionBody {pin=2} //IDENTIFIER OpenBracket CloseBracket  OpenBrace FunctionBody CloseBrace
 
-ScriptDefinition ::= ScriptIdentifier ScriptName ((ScriptParameterWithVoid NetType?) | (ScriptType NetType?)  | (ScriptParameter NetType?)) ScriptBody
+ScriptDefinition ::= ScriptIdentifier ScriptName ((ScriptParameterWithVoid NetType?) | (ScriptType NetType?)  | (ScriptParameter NetType?)) ScriptBody {pin=2}
 
 /**
     Directives statement
@@ -60,11 +60,11 @@ LibraryDeclaration ::= PoundSymbol library STRING {pin=2}
 /**
     Script statements
  */
-ScriptIdentifier ::= 'script'
+ScriptIdentifier ::= SCRIPT
 
 ScriptType ::= OPEN | ENTER | RETURN | RESPAWN | DEATH | LIGHTNING | UNLOADING | DISCONNECT | KILL | REOPEN
 
-ScriptName ::= STRING | NUM
+ScriptName ::= (STRING | NUMBER)
 
 ScriptParameterWithVoid ::= OpenBracket VoidType CloseBracket //   (void)
 

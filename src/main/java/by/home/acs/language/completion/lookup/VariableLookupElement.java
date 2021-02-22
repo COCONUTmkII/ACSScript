@@ -13,8 +13,26 @@ public class VariableLookupElement {
                 .withPresentableText(completionString)
                 .withItemTextForeground(JBColor.BLACK)
                 .bold()
+                .withIcon(PlatformIcons.VARIABLE_ICON);
+    }
+
+    public VariableLookupElement(String completionString, String tailText) {
+        this.variableLookupElement = LookupElementBuilder.create(completionString)
+                .withPresentableText(completionString)
+                .withItemTextForeground(JBColor.BLACK)
+                .bold()
                 .withIcon(PlatformIcons.VARIABLE_ICON)
-                .withTailText(" primitive variable");
+                .withTailText(tailText);
+    }
+
+    public VariableLookupElement(String completionString, String typeText, String tailText) {
+        this.variableLookupElement = LookupElementBuilder.create(completionString)
+                .withPresentableText(completionString)
+                .withItemTextForeground(JBColor.BLACK)
+                .bold()
+                .withIcon(PlatformIcons.VARIABLE_ICON)
+                .withTailText(tailText)
+                .withTypeText(typeText);
     }
 
     public LookupElement getVariableLookupElement() {

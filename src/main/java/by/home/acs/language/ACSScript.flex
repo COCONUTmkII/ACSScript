@@ -50,6 +50,7 @@ LITERAL = [a-zA-Z]+
 FIRST_VALUE_CHARACTER=[^ \s] | "\\"{CRLF} | "\\".    //remove this
 VALUE_CHARACTER=[^\s] | "\\"{CRLF} | "\\".           //remove this
 FUNCTION = "function"
+SCRIPT = "script"
 VOID = "void"
 INT = "int"
 STR = "str"
@@ -67,20 +68,6 @@ TEST_SIGNATURE = [a-zA-Z_][a-zA-Z0-9_]*\(
   "global"              { return ACSScriptTypes.GLOBAL;}
   "static"              { return ACSScriptTypes.STATIC;}
   "world"               { return ACSScriptTypes.WORLD;}
-  "Script" | "script"   { return ACSScriptTypes.SCRIPT_IDENTIFIER;}
-     // {TEST_SIGNATURE}                                          {yybegin(YYINITIAL); return ACSScriptTypes.TEST_SIGNATURE;}
-  {OPEN_BRACKET}                                            {yybegin(YYINITIAL); return ACSScriptTypes.OPEN_BRACKET;}
-  {CLOSE_BRACKET}                                           {yybegin(YYINITIAL); return ACSScriptTypes.CLOSE_BRACKET;}
-  {VOID}                                                    {yybegin(YYINITIAL); return ACSScriptTypes.VOID;}
-  {BOOL}                                                    {yybegin(YYINITIAL); return ACSScriptTypes.BOOL;}
-  {INT}                                                     {yybegin(YYINITIAL); return ACSScriptTypes.INT;}
-  {STR}                                                     {yybegin(YYINITIAL); return ACSScriptTypes.STR;}
-  {FUNCTION}                                                {yybegin(YYINITIAL);  return ACSScriptTypes.FUNCTION;}
-
-      //<TEST_VALUE> {FIRST_VALUE_CHARACTER}{VALUE_CHARACTER}*   {yybegin(YYINITIAL); return ACSScriptTypes.TEST_SIGNATURE;}
-  ({CRLF}|{WHITE_SPACE})+                                     {yybegin(YYINITIAL); return TokenType.WHITE_SPACE;}
-
-  "OPEN"                { return ACSScriptTypes.OPEN;}
   "OPEN"                { return ACSScriptTypes.OPEN;}
   "ENTER"               { return ACSScriptTypes.ENTER;}
   "RETURN"              { return ACSScriptTypes.RETURN;}
@@ -92,6 +79,34 @@ TEST_SIGNATURE = [a-zA-Z_][a-zA-Z0-9_]*\(
   "KILL"                { return ACSScriptTypes.KILL;}
   "REOPEN"              { return ACSScriptTypes.REOPEN;}
   "net" | "NET"         { return ACSScriptTypes.NET;}
+    {NUMBER}              { return ACSScriptTypes.NUMBER;}
+    {STRING}              { return ACSScriptTypes.STRING;}
+     // {TEST_SIGNATURE}                                          {yybegin(YYINITIAL); return ACSScriptTypes.TEST_SIGNATURE;}
+  {OPEN_BRACKET}                                            {yybegin(YYINITIAL); return ACSScriptTypes.OPEN_BRACKET;}
+  {CLOSE_BRACKET}                                           {yybegin(YYINITIAL); return ACSScriptTypes.CLOSE_BRACKET;}
+  {OPEN_BRACE}          { return ACSScriptTypes.OPEN_BRACE;}
+  {CLOSE_BRACE}         { return ACSScriptTypes.CLOSE_BRACE;}
+  {VOID}                                                    {yybegin(YYINITIAL); return ACSScriptTypes.VOID;}
+  {BOOL}                                                    {yybegin(YYINITIAL); return ACSScriptTypes.BOOL;}
+  {INT}                                                     {yybegin(YYINITIAL); return ACSScriptTypes.INT;}
+  {STR}                                                     {yybegin(YYINITIAL); return ACSScriptTypes.STR;}
+  {FUNCTION}                                                {yybegin(YYINITIAL);  return ACSScriptTypes.FUNCTION;}
+  {SCRIPT}                                                  {yybegin(WAITING_VALUE); return ACSScriptTypes.SCRIPT;}
+        <WAITING_VALUE>  {WHITE_SPACE}+                      {yybegin(WAITING_VALUE); return TokenType.WHITE_SPACE;}
+        <WAITING_VALUE>  {WHITE_SPACE}+{NUMBER} {yybegin(TEST_ONE_VALUE); return ACSScriptTypes.SCRIPT_NAME;}
+        <TEST_ONE_VALUE>  {WHITE_SPACE}+                      {yybegin(TEST_ONE_VALUE); return TokenType.WHITE_SPACE;}
+        <TEST_ONE_VALUE>  {FIRST_VALUE_CHARACTER}{VALUE_CHARACTER}* {yybegin(YYINITIAL); return ACSScriptTypes.SCRIPT_TYPE;}
+        /*<TEST_ONE_VALUE>  {NUMBER} | {STRING}      {yybegin(YYINITIAL); return ACSScriptTypes.SCRIPT_PARAMETER;}*/
+      ({CRLF}|{WHITE_SPACE})+                                     {yybegin(YYINITIAL); return TokenType.WHITE_SPACE;}
+        //<WAITING_VALUE>   {NUMBER} {yybegin(YYINITIAL); return ACSScriptTypes.SCRIPT_NAME;}
+        //<WAITING_VALUE>   {NUMBER} {yybegin(TEST_VALUE); return ACSScriptTypes.SCRIPT_NAME;}
+        /*<TEST_VALUE>    {WHITE_SPACE}+   {yybegin(TEST_VALUE); return TokenType.WHITE_SPACE;}
+        <TEST_VALUE>   {FIRST_VALUE_CHARACTER}{VALUE_CHARACTER}* {yybegin(YYINITIAL); return ACSScriptTypes.SCRIPT_TYPE;}*/
+
+      //<TEST_VALUE> {FIRST_VALUE_CHARACTER}{VALUE_CHARACTER}*   {yybegin(YYINITIAL); return ACSScriptTypes.TEST_SIGNATURE;}
+  //({CRLF}|{WHITE_SPACE})+                                     {yybegin(YYINITIAL); return TokenType.WHITE_SPACE;}
+
+
   "true"                { return ACSScriptTypes.TRUE;}
   "false"               { return ACSScriptTypes.FALSE;}
   "switch"              { return ACSScriptTypes.SWITCH;}
@@ -107,19 +122,17 @@ TEST_SIGNATURE = [a-zA-Z_][a-zA-Z0-9_]*\(
   "return"              { return ACSScriptTypes.RETURN;}
 
 
-  {WHITE_SPACE}+         { return TokenType.WHITE_SPACE; }
+  //{WHITE_SPACE}+         { return TokenType.WHITE_SPACE; }
   //{VOID}                { return ACSScriptTypes.VOID_TYPE;} not working tto highlight
   {END_LINE_COMMENT}    { return ACSScriptTypes.COMMENT;}
   {MULTIPLE_LINE_COMMENT}   {return ACSScriptTypes.COMMENT;}
-  {NUMBER}              { return ACSScriptTypes.NUMBER;}
-  {STRING}              { return ACSScriptTypes.STRING;}
+
   {CHARACTER}           { return ACSScriptTypes.CHARACTER;}
   {FLOAT}               { return ACSScriptTypes.FLOAT;}
   {EQUALS_SYMBOL}       { return ACSScriptTypes.EQUALS_SYMBOL;}
   {DOT_SYMBOL}          { return ACSScriptTypes.DOT_SYMBOL;}
   {COMMA_SYMBOL}        { return ACSScriptTypes.COMMA;}
-  {OPEN_BRACE}          { return ACSScriptTypes.OPEN_BRACE;}
-  {CLOSE_BRACE}         { return ACSScriptTypes.CLOSE_BRACE;}
+
   //{OPEN_BRACKET}        { return ACSScriptTypes.OPEN_BRACKET;}
 //  {CLOSE_BRACKET}       { return ACSScriptTypes.CLOSE_BRACKET;}
   {OPEN_SQUARE_BRACKET} { return ACSScriptTypes.OPEN_SQUARE_BRACKET;}

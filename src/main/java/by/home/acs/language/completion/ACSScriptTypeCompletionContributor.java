@@ -2,6 +2,7 @@ package by.home.acs.language.completion;
 
 import by.home.acs.language.ACSScriptLanguage;
 import by.home.acs.language.ACSScriptTypes;
+import by.home.acs.language.completion.lookup.VariableLookupElement;
 import by.home.acs.language.psi.ACSScriptElementType;
 import by.home.acs.language.psi.ACSScriptType;
 import com.intellij.codeInsight.completion.*;
@@ -14,20 +15,33 @@ import com.intellij.util.ProcessingContext;
 import org.jetbrains.annotations.NotNull;
 
 public class ACSScriptTypeCompletionContributor extends CompletionContributor {
+    private final VariableLookupElement openType = new VariableLookupElement("OPEN", " World");
+    private final VariableLookupElement enterType = new VariableLookupElement("ENTER", " Player");
+    private final VariableLookupElement returnType = new VariableLookupElement("RETURN", " Player");
+    private final VariableLookupElement deathType = new VariableLookupElement("DEATH", " Player");
+    private final VariableLookupElement respawnType = new VariableLookupElement("RESPAWN", " Player");
+    private final VariableLookupElement lightningType = new VariableLookupElement("LIGHTNING", " World");
+    private final VariableLookupElement unloadingType = new VariableLookupElement("UNLOADING", " World");
+    private final VariableLookupElement killType = new VariableLookupElement("KILL", " Thing");
+    private final VariableLookupElement reopenType = new VariableLookupElement("REOPEN", " World");
+    private final VariableLookupElement disconnectType = new VariableLookupElement("DISCONNECT", " World");
+    private final VariableLookupElement netType = new VariableLookupElement("NET");
+
     public ACSScriptTypeCompletionContributor() {
-        extend(CompletionType.BASIC, PlatformPatterns.psiElement(ACSScriptTypes.SCRIPT_PARAMETER), new CompletionProvider<CompletionParameters>() {
+        extend(CompletionType.BASIC, PlatformPatterns.psiElement(ACSScriptTypes.SCRIPT_TYPE), new CompletionProvider<CompletionParameters>() {
             @Override
             protected void addCompletions(@NotNull CompletionParameters parameters, @NotNull ProcessingContext context, @NotNull CompletionResultSet result) {
-                result.addElement(LookupElementBuilder.create("OPEN"));
-                result.addElement(LookupElementBuilder.create("ENTER"));
-                result.addElement(LookupElementBuilder.create("RETURN"));
-                result.addElement(LookupElementBuilder.create("DEATH"));
-                result.addElement(LookupElementBuilder.create("RESPAWN"));
-                result.addElement(LookupElementBuilder.create("LIGHTNING"));
-                result.addElement(LookupElementBuilder.create("UNLOADING"));
-                result.addElement(LookupElementBuilder.create("KILL"));
-                result.addElement(LookupElementBuilder.create("REOPEN"));
-                result.addElement(LookupElementBuilder.create("DISCONNECT"));
+                result.addElement(openType.getVariableLookupElement());
+                result.addElement(enterType.getVariableLookupElement());
+                result.addElement(reopenType.getVariableLookupElement());
+                result.addElement(returnType.getVariableLookupElement());
+                result.addElement(deathType.getVariableLookupElement());
+                result.addElement(respawnType.getVariableLookupElement());
+                result.addElement(lightningType.getVariableLookupElement());
+                result.addElement(unloadingType.getVariableLookupElement());
+                result.addElement(killType.getVariableLookupElement());
+                result.addElement(disconnectType.getVariableLookupElement());
+                result.addElement(netType.getVariableLookupElement());
             }
         });
     }
