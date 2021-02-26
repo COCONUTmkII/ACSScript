@@ -27,7 +27,6 @@
                   BOOl = 'bool'
                   COMMA = ','
                   IDENTIFIER = 'regexp:[a-zA-Z_][a-zA-Z0-9_]*'
-          //TEST_SIGNATURE = 'regexp:[a-zA-Z_][a-zA-Z0-9_]*\('
       ]
 }
 
@@ -40,10 +39,9 @@ Definition ::= (FunctionDefinition | ScriptDefinition | DirectivesDeclaration | 
  {methods=[getFunctionKeyword getFunctionStatementReturnType]} {pin=1}
 
 
-private FunctionDefinition ::= FunctionIdentifier FunctionReturnType FunctionNameAndParams FunctionBody {pin=2} //IDENTIFIER OpenBracket CloseBracket  OpenBrace FunctionBody CloseBrace
+FunctionDefinition ::= FunctionIdentifier FunctionReturnType FunctionNameAndParams FunctionBody {pin=2}
 
-ScriptDefinition ::= ScriptIdentifier ScriptName ((ScriptParameterWithVoid NetType?) | (ScriptType NetType?)  | (ScriptParameter NetType?)) ScriptBody {pin=2}
-
+ScriptDefinition ::= ScriptIdentifier ScriptName (ScriptPossibleParams | ScriptType) NetType? ScriptBody {pin=2}
 /**
     Directives statement
  */
@@ -66,9 +64,11 @@ ScriptType ::= OPEN | ENTER | RETURN | RESPAWN | DEATH | LIGHTNING | UNLOADING |
 
 ScriptName ::= (STRING | NUMBER)
 
-ScriptParameterWithVoid ::= OpenBracket VoidType CloseBracket //   (void)
+ScriptPossibleParams ::= OpenBracket (ScriptParameterWithVoid | ScriptParameter) CloseBracket {pin=2}
 
-ScriptParameter ::= OpenBracket ScriptParameterList CloseBracket
+ScriptParameterWithVoid ::=  VoidType
+
+ScriptParameter ::= ScriptParameterList
 
 ScriptParameterList ::= ScriptFormalParameter (CommaSymbol ScriptFormalParameter)*
 
@@ -88,7 +88,6 @@ FunctionReturnType ::= VoidType | Type
 FunctionParameterWithVoid ::= VoidType
 
 FunctionNameAndParams ::= IDENTIFIER OpenBracket FunctionParameter CloseBracket
-//FunctionParameter ::= OpenBracket FunctionParameterList CloseBracket
 
 FunctionParameter ::=  (FunctionParameterWithVoid | FunctionParameterList)
 

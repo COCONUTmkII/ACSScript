@@ -28,6 +28,7 @@
         <completion.contributor language="ACSScript" implementationClass="by.home.acs.language.completion.ACSScriptTypeCompletionContributor"/>
         <completion.contributor language="ACSScript" implementationClass="by.home.acs.language.completion.ACSScriptDirectiveCompletionContributor"/>
         <completion.contributor language="ACSScript" implementationClass="by.home.acs.language.completion.ACSScriptVoidCompletionContributor"/>
+        <completion.contributor language="ACSScript" implementationClass="by.home.acs.language.completion.ACSScriptNetTypeCompletionContributor"/>
         <lang.findUsagesProvider language="ACSScript" implementationClass="by.home.acs.language.usage.ACSScriptUsageProvider"/>
         <lang.refactoringSupport language="ACSScript" implementationClass="by.home.acs.language.refactor.ACSScriptRefactoringSupportProvider"/>
         <lang.refactoringSupport language="ACSScript" implementationClass="by.home.acs.language.refactor.ACSTestRefactoring"/>

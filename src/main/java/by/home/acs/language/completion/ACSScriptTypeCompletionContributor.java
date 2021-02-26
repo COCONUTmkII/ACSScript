@@ -25,7 +25,6 @@ public class ACSScriptTypeCompletionContributor extends CompletionContributor {
     private final VariableLookupElement killType = new VariableLookupElement("KILL", " Thing");
     private final VariableLookupElement reopenType = new VariableLookupElement("REOPEN", " World");
     private final VariableLookupElement disconnectType = new VariableLookupElement("DISCONNECT", " World");
-    private final VariableLookupElement netType = new VariableLookupElement("NET");
 
     public ACSScriptTypeCompletionContributor() {
         extend(CompletionType.BASIC, PlatformPatterns.psiElement(ACSScriptTypes.SCRIPT_TYPE), new CompletionProvider<CompletionParameters>() {
@@ -41,7 +40,6 @@ public class ACSScriptTypeCompletionContributor extends CompletionContributor {
                 result.addElement(unloadingType.getVariableLookupElement());
                 result.addElement(killType.getVariableLookupElement());
                 result.addElement(disconnectType.getVariableLookupElement());
-                result.addElement(netType.getVariableLookupElement());
             }
         });
     }
