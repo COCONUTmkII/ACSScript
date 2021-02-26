@@ -55,7 +55,6 @@ VOID = "void"
 INT = "int"
 STR = "str"
 BOOL = "bool"
-TEST_SIGNATURE = [a-zA-Z_][a-zA-Z0-9_]*\(
 
 %states WAITING_VALUE, TEST_ONE_VALUE
 %xstate TEST_VALUE
@@ -79,25 +78,31 @@ TEST_SIGNATURE = [a-zA-Z_][a-zA-Z0-9_]*\(
   "KILL"                { return ACSScriptTypes.KILL;}
   "REOPEN"              { return ACSScriptTypes.REOPEN;}
   "net" | "NET"         { return ACSScriptTypes.NET;}
-    {NUMBER}              { return ACSScriptTypes.NUMBER;}
-    {STRING}              { return ACSScriptTypes.STRING;}
      // {TEST_SIGNATURE}                                          {yybegin(YYINITIAL); return ACSScriptTypes.TEST_SIGNATURE;}
   {OPEN_BRACKET}                                            {yybegin(YYINITIAL); return ACSScriptTypes.OPEN_BRACKET;}
   {CLOSE_BRACKET}                                           {yybegin(YYINITIAL); return ACSScriptTypes.CLOSE_BRACKET;}
-  {OPEN_BRACE}          { return ACSScriptTypes.OPEN_BRACE;}
-  {CLOSE_BRACE}         { return ACSScriptTypes.CLOSE_BRACE;}
+  {OPEN_BRACE}                                              { return ACSScriptTypes.OPEN_BRACE;}
+  {CLOSE_BRACE}                                             { return ACSScriptTypes.CLOSE_BRACE;}
   {VOID}                                                    {yybegin(YYINITIAL); return ACSScriptTypes.VOID;}
   {BOOL}                                                    {yybegin(YYINITIAL); return ACSScriptTypes.BOOL;}
   {INT}                                                     {yybegin(YYINITIAL); return ACSScriptTypes.INT;}
   {STR}                                                     {yybegin(YYINITIAL); return ACSScriptTypes.STR;}
   {FUNCTION}                                                {yybegin(YYINITIAL);  return ACSScriptTypes.FUNCTION;}
   {SCRIPT}                                                  {yybegin(WAITING_VALUE); return ACSScriptTypes.SCRIPT;}
-        <WAITING_VALUE>  {WHITE_SPACE}+                      {yybegin(WAITING_VALUE); return TokenType.WHITE_SPACE;}
-        <WAITING_VALUE>  {WHITE_SPACE}+{NUMBER} {yybegin(TEST_ONE_VALUE); return ACSScriptTypes.SCRIPT_NAME;}
+  <WAITING_VALUE> {
+      {WHITE_SPACE}+                                        {yybegin(WAITING_VALUE); return TokenType.WHITE_SPACE;}
+      {NUMBER}                                              {yybegin(TEST_ONE_VALUE); return ACSScriptTypes.NUMBER;}
+      {NUMBER}{FIRST_VALUE_CHARACTER}{VALUE_CHARACTER}* {yybegin(TEST_ONE_VALUE); return ACSScriptTypes.SCRIPT_NAME;}
+  }
+  <TEST_ONE_VALUE> {
+      {WHITE_SPACE}+                                        {yybegin(TEST_ONE_VALUE); return TokenType.WHITE_SPACE;}
+      {FIRST_VALUE_CHARACTER}{VALUE_CHARACTER}*             {yybegin(YYINITIAL); return ACSScriptTypes.SCRIPT_TYPE;}
+  }
+  ({CRLF}|{WHITE_SPACE})+                                   {yybegin(YYINITIAL); return TokenType.WHITE_SPACE;}
         <TEST_ONE_VALUE>  {WHITE_SPACE}+                      {yybegin(TEST_ONE_VALUE); return TokenType.WHITE_SPACE;}
         <TEST_ONE_VALUE>  {FIRST_VALUE_CHARACTER}{VALUE_CHARACTER}* {yybegin(YYINITIAL); return ACSScriptTypes.SCRIPT_TYPE;}
         /*<TEST_ONE_VALUE>  {NUMBER} | {STRING}      {yybegin(YYINITIAL); return ACSScriptTypes.SCRIPT_PARAMETER;}*/
-      ({CRLF}|{WHITE_SPACE})+                                     {yybegin(YYINITIAL); return TokenType.WHITE_SPACE;}
+       // ({CRLF}|{WHITE_SPACE})+                                     {yybegin(YYINITIAL); return TokenType.WHITE_SPACE;}
         //<WAITING_VALUE>   {NUMBER} {yybegin(YYINITIAL); return ACSScriptTypes.SCRIPT_NAME;}
         //<WAITING_VALUE>   {NUMBER} {yybegin(TEST_VALUE); return ACSScriptTypes.SCRIPT_NAME;}
         /*<TEST_VALUE>    {WHITE_SPACE}+   {yybegin(TEST_VALUE); return TokenType.WHITE_SPACE;}
@@ -121,7 +126,8 @@ TEST_SIGNATURE = [a-zA-Z_][a-zA-Z0-9_]*\(
   "else"                { return ACSScriptTypes.ELSE;}
   "return"              { return ACSScriptTypes.RETURN;}
 
-
+  {NUMBER}              { return ACSScriptTypes.NUMBER;}
+  {STRING}              { return ACSScriptTypes.STRING;}
   //{WHITE_SPACE}+         { return TokenType.WHITE_SPACE; }
   //{VOID}                { return ACSScriptTypes.VOID_TYPE;} not working tto highlight
   {END_LINE_COMMENT}    { return ACSScriptTypes.COMMENT;}
