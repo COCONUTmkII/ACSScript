@@ -4,9 +4,6 @@ import by.home.acs.language.psi.ACSScriptTokenType;
 import com.intellij.lexer.FlexLexer;
 import com.intellij.psi.TokenType;
 import com.intellij.psi.tree.IElementType;
-
-
-
 %%
 
 %{
@@ -54,6 +51,17 @@ VOID = "void"
 INT = "int"
 STR = "str"
 BOOL = "bool"
+OPEN="OPEN"
+ENTER="ENTER"
+RETURN="RETURN"
+RESPAWN="RESPAWN"
+DEATH="DEATH"
+LIGHTNING="LIGHTNING"
+UNLOADING="UNLOADING"
+DISCONNECT="DISCONNECT"
+KILL="KILL"
+REOPEN="REOPEN"
+NET="NET"
 
 %states WAITING_VALUE, TEST_ONE_VALUE
 %xstate TEST_VALUE
@@ -66,17 +74,6 @@ BOOL = "bool"
   "global"                                                  {yybegin(YYINITIAL); return ACSScriptTypes.GLOBAL;}
   "static"                                                  {yybegin(YYINITIAL); return ACSScriptTypes.STATIC;}
   "world"                                                   {yybegin(YYINITIAL); return ACSScriptTypes.WORLD;}
-  "OPEN"                                                    {yybegin(YYINITIAL); return ACSScriptTypes.OPEN;}
-  "ENTER"                                                   {yybegin(YYINITIAL); return ACSScriptTypes.ENTER;}
-  "RETURN"                                                  {yybegin(YYINITIAL); return ACSScriptTypes.RETURN;}
-  "RESPAWN"                                                 {yybegin(YYINITIAL); return ACSScriptTypes.RESPAWN;}
-  "DEATH"                                                   {yybegin(YYINITIAL); return ACSScriptTypes.DEATH;}
-  "LIGHTNING"                                               {yybegin(YYINITIAL); return ACSScriptTypes.LIGHTNING;}
-  "UNLOADING"                                               {yybegin(YYINITIAL); return ACSScriptTypes.UNLOADING;}
-  "DISCONNECT"                                              {yybegin(YYINITIAL); return ACSScriptTypes.DISCONNECT;}
-  "KILL"                                                    {yybegin(YYINITIAL); return ACSScriptTypes.KILL;}
-  "REOPEN"                                                  {yybegin(YYINITIAL); return ACSScriptTypes.REOPEN;}
-  "net" | "NET"                                             {yybegin(YYINITIAL); return ACSScriptTypes.NET;}
   {OPEN_BRACKET}                                            {yybegin(YYINITIAL); return ACSScriptTypes.OPEN_BRACKET;}
   {CLOSE_BRACKET}                                           {yybegin(YYINITIAL); return ACSScriptTypes.CLOSE_BRACKET;}
   {OPEN_BRACE}                                              {yybegin(YYINITIAL); return ACSScriptTypes.OPEN_BRACE;}
@@ -95,11 +92,22 @@ BOOL = "bool"
   }
   <TEST_ONE_VALUE> {
       {WHITE_SPACE}+                                        {yybegin(TEST_ONE_VALUE); return TokenType.WHITE_SPACE;}
+      {OPEN}                                                {yybegin(TEST_VALUE); return ACSScriptTypes.OPEN;}
+      {ENTER}                                               {yybegin(TEST_VALUE); return ACSScriptTypes.ENTER;}
+      {RETURN}                                              {yybegin(TEST_VALUE); return ACSScriptTypes.RETURN;}
+      {RESPAWN}                                             {yybegin(TEST_VALUE); return ACSScriptTypes.RESPAWN;}
+      {DEATH}                                               {yybegin(TEST_VALUE); return ACSScriptTypes.DEATH;}
+      {LIGHTNING}                                           {yybegin(TEST_VALUE); return ACSScriptTypes.LIGHTNING;}
+      {UNLOADING}                                           {yybegin(TEST_VALUE); return ACSScriptTypes.UNLOADING;}
+      {DISCONNECT}                                          {yybegin(TEST_VALUE); return ACSScriptTypes.DISCONNECT;}
+      {KILL}                                                {yybegin(TEST_VALUE); return ACSScriptTypes.KILL;}
+      {REOPEN}                                              {yybegin(TEST_VALUE); return ACSScriptTypes.REOPEN;}
       {FIRST_VALUE_CHARACTER}{VALUE_CHARACTER}*             {yybegin(TEST_VALUE); return ACSScriptTypes.SCRIPT_TYPE;}
   }
   <TEST_VALUE> {
-      {WHITE_SPACE}+                                        {yybegin(TEST_VALUE); return TokenType.WHITE_SPACE;}
-      {FIRST_VALUE_CHARACTER}{VALUE_CHARACTER}*             {yybegin(YYINITIAL);  return ACSScriptTypes.NET_TYPE;}
+      {WHITE_SPACE}+                                        {yybegin(TEST_VALUE);System.out.println("SSS"); return TokenType.WHITE_SPACE;}
+      {NET}                                                 {yybegin(TEST_VALUE); return ACSScriptTypes.NET;}
+      {FIRST_VALUE_CHARACTER}{VALUE_CHARACTER}*             {yybegin(YYINITIAL); System.out.println("S"); return ACSScriptTypes.NET_TYPE;}
   }
   ({CRLF}|{WHITE_SPACE})+                                   {yybegin(YYINITIAL); return TokenType.WHITE_SPACE;}
   "true"                                                    {yybegin(YYINITIAL); return ACSScriptTypes.TRUE;}
@@ -125,6 +133,17 @@ BOOL = "bool"
   {EQUALS_SYMBOL}                                           {yybegin(YYINITIAL); return ACSScriptTypes.EQUALS_SYMBOL;}
   {DOT_SYMBOL}                                              {yybegin(YYINITIAL); return ACSScriptTypes.DOT_SYMBOL;}
   {COMMA_SYMBOL}                                            {yybegin(YYINITIAL); return ACSScriptTypes.COMMA;}
+  {OPEN}                                                    {yybegin(YYINITIAL); return ACSScriptTypes.OPEN;}
+  {ENTER}                                                   {yybegin(YYINITIAL); return ACSScriptTypes.ENTER;}
+  {RETURN}                                                  {yybegin(YYINITIAL); return ACSScriptTypes.RETURN;}
+  {RESPAWN}                                                 {yybegin(YYINITIAL); return ACSScriptTypes.RESPAWN;}
+  {DEATH}                                                   {yybegin(YYINITIAL); return ACSScriptTypes.DEATH;}
+  {LIGHTNING}                                               {yybegin(YYINITIAL); return ACSScriptTypes.LIGHTNING;}
+  {UNLOADING}                                               {yybegin(YYINITIAL); return ACSScriptTypes.UNLOADING;}
+  {DISCONNECT}                                              {yybegin(YYINITIAL); return ACSScriptTypes.DISCONNECT;}
+  {KILL}                                                    {yybegin(YYINITIAL); return ACSScriptTypes.KILL;}
+  {REOPEN}                                                  {yybegin(YYINITIAL); return ACSScriptTypes.REOPEN;}
+  {NET}                                                     {yybegin(YYINITIAL); return ACSScriptTypes.NET;}
   {OPEN_SQUARE_BRACKET}                                     {yybegin(YYINITIAL); return ACSScriptTypes.OPEN_SQUARE_BRACKET;}
   {CLOSE_SQUARE_BRACKET}                                    {yybegin(YYINITIAL); return ACSScriptTypes.CLOSE_SQUARE_BRACKET;}
   {POUND_SYMBOL}                                            {yybegin(YYINITIAL); return ACSScriptTypes.POUND_SYMBOL;}
