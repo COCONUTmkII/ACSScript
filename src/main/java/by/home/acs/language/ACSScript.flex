@@ -43,8 +43,8 @@ CLOSE_SQUARE_BRACKET = "]"
 POUND_SYMBOL = "#"
 SEMICOLON_SYMBOL = ";"
 COLON_SYMBOL = ":"
-FIRST_VALUE_CHARACTER=[^ \s] | "\\"{CRLF} | "\\".
-VALUE_CHARACTER=[^\s] | "\\"{CRLF} | "\\".
+FIRST_VALUE_CHARACTER=[^ \s\\] | "\\"{CRLF} | "\\".
+VALUE_CHARACTER=[^\s\\] | "\\"{CRLF} | "\\".
 FUNCTION = "function"
 SCRIPT = "script"
 VOID = "void"
@@ -62,11 +62,11 @@ DISCONNECT="DISCONNECT"
 KILL="KILL"
 REOPEN="REOPEN"
 NET="NET"
+TEST_VALUE = [^ \s\(] | "\\"{CRLF} | "\\".
 
 %states WAITING_VALUE, TEST_ONE_VALUE
 %xstate TEST_VALUE
 %%
-
   "include"                                                 {yybegin(YYINITIAL); return ACSScriptTypes.INCLUDE;}
   "import"                                                  {yybegin(YYINITIAL); return ACSScriptTypes.IMPORT;}
   "define"                                                  {yybegin(YYINITIAL); return ACSScriptTypes.DEFINE;}
@@ -83,12 +83,13 @@ NET="NET"
   {INT}                                                     {yybegin(YYINITIAL); return ACSScriptTypes.INT;}
   {STR}                                                     {yybegin(YYINITIAL); return ACSScriptTypes.STR;}
   {FUNCTION}                                                {yybegin(YYINITIAL);  return ACSScriptTypes.FUNCTION;}
-  {SCRIPT}                                                  {yybegin(WAITING_VALUE); return ACSScriptTypes.SCRIPT;}
-  <WAITING_VALUE> {
+  {SCRIPT}                                                  {yybegin(YYINITIAL); return ACSScriptTypes.SCRIPT;}
+
+  /*<WAITING_VALUE> {
       {WHITE_SPACE}+                                        {yybegin(WAITING_VALUE); return TokenType.WHITE_SPACE;}
       {NUMBER}                                              {yybegin(TEST_ONE_VALUE); return ACSScriptTypes.NUMBER;}
       {STRING}                                              {yybegin(TEST_ONE_VALUE); return ACSScriptTypes.STRING;}
-      ({NUMBER} | {STRING}){FIRST_VALUE_CHARACTER}{VALUE_CHARACTER}*     {yybegin(TEST_ONE_VALUE); return ACSScriptTypes.SCRIPT_NAME;}
+      {FIRST_VALUE_CHARACTER}{VALUE_CHARACTER}*     {yybegin(TEST_ONE_VALUE); System.out.println("TYPE"); return ACSScriptTypes.SCRIPT_TYPE;}
   }
   <TEST_ONE_VALUE> {
       {WHITE_SPACE}+                                        {yybegin(TEST_ONE_VALUE); return TokenType.WHITE_SPACE;}
@@ -102,13 +103,13 @@ NET="NET"
       {DISCONNECT}                                          {yybegin(TEST_VALUE); return ACSScriptTypes.DISCONNECT;}
       {KILL}                                                {yybegin(TEST_VALUE); return ACSScriptTypes.KILL;}
       {REOPEN}                                              {yybegin(TEST_VALUE); return ACSScriptTypes.REOPEN;}
-      {FIRST_VALUE_CHARACTER}{VALUE_CHARACTER}*             {yybegin(TEST_VALUE); return ACSScriptTypes.SCRIPT_TYPE;}
+      {FIRST_VALUE_CHARACTER}{VALUE_CHARACTER}*                       {yybegin(TEST_VALUE); System.out.println("TEST_ONE_VALUE"); return ACSScriptTypes.SCRIPT_TYPE;}
   }
   <TEST_VALUE> {
       {WHITE_SPACE}+                                        {yybegin(TEST_VALUE);System.out.println("SSS"); return TokenType.WHITE_SPACE;}
       {NET}                                                 {yybegin(TEST_VALUE); return ACSScriptTypes.NET;}
       {FIRST_VALUE_CHARACTER}{VALUE_CHARACTER}*             {yybegin(YYINITIAL); System.out.println("S"); return ACSScriptTypes.NET_TYPE;}
-  }
+  }*/
   ({CRLF}|{WHITE_SPACE})+                                   {yybegin(YYINITIAL); return TokenType.WHITE_SPACE;}
   "true"                                                    {yybegin(YYINITIAL); return ACSScriptTypes.TRUE;}
   "false"                                                   {yybegin(YYINITIAL); return ACSScriptTypes.FALSE;}

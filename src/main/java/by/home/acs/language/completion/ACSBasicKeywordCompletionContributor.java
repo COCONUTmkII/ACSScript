@@ -1,12 +1,12 @@
 package by.home.acs.language.completion;
 
-import by.home.acs.language.ACSScriptLanguage;
 import com.intellij.codeInsight.completion.*;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.patterns.PlatformPatterns;
-import com.intellij.psi.PsiElement;
 import com.intellij.util.ProcessingContext;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 public class ACSBasicKeywordCompletionContributor extends CompletionContributor {
     public ACSBasicKeywordCompletionContributor() {
@@ -17,8 +17,11 @@ public class ACSBasicKeywordCompletionContributor extends CompletionContributor 
             protected void addCompletions(@NotNull CompletionParameters parameters,
                                           @NotNull ProcessingContext context,
                                           @NotNull CompletionResultSet result) {
-                PsiElement element = parameters.getOriginalPosition();
-                System.out.println(element);
+
+                System.out.println(parameters.getPosition());
+                System.out.println(parameters.getOriginalPosition());
+                System.out.println(Objects.requireNonNull(parameters.getPosition().getParent()));
+
                 result.addElement(LookupElementBuilder.create("script"));
                 result.addElement(LookupElementBuilder.create("function"));
                 result.addElement(LookupElementBuilder.create("int"));
