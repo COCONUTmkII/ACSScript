@@ -19,7 +19,7 @@ public class ACSBasicKeywordCompletionContributor extends CompletionContributor 
                                           @NotNull CompletionResultSet result) {
 
                 System.out.println(parameters.getPosition());
-                System.out.println(parameters.getOriginalPosition());
+                System.out.println(Objects.requireNonNull(parameters.getOriginalPosition()).getParent());
                 System.out.println(Objects.requireNonNull(parameters.getPosition().getParent()));
 
                 result.addElement(LookupElementBuilder.create("script"));
