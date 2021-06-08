@@ -7,7 +7,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.util.ProcessingContext;
 import org.jetbrains.annotations.NotNull;
 
-import static by.home.acs.language.completion.lookup.VariableLookupElement.createTypeLookupElement;
+import static by.home.acs.language.completion.lookup.VariableLookupElement.createBoldLookupElement;
 
 public class ACSBasicKeywordCompletionContributor extends CompletionContributor {
 
@@ -21,13 +21,13 @@ public class ACSBasicKeywordCompletionContributor extends CompletionContributor 
                                           @NotNull CompletionResultSet result) {
                 final PsiElement parent = parameters.getPosition().getParent().getParent();
                 if (parent instanceof ACSScriptFile) {
-                    result.addElement(createTypeLookupElement("script"));
-                    result.addElement(createTypeLookupElement("function"));
+                    result.addElement(createBoldLookupElement("script"));
+                    result.addElement(createBoldLookupElement("function"));
                 } else {
-                    result.addElement(createTypeLookupElement("int"));
-                    result.addElement(createTypeLookupElement("str"));
-                    result.addElement(createTypeLookupElement("bool"));
-                    result.addElement(createTypeLookupElement("void"));
+                    result.addElement(createBoldLookupElement("int"));
+                    result.addElement(createBoldLookupElement("str"));
+                    result.addElement(createBoldLookupElement("bool"));
+                    result.addElement(createBoldLookupElement("void"));
                 }
             }
         });

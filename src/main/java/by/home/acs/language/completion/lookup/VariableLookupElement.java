@@ -11,6 +11,13 @@ public class VariableLookupElement {
         return LookupElementBuilder.create(completionString)
                 .withPresentableText(completionString)
                 .withItemTextForeground(JBColor.BLACK)
+                .bold();
+    }
+
+    public static LookupElement createBoldLookupElementWithIcon(String completionString) {
+        return LookupElementBuilder.create(completionString)
+                .withPresentableText(completionString)
+                .withItemTextForeground(JBColor.BLACK)
                 .bold()
                 .withIcon(PlatformIcons.VARIABLE_ICON);
     }
@@ -37,7 +44,6 @@ public class VariableLookupElement {
     public static LookupElement createTypeLookupElement(String completionString) {
         return LookupElementBuilder.create(completionString)
                 .withPresentableText(completionString)
-                .withItemTextForeground(JBColor.BLACK)
-                .bold();
+                .withItemTextForeground(JBColor.BLACK);
     }
 }

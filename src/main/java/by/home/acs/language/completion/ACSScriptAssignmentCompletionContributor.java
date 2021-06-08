@@ -1,5 +1,6 @@
 package by.home.acs.language.completion;
 
+import by.home.acs.language.psi.ACSScriptAssignmentStatement;
 import by.home.acs.language.psi.impl.ACSScriptFunctionIdentifierImpl;
 import com.intellij.codeInsight.completion.*;
 import com.intellij.patterns.PlatformPatterns;
@@ -9,9 +10,10 @@ import org.jetbrains.annotations.NotNull;
 
 import static by.home.acs.language.completion.lookup.VariableLookupElement.createBoldLookupElement;
 
-public class ACSScriptVoidCompletionContributor extends CompletionContributor {
 
-    public ACSScriptVoidCompletionContributor() {
+public class ACSScriptAssignmentCompletionContributor extends CompletionContributor {
+
+    public ACSScriptAssignmentCompletionContributor() {
         extend(CompletionType.BASIC, PlatformPatterns.psiElement(), new CompletionProvider<CompletionParameters>() {
 
             //FIXME not working right now
@@ -19,11 +21,17 @@ public class ACSScriptVoidCompletionContributor extends CompletionContributor {
             protected void addCompletions(@NotNull CompletionParameters parameters, @NotNull ProcessingContext context, @NotNull CompletionResultSet result) {
                 final PsiElement element = parameters.getPosition().getParent();
 
-                if (element instanceof ACSScriptFunctionIdentifierImpl) {
+                if (element instanceof ACSScriptAssignmentStatement) {
                     result.addElement(createBoldLookupElement("void"));
                     result.addElement(createBoldLookupElement("int"));
                     result.addElement(createBoldLookupElement("bool"));
                     result.addElement(createBoldLookupElement("str"));
+                    result.addElement(createBoldLookupElement("for"));
+                    result.addElement(createBoldLookupElement("switch"));
+                    result.addElement(createBoldLookupElement("if"));
+                    result.addElement(createBoldLookupElement("do"));
+                    result.addElement(createBoldLookupElement("switch"));
+                    result.addElement(createBoldLookupElement("until"));
                 }
             }
         });
