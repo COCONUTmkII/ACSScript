@@ -6,18 +6,17 @@ import com.intellij.ui.JBColor;
 import com.intellij.util.PlatformIcons;
 
 public class VariableLookupElement {
-    private final LookupElement variableLookupElement;
 
-    public VariableLookupElement(String completionString) {
-        this.variableLookupElement = LookupElementBuilder.create(completionString)
+    public static LookupElement createBoldLookupElement(String completionString) {
+        return LookupElementBuilder.create(completionString)
                 .withPresentableText(completionString)
                 .withItemTextForeground(JBColor.BLACK)
                 .bold()
                 .withIcon(PlatformIcons.VARIABLE_ICON);
     }
 
-    public VariableLookupElement(String completionString, String tailText) {
-        this.variableLookupElement = LookupElementBuilder.create(completionString)
+    public static LookupElement createLookupElementWithTail(String completionString, String tailText) {
+        return LookupElementBuilder.create(completionString)
                 .withPresentableText(completionString)
                 .withItemTextForeground(JBColor.BLACK)
                 .bold()
@@ -25,8 +24,8 @@ public class VariableLookupElement {
                 .withTailText(tailText);
     }
 
-    public VariableLookupElement(String completionString, String typeText, String tailText) {
-        this.variableLookupElement = LookupElementBuilder.create(completionString)
+    public static LookupElement createLookupElementWithTypeAndTail(String completionString, String typeText, String tailText) {
+        return LookupElementBuilder.create(completionString)
                 .withPresentableText(completionString)
                 .withItemTextForeground(JBColor.BLACK)
                 .bold()
@@ -35,7 +34,10 @@ public class VariableLookupElement {
                 .withTypeText(typeText);
     }
 
-    public LookupElement getVariableLookupElement() {
-        return variableLookupElement;
+    public static LookupElement createTypeLookupElement(String completionString) {
+        return LookupElementBuilder.create(completionString)
+                .withPresentableText(completionString)
+                .withItemTextForeground(JBColor.BLACK)
+                .bold();
     }
 }
