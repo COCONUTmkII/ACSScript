@@ -119,7 +119,7 @@ CaseOperator ::=   case (IDENTIFIER | NUMBER | STRING) ColonSymbol  (FunctionInv
 
 AssignmentStatement ::= IDENTIFIER EqualsSymbol (FunctionInvocation)
 
-VariableDefinition ::= StaticModifier? (Type) IDENTIFIER (SemicolonSymbol | (EqualsSymbol (FunctionInvocation | VariableInitialization | Operator)))
+VariableDefinition ::= StaticModifier? Type IDENTIFIER ArrayType? (SemicolonSymbol | (EqualsSymbol (FunctionInvocation | VariableInitialization | Operator)))
 
 VariableInitialization ::= ( STRING | CHARACTER | EmptyString | LogicalType | ArrayInitializer | NUMBER | FLOAT) SemicolonSymbol
 
@@ -157,7 +157,7 @@ StringType ::= STR
 
 EmptyString ::= '""'
 
-ArrayType ::= (Type) OpenSquareBracket CloseSquareBracket
+ArrayType ::=  OpenSquareBracket NUM CloseSquareBracket
 
 ArrayInitializer ::= OpenBrace ArrayInitializers? CloseBrace
 
