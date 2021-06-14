@@ -20,6 +20,7 @@ public class ACSBasicKeywordCompletionContributor extends CompletionContributor 
                                           @NotNull ProcessingContext context,
                                           @NotNull CompletionResultSet result) {
                 final PsiElement parent = parameters.getPosition().getParent().getParent();
+
                 if (parent instanceof ACSScriptFile) {
                     result.addElement(createBoldLookupElement("script"));
                     result.addElement(createBoldLookupElement("function"));

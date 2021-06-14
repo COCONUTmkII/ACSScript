@@ -36,24 +36,24 @@ ACSScriptFile ::= FileContainer
 private FileContainer ::= (COMMENT|Definition*)
 
 Definition ::= (FunctionDefinition | ScriptDefinition | DirectivesDeclaration | GlobalModifier | VariableDefinition)
- {methods=[getFunctionKeyword getFunctionStatementReturnType]} {pin=1}
+ {methods=[getFunctionKeyword getFunctionStatementReturnType]}
 
 
-FunctionDefinition ::= FunctionIdentifier FunctionReturnType FunctionNameAndParams FunctionBody {pin=2}
+FunctionDefinition ::= FunctionIdentifier FunctionReturnType FunctionNameAndParams FunctionBody
 
-ScriptDefinition ::= ScriptIdentifier ScriptName (ScriptPossibleParams | ScriptType) NetType? ScriptBody {pin=2}
+ScriptDefinition ::= ScriptIdentifier ScriptName (ScriptPossibleParams | ScriptType) NetType? ScriptBody
 /**
     Directives statement
  */
 DirectivesDeclaration ::= (IncludeDeclaration | ImportDeclaration | DefineDeclaration | LibraryDeclaration)
 
-IncludeDeclaration ::= PoundSymbol include STRING {pin=2}
+IncludeDeclaration ::= PoundSymbol include STRING
 
-ImportDeclaration ::= PoundSymbol import STRING {pin=2}
+ImportDeclaration ::= PoundSymbol import STRING
 
-DefineDeclaration ::= PoundSymbol define IDENTIFIER  IDENTIFIER (Operator (IDENTIFIER | NUMBER))? {pin=2}
+DefineDeclaration ::= PoundSymbol define IDENTIFIER  IDENTIFIER (Operator (IDENTIFIER | NUMBER))?
 
-LibraryDeclaration ::= PoundSymbol library STRING {pin=2}
+LibraryDeclaration ::= PoundSymbol library STRING
 
 /**
     Script statements
@@ -64,7 +64,7 @@ ScriptType ::= OPEN | ENTER | RETURN | RESPAWN | DEATH | LIGHTNING | UNLOADING |
 
 ScriptName ::= (STRING | NUMBER)
 
-ScriptPossibleParams ::= OpenBracket (ScriptParameterWithVoid | ScriptParameter) CloseBracket {pin=2}
+ScriptPossibleParams ::= OpenBracket (ScriptParameterWithVoid | ScriptParameter) CloseBracket
 
 ScriptParameterWithVoid ::=  VoidType
 
@@ -119,7 +119,7 @@ CaseOperator ::=   case (IDENTIFIER | NUMBER | STRING) ColonSymbol  (FunctionInv
 
 AssignmentStatement ::= IDENTIFIER EqualsSymbol (FunctionInvocation)
 
-VariableDefinition ::= StaticModifier? (Type) IDENTIFIER (SemicolonSymbol | (EqualsSymbol (FunctionInvocation | VariableInitialization | Operator))) {pin=2}
+VariableDefinition ::= StaticModifier? (Type) IDENTIFIER (SemicolonSymbol | (EqualsSymbol (FunctionInvocation | VariableInitialization | Operator)))
 
 VariableInitialization ::= ( STRING | CHARACTER | EmptyString | LogicalType | ArrayInitializer | NUMBER | FLOAT) SemicolonSymbol
 
