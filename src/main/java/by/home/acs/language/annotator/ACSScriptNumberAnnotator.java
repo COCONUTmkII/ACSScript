@@ -1,62 +1,54 @@
 package by.home.acs.language.annotator;
 
-import by.home.acs.language.ACSScriptTypes;
-import by.home.acs.language.highlight.ACSScriptTextAttributeKeyValue;
+import by.home.acs.language.ACSUtil;
+import by.home.acs.language.psi.ACSScriptScriptName;
+import com.intellij.codeInspection.ProblemHighlightType;
 import com.intellij.lang.ASTNode;
-import com.intellij.lang.annotation.Annotation;
 import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.lang.annotation.Annotator;
+import com.intellij.lang.annotation.HighlightSeverity;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.tree.IElementType;
 import org.jetbrains.annotations.NotNull;
-import java.util.*;
 
-import static by.home.acs.language.annotator.ACSScriptAnnotatorPrefix.SCRIPT_LOWERCASE_PREFIX;
+import java.math.BigInteger;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
+//FIXME check why there is IllegalStateException but everything is fine
 public class ACSScriptNumberAnnotator implements Annotator {
-    private boolean testOne = false;
-    private boolean testTwo = false;
-    private final TextRange textRange
-            = TextRange.from(SCRIPT_LOWERCASE_PREFIX.length(), SCRIPT_LOWERCASE_PREFIX.length() + 1);
+
     @Override
     public void annotate(@NotNull PsiElement element, @NotNull AnnotationHolder holder) {
+
         try {
-            List<IElementType> iElementTypes = new ArrayList<>();
-            iElementTypes.add(element.getNode().getFirstChildNode().getElementType());
-            for (IElementType i : iElementTypes) {
-                if (i.equals(ACSScriptTypes.SCRIPT_IDENTIFIER)) {
-                    testOne = true;
-                    continue;
-                }
-                if (i.equals(ACSScriptTypes.NUMBER)) {
-                    testTwo = true;
-                    if (testOne && testTwo) {
-                        ASTNode node = element.getNode();
-                        checkScriptNumberRange(node, holder);
-                        testOne = false;
-                        testTwo = false;
-                    }
-                }
-            }
+            List<ACSScriptScriptName> definitionList = ACSUtil.findScriptName(element.getProject());
+            definitionList.forEach(acsScriptName -> {
+                ACSScriptScriptName scriptName = Objects.requireNonNull(acsScriptName);
+                Optional<ASTNode> scriptNumberNode = Optional.ofNullable(scriptName.getNode());
+                scriptNumberNode.ifPresent(astNode -> {
+                    TextRange textRange = new TextRange(astNode.getStartOffset(), astNode.getTextRange().getEndOffset());
+                    checkScript(astNode, holder, textRange);
+                });
+            });
         } catch (NullPointerException | NumberFormatException e) {
-            e.getCause();
+            e.printStackTrace();
         }
     }
 
-    private void checkScriptNumberRange(ASTNode node, @NotNull AnnotationHolder holder) {
-        boolean isVotValid;
-        int expectedScriptNumber = Integer.parseInt(node.getText());
-        if (expectedScriptNumber < 1 || expectedScriptNumber > 32767) {
-            isVotValid = true;
-            createScriptNumberAnnotation(holder, isVotValid);
+    private void checkScript(ASTNode astNode, @NotNull AnnotationHolder holder, TextRange textRange) {
+        BigInteger maxScriptNumber = BigInteger.valueOf(32767);
+        BigInteger scriptNumber = new BigInteger(astNode.getText());
+        if (scriptNumber.compareTo(BigInteger.ONE) < 0 || scriptNumber.compareTo(maxScriptNumber) > 0) {
+            createScriptNumberErrorAnnotator(textRange, holder);
         }
     }
 
-    private void createScriptNumberAnnotation(@NotNull AnnotationHolder holder, boolean isNotValid) throws NumberFormatException{
-        if (isNotValid) {
-            Annotation annotation = holder.createErrorAnnotation(textRange, "Script number must be > 0 or < 32768");
-            annotation.setTextAttributes(ACSScriptTextAttributeKeyValue.BAD_CHARACTER);
-        }
+    private void createScriptNumberErrorAnnotator(TextRange textRange, @NotNull AnnotationHolder holder) throws NumberFormatException {
+        holder.newAnnotation(HighlightSeverity.ERROR, "Script number can be only > 1 and < 32767 inclusive")
+                .range(textRange)
+                .highlightType(ProblemHighlightType.ERROR)
+                .create();
     }
 }

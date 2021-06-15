@@ -9,8 +9,7 @@ import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 
 public class ACSScriptPsiImplUtil {
-    public static String getScript (ACSScriptScriptDefinition scriptElement) {
-        System.out.println("privet");
+    public static String getScript(ACSScriptDefinition scriptElement) {
         ASTNode scriptNode = scriptElement.getNode().findChildByType(ACSScriptTypes.SCRIPT_IDENTIFIER);
         if (scriptNode != null) {
             return scriptNode.getText().replaceAll("\\\\ ", "");
@@ -20,7 +19,7 @@ public class ACSScriptPsiImplUtil {
     }
 
     public static String getScriptNumberValue (ACSScriptScriptDefinition scriptElement) {
-        ASTNode scriptValueNode = scriptElement.getNode().findChildByType(ACSScriptTypes.SCRIPT_IDENTIFIER);
+        ASTNode scriptValueNode = scriptElement.getNode().findChildByType(ACSScriptTypes.SCRIPT_NAME);
         if (scriptValueNode != null) {
             return scriptValueNode.getText();
         } else {
@@ -28,11 +27,8 @@ public class ACSScriptPsiImplUtil {
         }
     }
 
-    public static String getName(ACSScriptScriptDefinition scriptWord) {
-        return getScript(scriptWord);
-    }
 
-    public static PsiElement setName(ACSScriptScriptDefinition scriptWord, String newScript) {
+    public static PsiElement setName(ACSScriptDefinition scriptWord, String newScript) {
         ASTNode keyNode = scriptWord.getNode().findChildByType(ACSScriptTypes.SCRIPT_IDENTIFIER);
         if (keyNode != null) {
             System.out.println("m here!");
