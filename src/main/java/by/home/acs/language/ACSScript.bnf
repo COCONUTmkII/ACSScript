@@ -36,7 +36,10 @@ ACSScriptFile ::= FileContainer
 private FileContainer ::= (COMMENT|Definition*)
 
 Definition ::= (FunctionDefinition | ScriptDefinition | DirectivesDeclaration | GlobalModifier | VariableDefinition)
- {methods=[getScript setName getFunctionKeyword getFunctionStatementReturnType]}
+ {  mixin="by.home.acs.language.psi.impl.ACSNamedElementImpl"
+    implements="by.home.acs.language.psi.ACSNamedElement"
+    methods=[getScript setName getNameIdentifier getNameIdentifier getFunctionKeyword getFunctionStatementReturnType]
+ }
 
 
 FunctionDefinition ::= FunctionIdentifier FunctionReturnType FunctionNameAndParams FunctionBody
