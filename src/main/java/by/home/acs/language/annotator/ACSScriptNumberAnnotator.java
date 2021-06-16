@@ -16,11 +16,22 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-//FIXME check why there is IllegalStateException but everything is fine
 public class ACSScriptNumberAnnotator implements Annotator {
 
     @Override
     public void annotate(@NotNull PsiElement element, @NotNull AnnotationHolder holder) {
+
+
+        if (!(element instanceof ACSScriptScriptName)) {
+            return;
+        }
+
+        ACSScriptScriptName acsScriptScriptName = (ACSScriptScriptName) element;
+        PsiElement stringNumber = acsScriptScriptName.getString();
+        PsiElement number = acsScriptScriptName.getNumber();
+        if (stringNumber != null || number == null) {
+            return;
+        }
 
         try {
             List<ACSScriptScriptName> definitionList = ACSUtil.findScriptName(element.getProject());
@@ -32,7 +43,7 @@ public class ACSScriptNumberAnnotator implements Annotator {
                     checkScript(astNode, holder, textRange);
                 });
             });
-        } catch (NullPointerException | NumberFormatException e) {
+        } catch (NullPointerException e) {
             e.printStackTrace();
         }
     }
@@ -45,7 +56,7 @@ public class ACSScriptNumberAnnotator implements Annotator {
         }
     }
 
-    private void createScriptNumberErrorAnnotator(TextRange textRange, @NotNull AnnotationHolder holder) throws NumberFormatException {
+    private void createScriptNumberErrorAnnotator(TextRange textRange, @NotNull AnnotationHolder holder) {
         holder.newAnnotation(HighlightSeverity.ERROR, "Script number can be only > 1 and < 32767 inclusive")
                 .range(textRange)
                 .highlightType(ProblemHighlightType.ERROR)
