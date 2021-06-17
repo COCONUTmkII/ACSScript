@@ -20,7 +20,7 @@ public class ACSScriptReferenceContributor extends PsiReferenceContributor {
                         PsiLiteralExpression scriptName = (PsiLiteralExpression) element;
                         String scriptNameValue = scriptName.getValue() instanceof String ? (String) scriptName.getValue() : null;
                         if (scriptNameValue != null && scriptNameValue.startsWith("script")) {
-                            TextRange textRange = new TextRange(SCRIPT_IDENTIFIER.length(), SCRIPT_IDENTIFIER.length() + 1);
+                            TextRange textRange = new TextRange(SCRIPT_IDENTIFIER.length(), SCRIPT_IDENTIFIER.length());
                             return new PsiReference[]{new ACSScriptReference(element, textRange)};
                         }
                         return PsiReference.EMPTY_ARRAY;

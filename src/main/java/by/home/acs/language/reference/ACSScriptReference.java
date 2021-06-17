@@ -42,7 +42,7 @@ public class ACSScriptReference extends PsiReferenceBase<PsiElement> implements 
     @Nullable
     @Override
     public PsiElement resolve() {
-        ResolveResult[]resolveResults = multiResolve(true);
+        ResolveResult[]resolveResults = multiResolve(false);
         return resolveResults.length == 1 ? resolveResults[0].getElement() : null;
     }
 

@@ -32,6 +32,7 @@
         <lang.refactoringSupport language="ACSScript" implementationClass="by.home.acs.language.refactor.ACSScriptRefactoringSupportProvider"/>
         <lang.refactoringSupport language="ACSScript" implementationClass="by.home.acs.language.refactor.ACSTestRefactoring"/>
         <psi.referenceContributor implementation="by.home.acs.language.reference.ACSScriptReferenceContributor"/>
+        <psi.referenceContributor implementation="by.home.acs.language.reference.ACSNameReferenceContributor"/>
         <moduleType id="ACS_MODULE_TYPE" implementationClass="by.home.acs.language.wizard.ACSModuleType"/>
     </extensions>
 

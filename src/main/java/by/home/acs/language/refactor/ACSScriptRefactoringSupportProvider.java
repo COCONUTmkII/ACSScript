@@ -1,6 +1,7 @@
 package by.home.acs.language.refactor;
 
 import by.home.acs.language.psi.ACSScriptScriptDefinition;
+import by.home.acs.language.psi.ACSScriptScriptName;
 import com.intellij.lang.refactoring.RefactoringSupportProvider;
 import com.intellij.psi.PsiElement;
 import org.jetbrains.annotations.NotNull;
@@ -10,7 +11,7 @@ public class ACSScriptRefactoringSupportProvider extends RefactoringSupportProvi
 
     @Override
     public boolean isMemberInplaceRenameAvailable(@NotNull PsiElement elementToRename, @Nullable PsiElement context) {
-        return (elementToRename instanceof ACSScriptScriptDefinition);
+        return (elementToRename instanceof ACSScriptScriptName);
     }
 
 }
