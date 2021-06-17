@@ -1,6 +1,5 @@
 package by.home.acs.language.reference;
 
-import by.home.acs.language.psi.ACSScriptScriptName;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.patterns.PlatformPatterns;
 import com.intellij.psi.*;
@@ -8,6 +7,7 @@ import com.intellij.util.ProcessingContext;
 import org.jetbrains.annotations.NotNull;
 
 public class ACSScriptReferenceContributor extends PsiReferenceContributor {
+    private static final String SCRIPT_IDENTIFIER = "script";
 
     @Override
     public void registerReferenceProviders(@NotNull PsiReferenceRegistrar registrar) {
@@ -17,15 +17,13 @@ public class ACSScriptReferenceContributor extends PsiReferenceContributor {
                     @Override
                     public PsiReference[] getReferencesByElement(@NotNull PsiElement element,
                                                                  @NotNull ProcessingContext context) {
-                        ACSScriptScriptName scriptName = (ACSScriptScriptName) element;
-                        PsiElement stringNumber = scriptName.getString();
-                        PsiElement number = scriptName.getNumber();
-                        if (stringNumber != null || number == null) {
-                            return PsiReference.EMPTY_ARRAY;
-                        } else {
-                            TextRange textRange = new TextRange(scriptName.getNode().getStartOffset(), scriptName.getNode().getTextRange().getEndOffset());
+                        PsiLiteralExpression scriptName = (PsiLiteralExpression) element;
+                        String scriptNameValue = scriptName.getValue() instanceof String ? (String) scriptName.getValue() : null;
+                        if (scriptNameValue != null && scriptNameValue.startsWith("script")) {
+                            TextRange textRange = new TextRange(SCRIPT_IDENTIFIER.length(), SCRIPT_IDENTIFIER.length() + 1);
                             return new PsiReference[]{new ACSScriptReference(element, textRange)};
                         }
+                        return PsiReference.EMPTY_ARRAY;
                     }
                 });
     }

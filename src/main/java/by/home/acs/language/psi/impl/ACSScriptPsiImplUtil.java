@@ -8,8 +8,8 @@ import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 
 public class ACSScriptPsiImplUtil {
-    public static String getScript(ACSScriptDefinition scriptElement) {
-        ASTNode scriptNode = scriptElement.getNode().findChildByType(ACSScriptTypes.SCRIPT_IDENTIFIER);
+    public static String getName(ACSScriptDefinition scriptElement) {
+        ASTNode scriptNode = scriptElement.getNode().findChildByType(ACSScriptTypes.SCRIPT_NAME);
         if (scriptNode != null) {
             return scriptNode.getText().replaceAll("\\\\ ", "");
         } else {
@@ -23,6 +23,8 @@ public class ACSScriptPsiImplUtil {
             ACSScriptDefinition acsScriptDefinition = ACSScriptElementFactory.createScript(scriptWord.getProject(), newScriptName);
             ASTNode newNameNode = acsScriptDefinition.getFirstChild().getNode(); //maybe change this
             scriptWord.getNode().replaceChild(currentNameNode, newNameNode);
+        } else {
+            System.out.println("null");
         }
         return scriptWord;
     }
