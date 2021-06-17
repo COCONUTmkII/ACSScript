@@ -3,6 +3,7 @@ package by.home.acs.language.highlight;
 import by.home.acs.language.ACSScriptTypes;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.psi.tree.IElementType;
+
 import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;

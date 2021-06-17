@@ -2,7 +2,6 @@ package by.home.acs.language;
 
 import by.home.acs.language.parser.ACSScriptParser;
 import by.home.acs.language.psi.ACSScriptFile;
-//import by.home.acs.language.psi.ACSScriptType;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.ParserDefinition;
 import com.intellij.lang.PsiParser;

@@ -1,10 +1,8 @@
 package by.home.acs.language.refactor;
 
-import by.home.acs.language.psi.*;
+import by.home.acs.language.psi.ACSScriptScriptDefinition;
 import com.intellij.lang.refactoring.RefactoringSupportProvider;
 import com.intellij.psi.PsiElement;
-import com.intellij.refactoring.RefactoringActionHandler;
-import com.intellij.refactoring.changeSignature.ChangeSignatureHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

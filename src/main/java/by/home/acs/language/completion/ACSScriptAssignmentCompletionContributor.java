@@ -1,7 +1,6 @@
 package by.home.acs.language.completion;
 
 import by.home.acs.language.psi.ACSScriptAssignmentStatement;
-import by.home.acs.language.psi.impl.ACSScriptFunctionIdentifierImpl;
 import com.intellij.codeInsight.completion.*;
 import com.intellij.patterns.PlatformPatterns;
 import com.intellij.psi.PsiElement;
