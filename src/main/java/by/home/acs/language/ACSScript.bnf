@@ -118,7 +118,7 @@ Statement ::= (VariableDefinition | AssignmentStatement | FunctionInvocation | C
 
 ScriptStatement ::= VariableDefinition | VariableInitialization | AssignmentStatement | FunctionInvocation | ControlFlowStatement | Loops
 
-CaseOperator ::=   case (IDENTIFIER | NUMBER | STRING) ColonSymbol  (FunctionInvocation | VariableDefinition)? (SwitchStatement)?  (break SemicolonSymbol)? CaseOperator? (default ColonSymbol FunctionInvocation)?
+
 
 AssignmentStatement ::= IDENTIFIER EqualsSymbol (FunctionInvocation)
 
@@ -172,14 +172,23 @@ ReturnOperator ::= return SemicolonSymbol | return IDENTIFIER SemicolonSymbol //
 
 
 
-ControlFlowStatement ::= IfThenStatement | IfThenElseStatement |  SwitchStatement
+ControlFlowStatement ::= IfThenStatement | IfThenElseStatement |  SwitchLoop
 
 IfThenStatement ::= if OpenBracket LogicalType CloseBracket Statement
 
-IfThenElseStatement ::= if OpenBracket LogicalType OpenBracket OpenBrace FunctionBody CloseBrace (else (OpenBrace FunctionBody CloseBrace | IfThenElseStatement) )?
+IfThenElseStatement ::= if OpenBracket LogicalType CloseBracket OpenBrace Statement* CloseBrace (else (OpenBrace Statement* CloseBrace | IfThenElseStatement) )?
 
-SwitchStatement ::= switch OpenBracket (IDENTIFIER | NUMBER) CloseBracket OpenBrace CaseOperator CloseBrace
+SwitchLoop ::= switch OpenBracket (IDENTIFIER | NUMBER) CloseBracket OpenBrace CaseOperator CloseBrace
 
+CaseOperator ::=   case (IDENTIFIER | NUMBER | STRING) ColonSymbol  SwitchStatement*  (break SemicolonSymbol)?  (default ColonSymbol SwitchStatement*)? CaseOperator?
+
+SwitchStatement ::= VariableDefinition | VariableInitialization | AssignmentStatement | FunctionInvocation | SwitchControlFlowStatement | Loops | break SemicolonSymbol?
+
+SwitchControlFlowStatement ::= BreakableIfThenStatement | BreakableIfThenElseStatement | SwitchLoop
+
+BreakableIfThenStatement ::= if OpenBracket LogicalType CloseBracket SwitchStatement
+
+BreakableIfThenElseStatement ::= if OpenBracket LogicalType CloseBracket OpenBrace SwitchStatement* CloseBrace (else (OpenBrace SwitchStatement* CloseBrace | IfThenElseStatement) )?
 /*
     Key symbol's
  */
