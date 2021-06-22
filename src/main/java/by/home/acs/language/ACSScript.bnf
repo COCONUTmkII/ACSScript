@@ -134,19 +134,23 @@ LogicalOperator ::= ('&&' | '||' | '!')
 
 BitwiseOperator ::= ('&' | '|' | '^' | '~' | '<<' | '>>')
 
-Loops ::= forLoop | whileLoop | untilLoop | doWhileLoop | doUntilLoop
+Loops ::= ForLoop | whileLoop | untilLoop | doWhileLoop | doUntilLoop
 
-forLoop ::= for OpenBracket Initialization Condition Iteration CloseBracket OpenBrace LoopStatement* CloseBrace
+ForLoop ::= for OpenBracket Initialization Condition Iteration CloseBracket OpenBrace ((LoopStatement* BreakStatement) | (LoopStatement* ContinueStatement) | LoopStatement*) CloseBrace
 
 private Initialization ::= EmptyInitialization | TypeInitialization
 
 EmptyInitialization ::= SemicolonSymbol
 
-TypeInitialization ::= Type IDENTIFIER EqualsSymbol (NUMBER | STRING | LogicalType) SemicolonSymbol//check logical type
+TypeInitialization ::= Type IDENTIFIER EqualsSymbol (NUMBER | STRING | IDENTIFIER | LogicalType)  ArithmeticInitialization* SemicolonSymbol//check logical type
+
+private ArithmeticInitialization ::= ArithmeticOperator (NUMBER | STRING | IDENTIFIER)
 
 private Condition ::= EmptyCondition | NormalCondition
 
-NormalCondition ::= IDENTIFIER Operator (IDENTIFIER | NUMBER | STRING | LogicalType) SemicolonSymbol//check logical type
+private LogicalCondition ::= RelationalOperator | LogicalOperator
+
+NormalCondition ::= IDENTIFIER Operator (IDENTIFIER | NUMBER | STRING | LogicalType)  SemicolonSymbol
 
 EmptyCondition ::= SemicolonSymbol
 
@@ -169,9 +173,9 @@ LoopStatement ::= VariableDefinition | VariableInitialization | AssignmentStatem
 
 LoopControlFlowStatement ::= LoopIfThenElseStatement | LoopIfThenStatement | Loops | SwitchLoop
 
-LoopIfThenStatement ::= if OpenBracket LogicalType CloseBracket OpenBrace LoopStatement* (BreakStatement | ContinueStatement)? CloseBrace
+LoopIfThenStatement ::= if OpenBracket LogicalType CloseBracket OpenBrace ((LoopStatement* BreakStatement) | (LoopStatement* ContinueStatement) | LoopStatement*) CloseBrace
 
-LoopIfThenElseStatement ::= IfThenStatement else (OpenBrace LoopStatement* CloseBrace | IfThenElseStatement?)
+LoopIfThenElseStatement ::= IfThenStatement else (OpenBrace ((LoopStatement* BreakStatement) | (LoopStatement* ContinueStatement) | LoopStatement*) CloseBrace | IfThenElseStatement?)
 
 Type ::= (IntType | StringType | BoolType)
 
