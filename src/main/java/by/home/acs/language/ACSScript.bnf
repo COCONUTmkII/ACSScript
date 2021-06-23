@@ -73,7 +73,7 @@ ScriptParameterWithVoid ::=  VoidType
 
 ScriptParameter ::= ScriptParameterList
 
-ScriptParameterList ::= ScriptFormalParameter (CommaSymbol ScriptFormalParameter)*
+ScriptParameterList ::= ScriptFormalParameter (Comma ScriptFormalParameter)*
 
 ScriptFormalParameter ::= IntType IDENTIFIER
 
@@ -84,7 +84,7 @@ ScriptBody ::= OpenBrace ScriptStatement* CloseBrace
  */
 FunctionIdentifier ::= FUNCTION
 
-FunctionInvocation ::= IDENTIFIER OpenBracket CloseBracket SemicolonSymbol ReturnOperator?
+FunctionInvocation ::= IDENTIFIER OpenBracket CloseBracket Semicolon ReturnOperator?
 
 FunctionReturnType ::= VoidType | Type
 
@@ -94,7 +94,7 @@ FunctionNameAndParams ::= IDENTIFIER OpenBracket FunctionParameter CloseBracket
 
 FunctionParameter ::=  (FunctionParameterWithVoid | FunctionParameterList)
 
-FunctionParameterList ::= FunctionFormalParameter (CommaSymbol FunctionFormalParameter)*
+FunctionParameterList ::= FunctionFormalParameter (Comma FunctionFormalParameter)*
 
 FunctionFormalParameter ::= Type IDENTIFIER
 
@@ -104,7 +104,7 @@ FunctionBody ::= OpenBrace Statement* CloseBrace
 
  */
 
-GlobalModifier ::= (global | world) Type IDENTIFIER ColonSymbol IDENTIFIER SemicolonSymbol
+GlobalModifier ::= (global | world) Type IDENTIFIER Colon IDENTIFIER Semicolon
 
 StaticModifier ::= static
 
@@ -116,11 +116,13 @@ Statement ::= (VariableDefinition | AssignmentStatement | FunctionInvocation | C
 
 ScriptStatement ::= VariableDefinition | VariableInitialization | AssignmentStatement | FunctionInvocation | ControlFlowStatement | Loops
 
-AssignmentStatement ::= IDENTIFIER EqualsSymbol (FunctionInvocation)
+AssignmentStatement ::= IDENTIFIER Equals (FunctionInvocation)
 
-VariableDefinition ::= StaticModifier? Type IDENTIFIER ArrayType? (SemicolonSymbol | (EqualsSymbol (FunctionInvocation | VariableInitialization | Operator)))
+VariableDefinition ::= StaticModifier? Type VariableName ArrayType? (Semicolon | (Equals (FunctionInvocation | VariableInitialization Semicolon)))
 
-VariableInitialization ::= ( STRING | CHARACTER | EmptyString | LogicalType | ArrayInitializer | NUMBER | FLOAT) SemicolonSymbol
+left VariableName ::=  IDENTIFIER  (Comma VariableName)*
+
+VariableInitialization ::= AllTypes (Comma VariableName Equals AllTypes)*
 
 Operator ::= (AssignmentOperator | RelationalOperator | ArithmeticOperator | LogicalOperator | BitwiseOperator)
 
@@ -140,19 +142,23 @@ ForLoop ::= for OpenBracket Initialization Condition Iteration CloseBracket Open
 
 private Initialization ::= EmptyInitialization | TypeInitialization
 
-EmptyInitialization ::= SemicolonSymbol
+EmptyInitialization ::= Semicolon
 
-TypeInitialization ::= Type IDENTIFIER EqualsSymbol (NUMBER | STRING | IDENTIFIER | LogicalType)  ArithmeticInitialization* SemicolonSymbol//check logical type
+TypeInitialization ::= StaticModifier? Type VariableName Equals (NUMBER | STRING | IDENTIFIER | LogicalType)  ArithmeticInitialization* Semicolon//check logical type
 
 private ArithmeticInitialization ::= ArithmeticOperator (NUMBER | STRING | IDENTIFIER)
 
-private Condition ::= EmptyCondition | NormalCondition
+private Condition ::= EmptyCondition | NormalCondition | ArithmeticCondition
 
-private LogicalCondition ::= RelationalOperator | LogicalOperator
+private LogicalCondition ::= RelationalOperator
 
-NormalCondition ::= IDENTIFIER Operator (IDENTIFIER | NUMBER | STRING | LogicalType)  SemicolonSymbol
+NormalCondition ::= ComparisonCondition (LogicalCondition ComparisonCondition)? Semicolon
 
-EmptyCondition ::= SemicolonSymbol
+private ComparisonCondition ::= IDENTIFIER LogicalCondition (IDENTIFIER | NUMBER | STRING | LogicalType (LogicalCondition NormalCondition )?)
+
+private ArithmeticCondition ::= NormalCondition LogicalOperator
+
+EmptyCondition ::= Semicolon
 
 private Iteration ::=  NormalIteration | EmptyIteration
 
@@ -165,9 +171,9 @@ whileLoop ::= while OpenBracket LogicalType CloseBracket OpenBrace Statement* Cl
 
 untilLoop ::= until OpenBracket LogicalType CloseBracket OpenBrace Statement* CloseBrace
 
-doWhileLoop ::= do OpenBrace Statement* CloseBrace while OpenBracket LogicalType CloseBracket SemicolonSymbol
+doWhileLoop ::= do OpenBrace Statement* CloseBrace while OpenBracket LogicalType CloseBracket Semicolon
 
-doUntilLoop ::= do OpenBrace Statement* CloseBrace until OpenBracket LogicalType CloseBracket SemicolonSymbol
+doUntilLoop ::= do OpenBrace Statement* CloseBrace until OpenBracket LogicalType CloseBracket Semicolon
 
 LoopStatement ::= VariableDefinition | VariableInitialization | AssignmentStatement | FunctionInvocation | LoopControlFlowStatement | Loops
 
@@ -178,6 +184,8 @@ LoopIfThenStatement ::= if OpenBracket LogicalType CloseBracket OpenBrace ((Loop
 LoopIfThenElseStatement ::= IfThenStatement else (OpenBrace ((LoopStatement* BreakStatement) | (LoopStatement* ContinueStatement) | LoopStatement*) CloseBrace | IfThenElseStatement?)
 
 Type ::= (IntType | StringType | BoolType)
+
+private AllTypes ::= STRING | CHARACTER | EmptyString | LogicalType | ArrayInitializer | NUMBER | FLOAT
 
 BoolType ::= BOOL
 
@@ -191,11 +199,11 @@ ArrayType ::=  OpenSquareBracket NUM CloseSquareBracket
 
 ArrayInitializer ::= OpenBrace ArrayInitializers? CloseBrace
 
-ArrayInitializers ::= (NUMBER | STRING) (CommaSymbol ArrayInitializers)?
+ArrayInitializers ::= (NUMBER | STRING) (Comma ArrayInitializers)?
 
 LogicalType ::= true | false
 
-ReturnOperator ::= return SemicolonSymbol | return IDENTIFIER SemicolonSymbol // Use something else but IDENTIFIER later
+ReturnOperator ::= return Semicolon | return IDENTIFIER Semicolon // Use something else but IDENTIFIER later
 
 ControlFlowStatement ::= IfThenElseStatement | IfThenStatement |  SwitchLoop
 
@@ -205,9 +213,9 @@ IfThenElseStatement ::= IfThenStatement else (OpenBrace Statement* CloseBrace | 
 
 SwitchLoop ::= switch OpenBracket (IDENTIFIER | NUMBER) CloseBracket OpenBrace CaseOperator CloseBrace
 
-CaseOperator ::=   CaseIdentifier ((SwitchStatement*  BreakStatement) | SwitchStatement*)  (default ColonSymbol SwitchStatement*)? CaseOperator?
+CaseOperator ::=   CaseIdentifier ((SwitchStatement*  BreakStatement) | SwitchStatement*)  (default Colon SwitchStatement*)? CaseOperator?
 
-private CaseIdentifier ::= case (IDENTIFIER | NUMBER | STRING) ColonSymbol
+private CaseIdentifier ::= case (IDENTIFIER | NUMBER | STRING) Colon
 
 SwitchStatement ::= VariableDefinition | VariableInitialization | AssignmentStatement | FunctionInvocation | SwitchControlFlowStatement | Loops
 
@@ -221,11 +229,11 @@ BreakableIfThenElseStatement ::= BreakableIfThenStatement else (OpenBrace Statem
     Key symbol's
  */
 
-EqualsSymbol ::= '='
+Equals ::= '='
 
-DotSymbol ::= '.' //not used
+Dot ::= '.' //not used
 
-CommaSymbol ::= COMMA
+Comma ::= COMMA
 
 OpenBrace ::= '{'
 
@@ -237,9 +245,9 @@ CloseBracket ::= ')'
 
 PoundSymbol ::= '#'
 
-SemicolonSymbol ::= ';'
+Semicolon ::= ';'
 
-ColonSymbol ::= ':'
+Colon ::= ':'
 
 OpenSquareBracket ::= '['
 
@@ -251,6 +259,6 @@ NUM ::= NUMBER
     Loop Statements
  */
 
-BreakStatement ::= break SemicolonSymbol
+BreakStatement ::= break Semicolon
 
-ContinueStatement ::= continue SemicolonSymbol
+ContinueStatement ::= continue Semicolon
