@@ -95,6 +95,7 @@ NET="NET"
   "if"                                                      {yybegin(YYINITIAL); return ACSScriptTypes.IF;}
   "else"                                                    {yybegin(YYINITIAL); return ACSScriptTypes.ELSE;}
   "return"                                                  {yybegin(YYINITIAL); return ACSScriptTypes.RETURN;}
+  "terminate"                                               {yybegin(YYINITIAL); return ACSScriptTypes.TERMINATE;}
 
   {NUMBER}                                                  {yybegin(YYINITIAL); return ACSScriptTypes.NUMBER;}
   {STRING}                                                  {yybegin(YYINITIAL); return ACSScriptTypes.STRING;}
@@ -102,8 +103,8 @@ NET="NET"
   {MULTIPLE_LINE_COMMENT}                                   {yybegin(YYINITIAL); return ACSScriptTypes.COMMENT;}
   {CHARACTER}                                               {yybegin(YYINITIAL); return ACSScriptTypes.CHARACTER;}
   {FLOAT}                                                   {yybegin(YYINITIAL); return ACSScriptTypes.FLOAT;}
-  {EQUALS_SYMBOL}                                           {yybegin(YYINITIAL); return ACSScriptTypes.EQUALS_SYMBOL;}
-  {DOT_SYMBOL}                                              {yybegin(YYINITIAL); return ACSScriptTypes.DOT_SYMBOL;}
+  {EQUALS_SYMBOL}                                           {yybegin(YYINITIAL); return ACSScriptTypes.EQUALS;}
+  {DOT_SYMBOL}                                              {yybegin(YYINITIAL); return ACSScriptTypes.DOT;}
   {COMMA_SYMBOL}                                            {yybegin(YYINITIAL); return ACSScriptTypes.COMMA;}
   {OPEN}                                                    {yybegin(YYINITIAL); return ACSScriptTypes.OPEN;}
   {ENTER}                                                   {yybegin(YYINITIAL); return ACSScriptTypes.ENTER;}
@@ -119,8 +120,8 @@ NET="NET"
   {OPEN_SQUARE_BRACKET}                                     {yybegin(YYINITIAL); return ACSScriptTypes.OPEN_SQUARE_BRACKET;}
   {CLOSE_SQUARE_BRACKET}                                    {yybegin(YYINITIAL); return ACSScriptTypes.CLOSE_SQUARE_BRACKET;}
   {POUND_SYMBOL}                                            {yybegin(YYINITIAL); return ACSScriptTypes.POUND_SYMBOL;}
-  {SEMICOLON_SYMBOL}                                        {yybegin(YYINITIAL); return ACSScriptTypes.SEMICOLON_SYMBOL;}
-  {COLON_SYMBOL}                                            {yybegin(YYINITIAL); return ACSScriptTypes.COLON_SYMBOL;}
+  {SEMICOLON_SYMBOL}                                        {yybegin(YYINITIAL); return ACSScriptTypes.SEMICOLON;}
+  {COLON_SYMBOL}                                            {yybegin(YYINITIAL); return ACSScriptTypes.COLON;}
   {IDENTIFIER}                                              {yybegin(YYINITIAL); return ACSScriptTypes.IDENTIFIER; }
 // If the character sequence does not match any of the above rules, we return BAD_CHARACTER which indicates that
 // there is an error in the character sequence. This is used to highlight errors.

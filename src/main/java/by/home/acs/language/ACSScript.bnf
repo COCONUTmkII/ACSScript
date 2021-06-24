@@ -73,7 +73,7 @@ ScriptParameterWithVoid ::=  VoidType
 
 ScriptParameter ::= ScriptParameterList
 
-ScriptParameterList ::= ScriptFormalParameter (Comma ScriptFormalParameter)*
+ScriptParameterList ::= ScriptFormalParameter (CommaSymbol ScriptFormalParameter)*
 
 ScriptFormalParameter ::= IntType IDENTIFIER
 
@@ -94,7 +94,7 @@ FunctionNameAndParams ::= IDENTIFIER OpenBracket FunctionParameter CloseBracket
 
 FunctionParameter ::=  (FunctionParameterWithVoid | FunctionParameterList)
 
-FunctionParameterList ::= FunctionFormalParameter (Comma FunctionFormalParameter)*
+FunctionParameterList ::= FunctionFormalParameter (CommaSymbol FunctionFormalParameter)*
 
 FunctionFormalParameter ::= Type IDENTIFIER
 
@@ -108,21 +108,23 @@ GlobalModifier ::= (global | world) Type IDENTIFIER Colon IDENTIFIER Semicolon
 
 StaticModifier ::= static
 
-NetType ::= net
+NetType ::= NET
 
 VoidType ::= VOID
 
+TerminateKeyword ::= terminate
+
 Statement ::= (VariableDefinition | AssignmentStatement | FunctionInvocation | ControlFlowStatement | Loops | ReturnOperator)
 
-ScriptStatement ::= VariableDefinition | VariableInitialization | AssignmentStatement | FunctionInvocation | ControlFlowStatement | Loops
+ScriptStatement ::= VariableDefinition | VariableInitialization | AssignmentStatement | FunctionInvocation | ControlFlowStatement | Loops | (TerminateKeyword Semicolon)
 
 AssignmentStatement ::= IDENTIFIER Equals (FunctionInvocation)
 
 VariableDefinition ::= StaticModifier? Type VariableName ArrayType? (Semicolon | (Equals (FunctionInvocation | VariableInitialization Semicolon)))
 
-left VariableName ::=  IDENTIFIER  (Comma VariableName)*
+left VariableName ::=  IDENTIFIER  (CommaSymbol VariableName)*
 
-VariableInitialization ::= AllTypes (Comma VariableName Equals AllTypes)*
+VariableInitialization ::= AllTypes (CommaSymbol VariableName Equals AllTypes)*
 
 Operator ::= (AssignmentOperator | RelationalOperator | ArithmeticOperator | LogicalOperator | BitwiseOperator)
 
@@ -144,7 +146,9 @@ private Initialization ::= EmptyInitialization | TypeInitialization
 
 EmptyInitialization ::= Semicolon
 
-TypeInitialization ::= StaticModifier? Type VariableName Equals (NUMBER | STRING | IDENTIFIER | LogicalType)  ArithmeticInitialization* Semicolon//check logical type
+TypeInitialization ::= StaticModifier? Type VariableList  ArithmeticInitialization* Semicolon
+
+private VariableList ::= VariableName Equals (NUMBER | STRING | IDENTIFIER | LogicalType) (CommaSymbol VariableList)?//check logical type
 
 private ArithmeticInitialization ::= ArithmeticOperator (NUMBER | STRING | IDENTIFIER)
 
@@ -199,7 +203,7 @@ ArrayType ::=  OpenSquareBracket NUM CloseSquareBracket
 
 ArrayInitializer ::= OpenBrace ArrayInitializers? CloseBrace
 
-ArrayInitializers ::= (NUMBER | STRING) (Comma ArrayInitializers)?
+ArrayInitializers ::= (NUMBER | STRING) (CommaSymbol ArrayInitializers)?
 
 LogicalType ::= true | false
 
@@ -233,7 +237,7 @@ Equals ::= '='
 
 Dot ::= '.' //not used
 
-Comma ::= COMMA
+CommaSymbol ::= COMMA
 
 OpenBrace ::= '{'
 
