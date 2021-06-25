@@ -104,7 +104,7 @@ FunctionBody ::= OpenBrace Statement* CloseBrace
 
  */
 
-GlobalModifier ::= (global | world) Type IDENTIFIER Colon IDENTIFIER Semicolon
+GlobalModifier ::= (global | world) Type NUMBER Colon IDENTIFIER Semicolon
 
 StaticModifier ::= static
 
@@ -152,15 +152,15 @@ private VariableList ::= VariableName Equals (NUMBER | STRING | IDENTIFIER | Log
 
 private ArithmeticInitialization ::= ArithmeticOperator (NUMBER | STRING | IDENTIFIER)
 
-private Condition ::= EmptyCondition | NormalCondition | ArithmeticCondition
+private Condition ::= (EmptyCondition | (NormalCondition Semicolon) | ArithmeticCondition)
 
 private LogicalCondition ::= RelationalOperator
 
-NormalCondition ::= ComparisonCondition (LogicalCondition ComparisonCondition)? Semicolon
+private ComparisonCondition ::= IDENTIFIER LogicalCondition (IDENTIFIER ArithmeticInitialization*| NUMBER ArithmeticInitialization* | STRING ArithmeticInitialization*| LogicalType) (LogicalOperator ComparisonCondition)?
 
-private ComparisonCondition ::= IDENTIFIER LogicalCondition (IDENTIFIER | NUMBER | STRING | LogicalType (LogicalCondition NormalCondition )?)
+NormalCondition ::= ComparisonCondition (LogicalCondition ComparisonCondition)?
 
-private ArithmeticCondition ::= NormalCondition LogicalOperator
+private ArithmeticCondition ::= NormalCondition Semicolon LogicalOperator
 
 EmptyCondition ::= Semicolon
 
@@ -169,23 +169,23 @@ private Iteration ::=  NormalIteration | EmptyIteration
 EmptyIteration ::= //not sure with this...
 
 NormalIteration ::=
- IDENTIFIER ArithmeticOperator | ArithmeticOperator IDENTIFIER | IDENTIFIER AssignmentOperator (NUMBER | STRING | LogicalType | IDENTIFIER)
+ IDENTIFIER (ArithmeticOperator | ArithmeticOperator IDENTIFIER | IDENTIFIER AssignmentOperator (NUMBER | STRING | LogicalType | IDENTIFIER)) (CommaSymbol NormalIteration)?
 
-whileLoop ::= while OpenBracket LogicalType CloseBracket OpenBrace Statement* CloseBrace
+whileLoop ::= while OpenBracket ControlFlowCondition CloseBracket OpenBrace Statement* CloseBrace
 
-untilLoop ::= until OpenBracket LogicalType CloseBracket OpenBrace Statement* CloseBrace
+untilLoop ::= until OpenBracket ControlFlowCondition CloseBracket OpenBrace Statement* CloseBrace
 
-doWhileLoop ::= do OpenBrace Statement* CloseBrace while OpenBracket LogicalType CloseBracket Semicolon
+doWhileLoop ::= do OpenBrace Statement* CloseBrace while OpenBracket ControlFlowCondition CloseBracket Semicolon
 
-doUntilLoop ::= do OpenBrace Statement* CloseBrace until OpenBracket LogicalType CloseBracket Semicolon
+doUntilLoop ::= do OpenBrace Statement* CloseBrace until OpenBracket ControlFlowCondition CloseBracket Semicolon
 
 LoopStatement ::= VariableDefinition | VariableInitialization | AssignmentStatement | FunctionInvocation | LoopControlFlowStatement | Loops
 
 LoopControlFlowStatement ::= LoopIfThenElseStatement | LoopIfThenStatement | Loops | SwitchLoop
 
-LoopIfThenStatement ::= if OpenBracket LogicalType CloseBracket OpenBrace ((LoopStatement* BreakStatement) | (LoopStatement* ContinueStatement) | LoopStatement*) CloseBrace
+LoopIfThenStatement ::= if OpenBracket ControlFlowCondition CloseBracket OpenBrace ((LoopStatement* BreakStatement) | (LoopStatement* ContinueStatement) | LoopStatement*) CloseBrace
 
-LoopIfThenElseStatement ::= IfThenStatement else (OpenBrace ((LoopStatement* BreakStatement) | (LoopStatement* ContinueStatement) | LoopStatement*) CloseBrace | IfThenElseStatement?)
+LoopIfThenElseStatement ::= LoopIfThenStatement else (OpenBrace ((LoopStatement* BreakStatement) | (LoopStatement* ContinueStatement) | LoopStatement*) CloseBrace | IfThenElseStatement?)
 
 Type ::= (IntType | StringType | BoolType)
 
@@ -211,7 +211,11 @@ ReturnOperator ::= return Semicolon | return IDENTIFIER Semicolon // Use somethi
 
 ControlFlowStatement ::= IfThenElseStatement | IfThenStatement |  SwitchLoop
 
-IfThenStatement ::= if OpenBracket LogicalType CloseBracket OpenBrace Statement* CloseBrace
+IfThenStatement ::= if OpenBracket ControlFlowCondition CloseBracket OpenBrace Statement* CloseBrace
+
+private ControlFlowCondition ::= NormalCondition | ArithmeticCondition | BoolIdentifierStatement
+
+BoolIdentifierStatement ::= IDENTIFIER
 
 IfThenElseStatement ::= IfThenStatement else (OpenBrace Statement* CloseBrace | IfThenElseStatement?)
 
@@ -225,7 +229,7 @@ SwitchStatement ::= VariableDefinition | VariableInitialization | AssignmentStat
 
 SwitchControlFlowStatement ::= BreakableIfThenElseStatement | BreakableIfThenStatement | SwitchLoop
 
-BreakableIfThenStatement ::= if OpenBracket LogicalType CloseBracket OpenBrace SwitchStatement* BreakStatement? CloseBrace
+BreakableIfThenStatement ::= if OpenBracket ControlFlowCondition CloseBracket OpenBrace SwitchStatement* BreakStatement? CloseBrace
 
 BreakableIfThenElseStatement ::= BreakableIfThenStatement else (OpenBrace Statement* CloseBrace | BreakableIfThenElseStatement?)
 
