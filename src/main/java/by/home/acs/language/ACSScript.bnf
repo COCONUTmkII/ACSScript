@@ -44,7 +44,7 @@ Definition ::= (FunctionDefinition | ScriptDefinition | DirectivesDeclaration | 
 
 FunctionDefinition ::= FunctionIdentifier FunctionReturnType FunctionNameAndParams FunctionBody
 
-ScriptDefinition ::= ScriptIdentifier ScriptName (ScriptPossibleParams | ScriptType) NetType? ScriptBody
+ScriptDefinition ::= ScriptIdentifier ScriptName (ScriptPossibleParams | ScriptType) (NetType ClientsideType | NetType)? ScriptBody
 /**
     Directives statement
  */
@@ -63,7 +63,7 @@ LibraryDeclaration ::= PoundSymbol library STRING
  */
 ScriptIdentifier ::= SCRIPT
 
-ScriptType ::= OPEN | ENTER | RETURN | RESPAWN | DEATH | LIGHTNING | UNLOADING | DISCONNECT | KILL | REOPEN
+ScriptType ::= OPEN | ENTER | RETURN | RESPAWN | DEATH | LIGHTNING | UNLOADING | DISCONNECT | KILL | REOPEN | PICKUP | REDRETURN | BLUERETURN | WHITERETURN
 
 ScriptName ::= (STRING | NUMBER)
 
@@ -110,13 +110,15 @@ StaticModifier ::= static
 
 NetType ::= NET
 
+ClientsideType ::= CLIENTSIDE
+
 VoidType ::= VOID
 
-TerminateKeyword ::= terminate
+TerminateKeyword ::= terminate Semicolon
 
-Statement ::= (VariableDefinition | AssignmentStatement | FunctionInvocation | ControlFlowStatement | Loops | ReturnOperator)
+Statement ::= (VariableDefinition | AssignmentStatement | FunctionInvocation | ControlFlowStatement | Loops | ReturnOperator | TerminateKeyword)
 
-ScriptStatement ::= VariableDefinition | VariableInitialization | AssignmentStatement | FunctionInvocation | ControlFlowStatement | Loops | (TerminateKeyword Semicolon)
+ScriptStatement ::= VariableDefinition | VariableInitialization | AssignmentStatement | FunctionInvocation | ControlFlowStatement | Loops | TerminateKeyword
 
 AssignmentStatement ::= IDENTIFIER Equals (FunctionInvocation)
 
@@ -179,7 +181,7 @@ doWhileLoop ::= do OpenBrace Statement* CloseBrace while OpenBracket ControlFlow
 
 doUntilLoop ::= do OpenBrace Statement* CloseBrace until OpenBracket ControlFlowCondition CloseBracket Semicolon
 
-LoopStatement ::= VariableDefinition | VariableInitialization | AssignmentStatement | FunctionInvocation | LoopControlFlowStatement | Loops
+LoopStatement ::= VariableDefinition | VariableInitialization | AssignmentStatement | FunctionInvocation | LoopControlFlowStatement | Loops | TerminateKeyword
 
 LoopControlFlowStatement ::= LoopIfThenElseStatement | LoopIfThenStatement | Loops | SwitchLoop
 
@@ -221,11 +223,11 @@ IfThenElseStatement ::= IfThenStatement else (OpenBrace Statement* CloseBrace | 
 
 SwitchLoop ::= switch OpenBracket (IDENTIFIER | NUMBER) CloseBracket OpenBrace CaseOperator CloseBrace
 
-CaseOperator ::=   CaseIdentifier ((SwitchStatement*  BreakStatement) | SwitchStatement*)  (default Colon SwitchStatement*)? CaseOperator?
+CaseOperator ::=   CaseIdentifier ((SwitchStatement*  BreakStatement TerminateKeyword?) | SwitchStatement*)  (default Colon SwitchStatement*)? CaseOperator?
 
 private CaseIdentifier ::= case (IDENTIFIER | NUMBER | STRING) Colon
 
-SwitchStatement ::= VariableDefinition | VariableInitialization | AssignmentStatement | FunctionInvocation | SwitchControlFlowStatement | Loops
+SwitchStatement ::= VariableDefinition | VariableInitialization | AssignmentStatement | FunctionInvocation | SwitchControlFlowStatement | Loops | TerminateKeyword
 
 SwitchControlFlowStatement ::= BreakableIfThenElseStatement | BreakableIfThenStatement | SwitchLoop
 

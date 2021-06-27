@@ -27,6 +27,11 @@ public class ACSScriptSyntaxAttributeKeySupplier {
         elements.put(ACSScriptTypes.DEATH, () -> new TextAttributesKey[]{SCRIPT_TYPE});
         elements.put(ACSScriptTypes.ENTER, () -> new TextAttributesKey[]{SCRIPT_TYPE});
         elements.put(ACSScriptTypes.DISCONNECT, () -> new TextAttributesKey[]{SCRIPT_TYPE});
+        elements.put(ACSScriptTypes.PICKUP, () -> new TextAttributesKey[]{SCRIPT_TYPE});
+        elements.put(ACSScriptTypes.REDRETURN, () -> new TextAttributesKey[]{SCRIPT_TYPE});
+        elements.put(ACSScriptTypes.BLUERETURN, () -> new TextAttributesKey[]{SCRIPT_TYPE});
+        elements.put(ACSScriptTypes.WHITERETURN, () -> new TextAttributesKey[]{SCRIPT_TYPE});
+        elements.put(ACSScriptTypes.CLIENTSIDE, () -> new TextAttributesKey[]{SCRIPT_TYPE});
         elements.put(ACSScriptTypes.REOPEN, () -> new TextAttributesKey[]{SCRIPT_TYPE});
         elements.put(ACSScriptTypes.NET, () -> new TextAttributesKey[]{SCRIPT_TYPE});
         elements.put(ACSScriptTypes.RETURN, () -> new TextAttributesKey[]{KEY});

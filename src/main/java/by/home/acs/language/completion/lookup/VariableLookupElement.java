@@ -5,6 +5,8 @@ import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.ui.JBColor;
 import com.intellij.util.PlatformIcons;
 
+import javax.swing.*;
+
 public class VariableLookupElement {
 
     public static LookupElement createBoldLookupElement(String completionString) {
@@ -28,6 +30,15 @@ public class VariableLookupElement {
                 .withItemTextForeground(JBColor.BLACK)
                 .bold()
                 .withIcon(PlatformIcons.VARIABLE_ICON)
+                .withTailText(tailText);
+    }
+
+    public static LookupElement createLookupElementWithTailAndIcon(String completionString, String tailText, Icon icon) {
+        return LookupElementBuilder.create(completionString)
+                .withPresentableText(completionString)
+                .withItemTextForeground(JBColor.BLACK)
+                .bold()
+                .withIcon(icon)
                 .withTailText(tailText);
     }
 

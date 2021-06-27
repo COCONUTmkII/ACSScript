@@ -59,6 +59,11 @@ UNLOADING="UNLOADING"
 DISCONNECT="DISCONNECT"
 KILL="KILL"
 REOPEN="REOPEN"
+PICKUP="PICKUP"
+REDRETURN="REDRETURN"
+BLUERETURN="BLUERETURN"
+WHITERETURN="WHITERETURN"
+CLIENTSIDE="CLIENTSIDE"
 NET="NET"
 
 %states WAITING_VALUE, TEST_ONE_VALUE
@@ -116,6 +121,11 @@ NET="NET"
   {DISCONNECT}                                              {yybegin(YYINITIAL); return ACSScriptTypes.DISCONNECT;}
   {KILL}                                                    {yybegin(YYINITIAL); return ACSScriptTypes.KILL;}
   {REOPEN}                                                  {yybegin(YYINITIAL); return ACSScriptTypes.REOPEN;}
+  {PICKUP}                                                  {yybegin(YYINITIAL); return ACSScriptTypes.PICKUP;}
+  {REDRETURN}                                               {yybegin(YYINITIAL); return ACSScriptTypes.REDRETURN;}
+  {WHITERETURN}                                             {yybegin(YYINITIAL); return ACSScriptTypes.WHITERETURN;}
+  {BLUERETURN}                                              {yybegin(YYINITIAL); return ACSScriptTypes.BLUERETURN;}
+  {CLIENTSIDE}                                              {yybegin(YYINITIAL); return ACSScriptTypes.CLIENTSIDE;}
   {NET}                                                     {yybegin(YYINITIAL); return ACSScriptTypes.NET;}
   {OPEN_SQUARE_BRACKET}                                     {yybegin(YYINITIAL); return ACSScriptTypes.OPEN_SQUARE_BRACKET;}
   {CLOSE_SQUARE_BRACKET}                                    {yybegin(YYINITIAL); return ACSScriptTypes.CLOSE_SQUARE_BRACKET;}
