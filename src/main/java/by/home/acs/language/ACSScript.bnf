@@ -158,7 +158,7 @@ private Condition ::= (EmptyCondition | (NormalCondition Semicolon) | Arithmetic
 
 private LogicalCondition ::= RelationalOperator
 
-private ComparisonCondition ::= IDENTIFIER LogicalCondition (IDENTIFIER ArithmeticInitialization*| NUMBER ArithmeticInitialization* | STRING ArithmeticInitialization*| LogicalType) (LogicalOperator ComparisonCondition)?
+private ComparisonCondition ::= (IDENTIFIER | NUMBER | STRING) LogicalCondition (IDENTIFIER ArithmeticInitialization*| NUMBER ArithmeticInitialization* | STRING ArithmeticInitialization*| LogicalType) (LogicalOperator ComparisonCondition)?
 
 NormalCondition ::= ComparisonCondition (LogicalCondition ComparisonCondition)?
 

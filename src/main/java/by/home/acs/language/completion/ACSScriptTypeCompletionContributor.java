@@ -3,7 +3,6 @@ package by.home.acs.language.completion;
 
 import by.home.acs.language.ACSScriptTypes;
 import com.intellij.codeInsight.completion.*;
-import com.intellij.openapi.util.IconLoader;
 import com.intellij.patterns.PlatformPatterns;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.IElementType;
@@ -12,12 +11,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
-import static by.home.acs.language.completion.lookup.VariableLookupElement.createLookupElementWithTail;
 import static by.home.acs.language.completion.lookup.VariableLookupElement.createLookupElementWithTailAndIcon;
 import static by.home.acs.language.util.PsiHelper.psiEquals;
 import static com.intellij.openapi.util.IconLoader.getIcon;
-
-import com.intellij.icons.AllIcons;
 
 public class ACSScriptTypeCompletionContributor extends CompletionContributor {
 
@@ -31,7 +27,7 @@ public class ACSScriptTypeCompletionContributor extends CompletionContributor {
                 try {
                     Optional<PsiElement> element = Optional.of(parameters.getPosition().getParent().getPrevSibling().getPrevSibling());
                     element.ifPresent(psiElement -> {
-                        if (psiEquals(psiElement.toString(), scriptNames)) {
+                        if (psiEquals(psiElement, scriptNames)) {
                             result.addElement(createLookupElementWithTailAndIcon("OPEN", " World", getIcon("/icons/zd.png")));
                             result.addElement(createLookupElementWithTailAndIcon("ENTER", " Player", getIcon("/icons/zd.png")));
                             result.addElement(createLookupElementWithTailAndIcon("REOPEN", " World", getIcon("/icons/zd.png")));

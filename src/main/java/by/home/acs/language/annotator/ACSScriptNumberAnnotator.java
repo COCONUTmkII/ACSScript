@@ -25,7 +25,7 @@ public class ACSScriptNumberAnnotator implements Annotator {
         }
 
         ACSScriptScriptName acsScriptScriptName = (ACSScriptScriptName) element;
-        if (PsiHelper.psiEquals(acsScriptScriptName.getFirstChild().toString(), ACSScriptTypes.NUMBER)) {
+        if (PsiHelper.psiEquals(acsScriptScriptName.getFirstChild(), ACSScriptTypes.NUMBER)) {
             try {
                 checkScript(acsScriptScriptName.getNode(), holder);
             } catch (NullPointerException e) {

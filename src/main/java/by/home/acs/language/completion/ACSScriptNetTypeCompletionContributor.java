@@ -28,11 +28,11 @@ public class ACSScriptNetTypeCompletionContributor extends CompletionContributor
                 try {
                     Optional<PsiElement> element = Optional.of(parameters.getPosition().getParent().getPrevSibling().getPrevSibling());
                     element.ifPresent(psiElement -> {
-                        if (psiEquals(psiElement.toString(), SCRIPT_TYPES)) {
+                        if (psiEquals(psiElement, SCRIPT_TYPES)) {
                             result.addElement(createBoldLookupElement("NET"));
-                        } else if (psiEquals(psiElement.toString(), SCRIPT_PARAMETERS)) {
+                        } else if (psiEquals(psiElement, SCRIPT_PARAMETERS)) {
                             result.addElement(createBoldLookupElement("NET"));
-                        } else if (psiEquals(psiElement.toString(), NET_TYPE)) {
+                        } else if (psiEquals(psiElement, NET_TYPE)) {
                             result.addElement(createLookupElementWithTailAndIcon("CLIENTSIDE", "", IconLoader.getIcon("/icons/gz.png")));
                         }
                     });
