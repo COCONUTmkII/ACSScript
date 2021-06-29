@@ -25,17 +25,26 @@
         <completion.contributor language="ACSScript" implementationClass="by.home.acs.language.completion.ACSBasicKeywordCompletionContributor"/>
         <completion.contributor language="ACSScript" implementationClass="by.home.acs.language.completion.ACSVariableCompletionContributor"/>
         <completion.contributor language="ACSScript" implementationClass="by.home.acs.language.completion.ACSScriptTypeCompletionContributor"/>
-        <completion.contributor language="ACSScript" implementationClass="by.home.acs.language.completion.ACSScriptDirectiveCompletionContributor"/>
-        <completion.contributor language="ACSScript" implementationClass="by.home.acs.language.completion.ACSScriptAssignmentCompletionContributor"/>
-        <completion.contributor language="ACSScript" implementationClass="by.home.acs.language.completion.ACSScriptNetTypeCompletionContributor"/>
-        <lang.findUsagesProvider language="ACSScript" implementationClass="by.home.acs.language.usage.ACSScriptUsageProvider"/>
-        <lang.refactoringSupport language="ACSScript" implementationClass="by.home.acs.language.refactor.ACSScriptRefactoringSupportProvider"/>
-        <lang.refactoringSupport language="ACSScript" implementationClass="by.home.acs.language.refactor.ACSTestRefactoring"/>
+        <completion.contributor language="ACSScript"
+                                implementationClass="by.home.acs.language.completion.ACSScriptDirectiveCompletionContributor"/>
+        <completion.contributor language="ACSScript"
+                                implementationClass="by.home.acs.language.completion.ACSScriptAssignmentCompletionContributor"/>
+        <completion.contributor language="ACSScript"
+                                implementationClass="by.home.acs.language.completion.ACSScriptNetTypeCompletionContributor"/>
+        <lang.findUsagesProvider language="ACSScript"
+                                 implementationClass="by.home.acs.language.usage.ACSScriptUsageProvider"/>
+        <lang.refactoringSupport language="ACSScript"
+                                 implementationClass="by.home.acs.language.refactor.ACSScriptRefactoringSupportProvider"/>
+        <lang.refactoringSupport language="ACSScript"
+                                 implementationClass="by.home.acs.language.refactor.ACSTestRefactoring"/>
         <psi.referenceContributor implementation="by.home.acs.language.reference.ACSScriptReferenceContributor"/>
         <psi.referenceContributor implementation="by.home.acs.language.reference.ACSNameReferenceContributor"/>
         <moduleType id="ACS_MODULE_TYPE" implementationClass="by.home.acs.language.wizard.ACSModuleType"/>
         <localInspection implementationClass="by.home.acs.language.inspection.VariableReferenceInspection"
-                         displayName="Hello"/>
+                         displayName="Variable reference inspection"/>
+        <lang.commenter language="ACSScript" implementationClass="by.home.acs.language.commenter.ACSCommenter"/>
+        <lang.formatter language="ACSScript"
+                        implementationClass="by.home.acs.language.formatter.SimpleFormattingModelBuilder"/>
     </extensions>
 
     <actions>
