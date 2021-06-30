@@ -1,8 +1,8 @@
 package by.home.acs.language.reference;
 
 import by.home.acs.language.ACSScriptIcon;
-import by.home.acs.language.ACSUtil;
 import by.home.acs.language.psi.ACSScriptScriptName;
+import by.home.acs.language.util.ACSUtil;
 import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.openapi.project.Project;

@@ -1,7 +1,8 @@
-package by.home.acs.language;
+package by.home.acs.language.util;
 
 //import by.home.acs.language.psi.ACSScriptDefinition;
 
+import by.home.acs.language.ACSScriptType;
 import by.home.acs.language.psi.*;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -20,7 +21,7 @@ public class ACSUtil {
     public static List<ACSScriptDefinition> findScript(Project project, String number) {
         List<ACSScriptDefinition> result = new ArrayList<>();
         Collection<VirtualFile> virtualFiles =
-                FileTypeIndex.getFiles(ACSScriptType.INSTANCE, GlobalSearchScope.allScope(project));
+                FileTypeIndex.getFiles(by.home.acs.language.ACSScriptType.INSTANCE, GlobalSearchScope.allScope(project));
         for (VirtualFile virtualFile : virtualFiles) {
             ACSScriptFile acsFile = (ACSScriptFile) PsiManager.getInstance(project).findFile(virtualFile);
             if (acsFile != null) {
@@ -40,7 +41,7 @@ public class ACSUtil {
     public static List<ACSScriptDefinition> findScript(Project project) {
         List<ACSScriptDefinition> result = new ArrayList<>();
         Collection<VirtualFile> virtualFiles =
-                FileTypeIndex.getFiles(ACSScriptType.INSTANCE, GlobalSearchScope.allScope(project));
+                FileTypeIndex.getFiles(by.home.acs.language.ACSScriptType.INSTANCE, GlobalSearchScope.allScope(project));
         for (VirtualFile virtualFile : virtualFiles) {
             ACSScriptFile acsFile = (ACSScriptFile) PsiManager.getInstance(project).findFile(virtualFile);
             if (acsFile != null) {
@@ -56,7 +57,7 @@ public class ACSUtil {
     public static List<ACSScriptScriptDefinition> findIdentifiers(Project project, String identifier) {
         List<ACSScriptScriptDefinition> result = new ArrayList<>();
         Collection<VirtualFile> virtualFiles =
-                FileTypeIndex.getFiles(ACSScriptType.INSTANCE, GlobalSearchScope.allScope(project));
+                FileTypeIndex.getFiles(by.home.acs.language.ACSScriptType.INSTANCE, GlobalSearchScope.allScope(project));
         for (VirtualFile virtualFile : virtualFiles) {
             ACSScriptFile acsFile = (ACSScriptFile) PsiManager.getInstance(project).findFile(virtualFile);
             if (acsFile != null) {
@@ -72,7 +73,7 @@ public class ACSUtil {
     public static List<ACSScriptScriptBody> findScriptBody(Project project) {
         List<ACSScriptScriptBody> result = new ArrayList<>();
         Collection<VirtualFile> virtualFiles =
-                FileTypeIndex.getFiles(ACSScriptType.INSTANCE, GlobalSearchScope.allScope(project));
+                FileTypeIndex.getFiles(by.home.acs.language.ACSScriptType.INSTANCE, GlobalSearchScope.allScope(project));
         for (VirtualFile virtualFile : virtualFiles) {
             ACSScriptFile acsScriptFile = (ACSScriptFile) PsiManager.getInstance(project).findFile(virtualFile);
             if (acsScriptFile != null) {

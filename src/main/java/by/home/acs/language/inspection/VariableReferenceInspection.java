@@ -1,5 +1,6 @@
 package by.home.acs.language.inspection;
 
+import by.home.acs.language.psi.ACSScriptElementFactory;
 import by.home.acs.language.psi.ACSScriptVariableDefinition;
 import com.intellij.codeInspection.AbstractBaseJavaLocalInspectionTool;
 import com.intellij.codeInspection.LocalQuickFix;
@@ -9,6 +10,7 @@ import com.intellij.codeInspection.util.IntentionFamilyName;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
+import com.intellij.psi.PsiManager;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 
@@ -16,8 +18,7 @@ import static by.home.acs.language.ACSScriptTypes.*;
 import static by.home.acs.language.util.PsiHelper.psiEquals;
 
 public class VariableReferenceInspection extends AbstractBaseJavaLocalInspectionTool {
-    public static final String DESCRIPTION = "typecast compilable, but it can lead to errors";
-    public static final String QUICK_FIX_NAME = "change variable type to";
+    public static final String DESCRIPTION = "typecast compilable, but it may lead to errors";
 
     @Override
     @Nls(capitalization = Nls.Capitalization.Sentence)
@@ -34,13 +35,13 @@ public class VariableReferenceInspection extends AbstractBaseJavaLocalInspection
     @Override
     public @NotNull
     PsiElementVisitor buildVisitor(@NotNull ProblemsHolder holder, boolean isOnTheFly) {
-        return new TestPsiVisitor(holder);
+        return new ACSPsiVisitor(holder);
     }
 
-    public static class TestPsiVisitor extends PsiElementVisitor {
+    public static class ACSPsiVisitor extends PsiElementVisitor {
         private final ProblemsHolder myHolder;
 
-        public TestPsiVisitor(ProblemsHolder holder) {
+        public ACSPsiVisitor(ProblemsHolder holder) {
             this.myHolder = holder;
         }
 
@@ -50,33 +51,54 @@ public class VariableReferenceInspection extends AbstractBaseJavaLocalInspection
             if (element instanceof ACSScriptVariableDefinition) {
                 PsiElement typeElement = element.getFirstChild().getFirstChild().getFirstChild().getFirstChild();
                 PsiElement initializedType = element.getNavigationElement().getLastChild().getPrevSibling().getFirstChild();
-                boolean isProblemNeeded = checkVariableTypes(typeElement, initializedType);
-                if (isProblemNeeded) {
-                    myHolder.registerProblem(element, DESCRIPTION, new MyQuickFix());
-                }
+                checkVariableTypes(element, typeElement, initializedType);
             }
         }
 
-        private boolean checkVariableTypes(PsiElement variableType, PsiElement variableInitializedType) {
+        //TODO refactor this mess...
+        private void checkVariableTypes(PsiElement currentElement, PsiElement variableType, PsiElement variableInitializedType) {
             if (psiEquals(variableType, INT) && (!psiEquals(variableInitializedType, NUMBER, FLOAT, CHARACTER))) {
-                return true;
-            } else return psiEquals(variableType, STR) && (!psiEquals(variableInitializedType, STRING));
+                if ((variableInitializedType.getNode().getElementType().equals(LOGICAL_TYPE))) {
+                    myHolder.registerProblem(currentElement, DESCRIPTION, new ACSVariableTypeFix("bool", "int"));
+                } else {
+                    myHolder.registerProblem(currentElement, DESCRIPTION, new ACSVariableTypeFix("str", "int"));
+                }
+            } else if (psiEquals(variableType, STR) && (!psiEquals(variableInitializedType, STRING))) {
+                if ((variableInitializedType.getNode().getElementType().equals(LOGICAL_TYPE))) {
+                    myHolder.registerProblem(currentElement, DESCRIPTION, new ACSVariableTypeFix("bool", "str"));
+                } else {
+                    myHolder.registerProblem(currentElement, DESCRIPTION, new ACSVariableTypeFix("int", "str"));
+                }
+            } else if (psiEquals(variableType, INT) && (psiEquals(variableInitializedType, LOGICAL_TYPE))) {
+                myHolder.registerProblem(currentElement, DESCRIPTION, new ACSVariableTypeFix("bool", "int"));
+            } else if (psiEquals(variableType, BOOL) && psiEquals(variableInitializedType, STRING)) {
+                myHolder.registerProblem(currentElement, DESCRIPTION, new ACSVariableTypeFix("str", "bool"));
+            }
         }
     }
 
+    private static class ACSVariableTypeFix implements LocalQuickFix {
+        private final String newVariableType;
+        private final String currentVariableType;
 
-    private static class MyQuickFix implements LocalQuickFix {
+        public ACSVariableTypeFix(String newVariableType, String currentVariableType) {
+            this.newVariableType = newVariableType;
+            this.currentVariableType = currentVariableType;
+        }
 
         @Override
         public @IntentionFamilyName
         @NotNull
         String getFamilyName() {
-            return QUICK_FIX_NAME;
+            return ACSInspectionBundle.message("acs.inspection.comparing.variable.type-cast", currentVariableType, newVariableType);
         }
 
         @Override
         public void applyFix(@NotNull Project project, @NotNull ProblemDescriptor descriptor) {
-            System.out.println("Applying fix");
+            PsiManager instance = PsiManager.getInstance(project);
+            PsiElement newKeyword = ACSScriptElementFactory.createACSKeyword(instance, newVariableType);
+            descriptor.getPsiElement().getFirstChild().getFirstChild().getFirstChild().getFirstChild()
+                    .replace(newKeyword);
         }
     }
 }
