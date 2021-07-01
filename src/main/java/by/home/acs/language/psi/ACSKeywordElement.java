@@ -40,6 +40,6 @@ public class ACSKeywordElement extends LightElement implements PsiKeyword {
 
     @Override
     public String toString() {
-        return "PsiKeyword:" + getText();
+        return "PsiACSKeyword:" + getText();
     }
 }

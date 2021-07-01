@@ -19,7 +19,7 @@
           FUNCTION='function'
                   SCRIPT='script'
                   WHITE_SPACE = 'regexp:\s+'
-                  NUMBER='regexp:(-?[0-9]+)'
+                  NUMBER='regexp:(0[xX][0-9a-fA-F]+)|(-?[0-9]+)'
                   STRING = 'regexp:\"([^\\\"]|\\.)*\"'
                   VOID = 'void'
                   INT = 'int'
@@ -54,7 +54,7 @@ IncludeDeclaration ::= PoundSymbol include STRING
 
 ImportDeclaration ::= PoundSymbol import STRING
 
-DefineDeclaration ::= PoundSymbol define IDENTIFIER  IDENTIFIER (Operator (IDENTIFIER | NUMBER))?
+DefineDeclaration ::= PoundSymbol define IDENTIFIER  (IDENTIFIER | NUMBER | FLOAT) (Operator (IDENTIFIER | NUMBER | FLOAT))*
 
 LibraryDeclaration ::= PoundSymbol library STRING
 
@@ -128,7 +128,7 @@ left VariableName ::=  IDENTIFIER  (CommaSymbol VariableName)*
 
 VariableInitialization ::= AllTypes (CommaSymbol VariableName Equals AllTypes)*
 
-Operator ::= (AssignmentOperator | RelationalOperator | ArithmeticOperator | LogicalOperator | BitwiseOperator)
+Operator ::= (BitwiseOperator | AssignmentOperator | RelationalOperator | ArithmeticOperator | LogicalOperator)
 
 AssignmentOperator ::= ('=' | '*=' | '/=' | '%=' | '+=' | '-=' | '<<=' | '>>=' | '&=' | '^=' | '|=')
 
