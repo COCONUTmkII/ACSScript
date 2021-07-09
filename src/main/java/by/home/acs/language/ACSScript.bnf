@@ -84,7 +84,9 @@ ScriptBody ::= OpenBrace ScriptStatement* CloseBrace
  */
 FunctionIdentifier ::= FUNCTION
 
-FunctionInvocation ::= IDENTIFIER OpenBracket CloseBracket Semicolon ReturnOperator?
+//FunctionInvocation ::= IDENTIFIER OpenBracket CloseBracket Semicolon ReturnOperator?
+
+FunctionInvocation ::= IDENTIFIER OpenBracket CloseBracket ReturnOperator?
 
 FunctionReturnType ::= VoidType | Type
 
@@ -122,11 +124,20 @@ ScriptStatement ::= VariableDefinition | VariableInitialization | AssignmentStat
 
 AssignmentStatement ::= IDENTIFIER Equals (FunctionInvocation)
 
-VariableDefinition ::= StaticModifier? Type VariableName ArrayType? (Semicolon | (Equals (FunctionInvocation | VariableInitialization Semicolon)))
+//VariableDefinition ::= StaticModifier? Type VariableName ArrayType? (Semicolon | (Equals (FunctionInvocation | VariableInitialization Semicolon)))
+
+VariableDefinition ::= StaticModifier? Type VariableName ArrayType? (Semicolon | (Equals (VariableInitialization | FunctionInvocation ) Semicolon))
 
 left VariableName ::=  IDENTIFIER  (CommaSymbol VariableName)*
 
-VariableInitialization ::= AllTypes (CommaSymbol VariableName Equals AllTypes)*
+
+//VariableInitialization ::= AllTypes (CommaSymbol VariableName Equals AllTypes)*
+VariableInitialization ::= BinaryExpression (Operator BinaryExpression)* | SimpleInitialization
+
+
+/*private SimpleInitialization ::= AllTypes (CommaSymbol VariableName Equals AllTypes)*
+
+private BinaryExpression ::= (IDENTIFIER | AllTypes ) Operator (IDENTIFIER | AllTypes ) | OpenBracket BinaryExpression CloseBracket*/
 
 Operator ::= (BitwiseOperator | AssignmentOperator | RelationalOperator | ArithmeticOperator | LogicalOperator)
 
