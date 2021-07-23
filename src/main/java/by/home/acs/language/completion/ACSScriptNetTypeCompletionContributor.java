@@ -36,7 +36,7 @@ public class ACSScriptNetTypeCompletionContributor extends CompletionContributor
                             result.addElement(createLookupElementWithTailAndIcon("CLIENTSIDE", "", IconLoader.getIcon("/icons/gz.png")));
                         }
                     });
-                } catch (NullPointerException e) {
+                } catch (NullPointerException ignored) {
 
                 }
             }

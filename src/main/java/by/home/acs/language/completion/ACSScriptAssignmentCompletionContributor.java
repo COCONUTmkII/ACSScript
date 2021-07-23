@@ -26,7 +26,6 @@ public class ACSScriptAssignmentCompletionContributor extends CompletionContribu
                     result.addElement(createBoldLookupElement("bool"));
                     result.addElement(createBoldLookupElement("str"));
                     result.addElement(createBoldLookupElement("for"));
-                    result.addElement(createBoldLookupElement("switch"));
                     result.addElement(createBoldLookupElement("if"));
                     result.addElement(createBoldLookupElement("do"));
                     result.addElement(createBoldLookupElement("switch"));

@@ -17,10 +17,8 @@ public class SimpleFormattingModelBuilder implements FormattingModelBuilder {
 
     private static SpacingBuilder createSpaceBuilder(CodeStyleSettings settings) {
         return new SpacingBuilder(settings, ACSScriptLanguage.INSTANCE)
-                .around(ACSScriptTypes.DEFINITION)
-                .spaceIf(settings.getCommonSettings(ACSScriptLanguage.INSTANCE.getID()).SPACE_AROUND_ASSIGNMENT_OPERATORS)
-                .before(ACSScriptTypes.DEFINITION)
-                .none();
+                .around(ACSScriptTypes.SCRIPT_BODY)
+                .lineBreakInCode();
     }
 
     @NotNull

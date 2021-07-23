@@ -8,6 +8,7 @@ import com.intellij.util.PlatformIcons;
 import javax.swing.*;
 
 public class VariableLookupElement {
+    private static final String EMPTY_WHITESPACE = " ";
 
     public static LookupElement createBoldLookupElement(String completionString) {
         return LookupElementBuilder.create(completionString)
@@ -30,7 +31,7 @@ public class VariableLookupElement {
                 .withItemTextForeground(JBColor.BLACK)
                 .bold()
                 .withIcon(PlatformIcons.VARIABLE_ICON)
-                .withTailText(tailText);
+                .withTailText(EMPTY_WHITESPACE + tailText);
     }
 
     public static LookupElement createLookupElementWithTailAndIcon(String completionString, String tailText, Icon icon) {
@@ -39,7 +40,7 @@ public class VariableLookupElement {
                 .withItemTextForeground(JBColor.BLACK)
                 .bold()
                 .withIcon(icon)
-                .withTailText(tailText);
+                .withTailText(EMPTY_WHITESPACE + tailText);
     }
 
     public static LookupElement createLookupElementWithTypeAndTail(String completionString, String typeText, String tailText) {
@@ -48,7 +49,7 @@ public class VariableLookupElement {
                 .withItemTextForeground(JBColor.BLACK)
                 .bold()
                 .withIcon(PlatformIcons.VARIABLE_ICON)
-                .withTailText(tailText)
+                .withTailText(EMPTY_WHITESPACE + tailText)
                 .withTypeText(typeText);
     }
 
