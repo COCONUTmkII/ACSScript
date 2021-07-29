@@ -1,7 +1,5 @@
 package by.home.acs.language.util;
 
-//import by.home.acs.language.psi.ACSScriptDefinition;
-
 import by.home.acs.language.ACSScriptType;
 import by.home.acs.language.psi.*;
 import com.intellij.openapi.project.Project;

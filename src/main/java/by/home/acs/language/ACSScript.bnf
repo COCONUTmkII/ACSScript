@@ -122,22 +122,22 @@ Statement ::= (VariableDefinition | AssignmentStatement | FunctionInvocation | C
 
 ScriptStatement ::= VariableDefinition | VariableInitialization | AssignmentStatement | FunctionInvocation | ControlFlowStatement | Loops | TerminateKeyword
 
-AssignmentStatement ::= IDENTIFIER Equals (FunctionInvocation)
+AssignmentStatement ::= IDENTIFIER Equals FunctionInvocation
 
 //VariableDefinition ::= StaticModifier? Type VariableName ArrayType? (Semicolon | (Equals (FunctionInvocation | VariableInitialization Semicolon)))
 
-VariableDefinition ::= StaticModifier? Type VariableName ArrayType? (Semicolon | (Equals (VariableInitialization | FunctionInvocation ) Semicolon))
+VariableDefinition ::= StaticModifier? Type VariableName ArrayType? (Semicolon | (Equals (VariableInitialization | FunctionInvocation Semicolon )))
 
 left VariableName ::=  IDENTIFIER  (CommaSymbol VariableName)*
 
 
 //VariableInitialization ::= AllTypes (CommaSymbol VariableName Equals AllTypes)*
-VariableInitialization ::= BinaryExpression (Operator BinaryExpression)* | SimpleInitialization
+VariableInitialization ::= (BinaryExpression (Operator BinaryExpression)* | SimpleInitialization) Semicolon
 
 
-/*private SimpleInitialization ::= AllTypes (CommaSymbol VariableName Equals AllTypes)*
+private SimpleInitialization ::= AllTypes (CommaSymbol VariableName Equals AllTypes)*
 
-private BinaryExpression ::= (IDENTIFIER | AllTypes ) Operator (IDENTIFIER | AllTypes ) | OpenBracket BinaryExpression CloseBracket*/
+private BinaryExpression ::= (IDENTIFIER | AllTypes ) Operator (IDENTIFIER | AllTypes ) | OpenBracket BinaryExpression CloseBracket
 
 Operator ::= (BitwiseOperator | AssignmentOperator | RelationalOperator | ArithmeticOperator | LogicalOperator)
 
@@ -220,7 +220,7 @@ ArrayInitializers ::= (NUMBER | STRING) (CommaSymbol ArrayInitializers)?
 
 LogicalType ::= true | false
 
-ReturnOperator ::= return Semicolon | return IDENTIFIER Semicolon // Use something else but IDENTIFIER later
+ReturnOperator ::= return Semicolon | return BinaryExpression Semicolon | return IDENTIFIER Semicolon // Use something else but IDENTIFIER later
 
 ControlFlowStatement ::= IfThenElseStatement | IfThenStatement |  SwitchLoop
 
