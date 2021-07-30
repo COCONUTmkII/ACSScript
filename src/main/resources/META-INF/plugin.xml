@@ -47,7 +47,7 @@
         <lang.commenter language="ACSScript" implementationClass="by.home.acs.language.commenter.ACSCommenter"/>
         <lang.formatter language="ACSScript"
                         implementationClass="by.home.acs.language.formatter.SimpleFormattingModelBuilder"/>
-        <localInspection implementationClass="by.home.acs.language.inspection.SwitchStringInspection"
+        <localInspection implementationClass="by.home.acs.language.inspection.SwitchWithStringParameterInspection"
                          displayName="Switch statement with string param inspection"
                          bundle="inspectionBundle.ACSInspectionBundle"
                          enabledByDefault="true" groupKey="acs.inspection"/>

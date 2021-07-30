@@ -35,7 +35,7 @@ ACSScriptFile ::= FileContainer
 
 private FileContainer ::= (COMMENT|Definition*)
 
-Definition ::= (FunctionDefinition | ScriptDefinition | DirectivesDeclaration | GlobalModifier | VariableDefinition)
+Definition ::= (FunctionDefinition | ScriptDefinition | DirectivesDeclaration | GlobalModifier | VariableDefinition | TestGlobalKeyword)
  {  mixin="by.home.acs.language.psi.impl.ACSNamedElementImpl"
     implements="by.home.acs.language.psi.ACSNamedElement"
     methods=[getName setName getNameIdentifier getNameIdentifier getFunctionKeyword getFunctionStatementReturnType]
@@ -118,7 +118,7 @@ VoidType ::= VOID
 
 TerminateKeyword ::= terminate Semicolon
 
-Statement ::= (VariableDefinition | AssignmentStatement | FunctionInvocation | ControlFlowStatement | Loops | ReturnOperator | TerminateKeyword)
+Statement ::= (VariableDefinition | AssignmentStatement | FunctionInvocation | ControlFlowStatement | Loops | ReturnOperator | TerminateKeyword | ParenthesisedExpression)
 
 ScriptStatement ::= VariableDefinition | VariableInitialization | AssignmentStatement | FunctionInvocation | ControlFlowStatement | Loops | TerminateKeyword
 
@@ -130,14 +130,15 @@ VariableDefinition ::= StaticModifier? Type VariableName ArrayType? (Semicolon |
 
 left VariableName ::=  IDENTIFIER  (CommaSymbol VariableName)*
 
+ParenthesisedExpression ::= OpenBracket Statement CloseBracket
 
 //VariableInitialization ::= AllTypes (CommaSymbol VariableName Equals AllTypes)*
-VariableInitialization ::= (BinaryExpression (Operator BinaryExpression)* | SimpleInitialization) Semicolon
+VariableInitialization ::= (BinaryExpression | SimpleInitialization) Semicolon
 
 
 private SimpleInitialization ::= AllTypes (CommaSymbol VariableName Equals AllTypes)*
 
-private BinaryExpression ::= (IDENTIFIER | AllTypes ) Operator (IDENTIFIER | AllTypes ) | OpenBracket BinaryExpression CloseBracket
+private BinaryExpression ::= (IDENTIFIER | AllTypes ) Operator (IDENTIFIER | AllTypes)
 
 Operator ::= (BitwiseOperator | AssignmentOperator | RelationalOperator | ArithmeticOperator | LogicalOperator)
 
@@ -283,3 +284,26 @@ NUM ::= NUMBER
 BreakStatement ::= break Semicolon
 
 ContinueStatement ::= continue Semicolon
+//-----------------------------------------------------------------------------------------------------------
+//TEST FEATURE
+TestGlobalKeyword ::= test OpenBrace TestExpression* CloseBrace
+
+TestExpression ::= TestVariableAssignmentExpression |
+                   TestParenthesisedExpression |
+                   TestBinaryExpression |
+                   TestMethodCallExpression |
+                   TestVariableExpression |
+                   TestLiteralExpression
+
+TestBinaryExpression ::= Operator
+
+TestParenthesisedExpression ::= OpenBracket TestExpression CloseBracket
+
+TestVariableExpression ::= Type IDENTIFIER Semicolon
+
+TestLiteralExpression ::= AllTypes
+
+TestVariableAssignmentExpression ::= Type IDENTIFIER Equals TestExpression Semicolon
+
+TestMethodCallExpression ::= IDENTIFIER OpenBracket FunctionParameter CloseBracket
+
