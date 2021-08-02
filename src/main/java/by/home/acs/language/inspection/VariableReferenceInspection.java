@@ -49,9 +49,13 @@ public class VariableReferenceInspection extends AbstractBaseJavaLocalInspection
         public void visitElement(@NotNull PsiElement element) {
             super.visitElement(element);
             if (element instanceof ACSScriptVariableDefinition) {
-                PsiElement typeElement = element.getFirstChild().getFirstChild().getFirstChild().getFirstChild();
-                PsiElement initializedType = element.getNavigationElement().getLastChild().getPrevSibling().getFirstChild();
-                checkVariableTypes(element, typeElement, initializedType);
+                try {
+                    PsiElement typeElement = element.getFirstChild().getFirstChild().getFirstChild().getFirstChild();
+                    PsiElement initializedType = element.getNavigationElement().getLastChild().getPrevSibling().getFirstChild();
+                    checkVariableTypes(element, typeElement, initializedType);
+                } catch (NullPointerException ignored) {
+
+                }
             }
         }
 

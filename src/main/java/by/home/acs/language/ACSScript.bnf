@@ -2,6 +2,8 @@
   parserClass="by.home.acs.language.parser.ACSScriptParser"
 
   extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+  extends("ParenthesisedExpression|BinaryExpression|FunctionInvocation|LiteralExpression")=AssignmentExpression
+  extends("DefineParenthesesExpression|DefineBinaryExpression|DefineLiteralExpression")=DefineExpression
 
   psiClassPrefix="ACSScript"
   psiImplClassSuffix="Impl"
@@ -35,7 +37,8 @@ ACSScriptFile ::= FileContainer
 
 private FileContainer ::= (COMMENT|Definition*)
 
-Definition ::= (FunctionDefinition | ScriptDefinition | DirectivesDeclaration | GlobalModifier | VariableDefinition | TestGlobalKeyword)
+//TODO change expression in function statements also and check method invocation
+Definition ::= (FunctionDefinition | ScriptDefinition | DirectivesDeclaration | GlobalModifier | VariableDefinition)
  {  mixin="by.home.acs.language.psi.impl.ACSNamedElementImpl"
     implements="by.home.acs.language.psi.ACSNamedElement"
     methods=[getName setName getNameIdentifier getNameIdentifier getFunctionKeyword getFunctionStatementReturnType]
@@ -54,7 +57,15 @@ IncludeDeclaration ::= PoundSymbol include STRING
 
 ImportDeclaration ::= PoundSymbol import STRING
 
-DefineDeclaration ::= PoundSymbol define IDENTIFIER  (IDENTIFIER | NUMBER | FLOAT) (Operator (IDENTIFIER | NUMBER | FLOAT))*
+DefineDeclaration ::= PoundSymbol define IDENTIFIER  DefineExpression
+
+DefineExpression ::= DefineParenthesesExpression | DefineBinaryExpression | DefineLiteralExpression
+
+DefineParenthesesExpression ::= OpenBracket DefineExpression CloseBracket
+
+DefineBinaryExpression ::= DefineExpression Operator DefineExpression
+
+DefineLiteralExpression ::= NUMBER | FLOAT | STRING | IDENTIFIER
 
 LibraryDeclaration ::= PoundSymbol library STRING
 
@@ -86,7 +97,7 @@ FunctionIdentifier ::= FUNCTION
 
 //FunctionInvocation ::= IDENTIFIER OpenBracket CloseBracket Semicolon ReturnOperator?
 
-FunctionInvocation ::= IDENTIFIER OpenBracket CloseBracket ReturnOperator?
+FunctionInvocation ::= IDENTIFIER OpenBracket CloseBracket ReturnOperator? //must declare possible parameters;
 
 FunctionReturnType ::= VoidType | Type
 
@@ -118,27 +129,30 @@ VoidType ::= VOID
 
 TerminateKeyword ::= terminate Semicolon
 
-Statement ::= (VariableDefinition | AssignmentStatement | FunctionInvocation | ControlFlowStatement | Loops | ReturnOperator | TerminateKeyword | ParenthesisedExpression)
+Statement ::= (VariableDefinition | AssignmentStatement | FunctionInvocation | ControlFlowStatement | Loops | ReturnOperator | TerminateKeyword)
 
-ScriptStatement ::= VariableDefinition | VariableInitialization | AssignmentStatement | FunctionInvocation | ControlFlowStatement | Loops | TerminateKeyword
+ScriptStatement ::= VariableDefinition | AssignmentStatement | FunctionInvocation | ControlFlowStatement | Loops | TerminateKeyword
+
+BinaryExpression ::= AssignmentExpression Operator AssignmentExpression
+
+AssignmentExpression ::= (ParenthesisedExpression | BinaryExpression | FunctionInvocation | LiteralExpression)
 
 AssignmentStatement ::= IDENTIFIER Equals FunctionInvocation
 
 //VariableDefinition ::= StaticModifier? Type VariableName ArrayType? (Semicolon | (Equals (FunctionInvocation | VariableInitialization Semicolon)))
 
-VariableDefinition ::= StaticModifier? Type VariableName ArrayType? (Semicolon | (Equals (VariableInitialization | FunctionInvocation Semicolon )))
+VariableDefinition ::= StaticModifier? Type VariableName ArrayType? (Semicolon | (Equals VariableInitialization))
 
 left VariableName ::=  IDENTIFIER  (CommaSymbol VariableName)*
 
-ParenthesisedExpression ::= OpenBracket Statement CloseBracket
-
 //VariableInitialization ::= AllTypes (CommaSymbol VariableName Equals AllTypes)*
-VariableInitialization ::= (BinaryExpression | SimpleInitialization) Semicolon
+VariableInitialization ::= (AssignmentExpression | SimpleInitialization) Semicolon
 
+ParenthesisedExpression ::= OpenBracket AssignmentExpression CloseBracket
 
-private SimpleInitialization ::= AllTypes (CommaSymbol VariableName Equals AllTypes)*
+SimpleInitialization ::= AllTypes (CommaSymbol VariableName Equals AllTypes)*
 
-private BinaryExpression ::= (IDENTIFIER | AllTypes ) Operator (IDENTIFIER | AllTypes)
+LiteralExpression ::= (AllTypes | IDENTIFIER)
 
 Operator ::= (BitwiseOperator | AssignmentOperator | RelationalOperator | ArithmeticOperator | LogicalOperator)
 
@@ -286,7 +300,7 @@ BreakStatement ::= break Semicolon
 ContinueStatement ::= continue Semicolon
 //-----------------------------------------------------------------------------------------------------------
 //TEST FEATURE
-TestGlobalKeyword ::= test OpenBrace TestExpression* CloseBrace
+/*TestGlobalKeyword ::= test OpenBrace TestExpression* CloseBrace
 
 TestExpression ::= TestVariableAssignmentExpression |
                    TestParenthesisedExpression |
@@ -295,7 +309,7 @@ TestExpression ::= TestVariableAssignmentExpression |
                    TestVariableExpression |
                    TestLiteralExpression
 
-TestBinaryExpression ::= Operator
+TestBinaryExpression ::= TestExpression Operator TestExpression
 
 TestParenthesisedExpression ::= OpenBracket TestExpression CloseBracket
 
@@ -305,5 +319,5 @@ TestLiteralExpression ::= AllTypes
 
 TestVariableAssignmentExpression ::= Type IDENTIFIER Equals TestExpression Semicolon
 
-TestMethodCallExpression ::= IDENTIFIER OpenBracket FunctionParameter CloseBracket
+TestMethodCallExpression ::= IDENTIFIER OpenBracket FunctionParameter CloseBracket*/
 
