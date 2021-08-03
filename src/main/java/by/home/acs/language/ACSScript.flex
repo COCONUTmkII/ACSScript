@@ -40,7 +40,6 @@ OPEN_BRACKET = "("
 CLOSE_BRACKET = ")"
 OPEN_SQUARE_BRACKET = "["
 CLOSE_SQUARE_BRACKET = "]"
-POUND_SYMBOL = "#"
 SEMICOLON_SYMBOL = ";"
 COLON_SYMBOL = ":"
 FUNCTION = "function"
@@ -69,13 +68,14 @@ NET="NET"
 %states WAITING_VALUE, TEST_ONE_VALUE
 %xstate TEST_VALUE
 %%
-  "include"                                                 {yybegin(YYINITIAL); return ACSScriptTypes.INCLUDE;}
-  "import"                                                  {yybegin(YYINITIAL); return ACSScriptTypes.IMPORT;}
-  "define"                                                  {yybegin(YYINITIAL); return ACSScriptTypes.DEFINE;}
-  "library"                                                 {yybegin(YYINITIAL); return ACSScriptTypes.LIBRARY;}
+  "#include"                                                 {yybegin(YYINITIAL); return ACSScriptTypes.INCLUDE_KEY;}
+  "#import"                                                  {yybegin(YYINITIAL); return ACSScriptTypes.IMPORT_KEY;}
+  "#define"                                                  {yybegin(YYINITIAL); return ACSScriptTypes.DEFINE_KEY;}
+  "#library"                                                 {yybegin(YYINITIAL); return ACSScriptTypes.LIBRARY_KEY;}
   "global"                                                  {yybegin(YYINITIAL); return ACSScriptTypes.GLOBAL;}
   "static"                                                  {yybegin(YYINITIAL); return ACSScriptTypes.STATIC;}
   "world"                                                   {yybegin(YYINITIAL); return ACSScriptTypes.WORLD;}
+  "special"                                                 {yybegin(YYINITIAL); return ACSScriptTypes.SPECIAL;}
   {OPEN_BRACKET}                                            {yybegin(YYINITIAL); return ACSScriptTypes.OPEN_BRACKET;}
   {CLOSE_BRACKET}                                           {yybegin(YYINITIAL); return ACSScriptTypes.CLOSE_BRACKET;}
   {OPEN_BRACE}                                              {yybegin(YYINITIAL); return ACSScriptTypes.OPEN_BRACE;}
@@ -129,7 +129,6 @@ NET="NET"
   {NET}                                                     {yybegin(YYINITIAL); return ACSScriptTypes.NET;}
   {OPEN_SQUARE_BRACKET}                                     {yybegin(YYINITIAL); return ACSScriptTypes.OPEN_SQUARE_BRACKET;}
   {CLOSE_SQUARE_BRACKET}                                    {yybegin(YYINITIAL); return ACSScriptTypes.CLOSE_SQUARE_BRACKET;}
-  {POUND_SYMBOL}                                            {yybegin(YYINITIAL); return ACSScriptTypes.POUND_SYMBOL;}
   {SEMICOLON_SYMBOL}                                        {yybegin(YYINITIAL); return ACSScriptTypes.SEMICOLON;}
   {COLON_SYMBOL}                                            {yybegin(YYINITIAL); return ACSScriptTypes.COLON;}
   {IDENTIFIER}                                              {yybegin(YYINITIAL); return ACSScriptTypes.IDENTIFIER; }

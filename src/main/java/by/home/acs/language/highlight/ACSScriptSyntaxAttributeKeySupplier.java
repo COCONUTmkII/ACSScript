@@ -16,13 +16,14 @@ public class ACSScriptSyntaxAttributeKeySupplier {
     private static final Map<IElementType, Supplier<TextAttributesKey[]>> IElements;
     static {
         final Map<IElementType, Supplier<TextAttributesKey[]>> elements = new ConcurrentHashMap<>();
-        elements.put(ACSScriptTypes.INCLUDE, () -> new TextAttributesKey[]{KEY});
-        elements.put(ACSScriptTypes.IMPORT, () -> new TextAttributesKey[]{KEY});
-        elements.put(ACSScriptTypes.DEFINE, () -> new TextAttributesKey[]{KEY});
-        elements.put(ACSScriptTypes.LIBRARY, () -> new TextAttributesKey[]{KEY});
+        elements.put(ACSScriptTypes.INCLUDE_KEY, () -> new TextAttributesKey[]{KEY});
+        elements.put(ACSScriptTypes.IMPORT_KEY, () -> new TextAttributesKey[]{KEY});
+        elements.put(ACSScriptTypes.DEFINE_KEY, () -> new TextAttributesKey[]{KEY});
+        elements.put(ACSScriptTypes.LIBRARY_KEY, () -> new TextAttributesKey[]{KEY});
         elements.put(ACSScriptTypes.WORLD, () -> new TextAttributesKey[]{KEY});
         elements.put(ACSScriptTypes.GLOBAL, () -> new TextAttributesKey[]{KEY});
         elements.put(ACSScriptTypes.STATIC, () -> new TextAttributesKey[]{KEY});
+        elements.put(ACSScriptTypes.SPECIAL, () -> new TextAttributesKey[]{KEY});
         elements.put(ACSScriptTypes.OPEN, () -> new TextAttributesKey[]{SCRIPT_TYPE});
         elements.put(ACSScriptTypes.DEATH, () -> new TextAttributesKey[]{SCRIPT_TYPE});
         elements.put(ACSScriptTypes.ENTER, () -> new TextAttributesKey[]{SCRIPT_TYPE});

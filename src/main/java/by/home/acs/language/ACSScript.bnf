@@ -37,12 +37,22 @@ ACSScriptFile ::= FileContainer
 
 private FileContainer ::= (COMMENT|Definition*)
 
-//TODO change expression in function statements also and check method invocation
-Definition ::= (FunctionDefinition | ScriptDefinition | DirectivesDeclaration | GlobalModifier | VariableDefinition)
+//TODO create short if and test all loops. Looks like there is a compile 'feature' with for loop
+Definition ::= (FunctionDefinition | ScriptDefinition | DirectivesDeclaration | GlobalModifier | SpecialDefinition | VariableDefinition)
  {  mixin="by.home.acs.language.psi.impl.ACSNamedElementImpl"
     implements="by.home.acs.language.psi.ACSNamedElement"
     methods=[getName setName getNameIdentifier getNameIdentifier getFunctionKeyword getFunctionStatementReturnType]
  }
+
+/**
+    Specials declaration
+ */
+
+SpecialDefinition ::= SpecialIdentifier SpecialExpression Semicolon
+
+SpecialIdentifier ::= special
+
+SpecialExpression ::= (NUMBER Colon FunctionInvocation) (CommaSymbol SpecialExpression)*
 
 
 FunctionDefinition ::= FunctionIdentifier FunctionReturnType FunctionNameAndParams FunctionBody
@@ -53,11 +63,25 @@ ScriptDefinition ::= ScriptIdentifier ScriptName (ScriptPossibleParams | ScriptT
  */
 DirectivesDeclaration ::= (IncludeDeclaration | ImportDeclaration | DefineDeclaration | LibraryDeclaration)
 
-IncludeDeclaration ::= PoundSymbol include STRING
+IncludeDeclaration ::= IncludeKey STRING
 
-ImportDeclaration ::= PoundSymbol import STRING
+ImportDeclaration ::= ImportKey STRING
 
-DefineDeclaration ::= PoundSymbol define IDENTIFIER  DefineExpression
+DefineDeclaration ::= DefineKey IDENTIFIER  DefineExpression
+
+LibraryDeclaration ::= LibraryKey STRING
+
+/**
+    Directives keywords
+ */
+
+DefineKey ::= '#define'
+
+IncludeKey ::= '#include'
+
+ImportKey ::= '#import'
+
+LibraryKey ::= '#library'
 
 DefineExpression ::= DefineParenthesesExpression | DefineBinaryExpression | DefineLiteralExpression
 
@@ -66,8 +90,6 @@ DefineParenthesesExpression ::= OpenBracket DefineExpression CloseBracket
 DefineBinaryExpression ::= DefineExpression Operator DefineExpression
 
 DefineLiteralExpression ::= NUMBER | FLOAT | STRING | IDENTIFIER
-
-LibraryDeclaration ::= PoundSymbol library STRING
 
 /**
     Script statements
@@ -97,7 +119,9 @@ FunctionIdentifier ::= FUNCTION
 
 //FunctionInvocation ::= IDENTIFIER OpenBracket CloseBracket Semicolon ReturnOperator?
 
-FunctionInvocation ::= IDENTIFIER OpenBracket CloseBracket ReturnOperator? //must declare possible parameters;
+FunctionInvocation ::= IDENTIFIER OpenBracket FunctionInvokeParameters* CloseBracket ReturnOperator?
+
+FunctionInvokeParameters ::= LiteralExpression (CommaSymbol LiteralExpression)*
 
 FunctionReturnType ::= VoidType | Type
 
@@ -131,7 +155,7 @@ TerminateKeyword ::= terminate Semicolon
 
 Statement ::= (VariableDefinition | AssignmentStatement | FunctionInvocation | ControlFlowStatement | Loops | ReturnOperator | TerminateKeyword)
 
-ScriptStatement ::= VariableDefinition | AssignmentStatement | FunctionInvocation | ControlFlowStatement | Loops | TerminateKeyword
+ScriptStatement ::= VariableDefinition | AssignmentStatement | FunctionInvocation Semicolon | ControlFlowStatement | Loops | TerminateKeyword
 
 BinaryExpression ::= AssignmentExpression Operator AssignmentExpression
 
@@ -196,8 +220,7 @@ private Iteration ::=  NormalIteration | EmptyIteration
 
 EmptyIteration ::= //not sure with this...
 
-NormalIteration ::=
- IDENTIFIER (ArithmeticOperator | ArithmeticOperator IDENTIFIER | IDENTIFIER AssignmentOperator (NUMBER | STRING | LogicalType | IDENTIFIER)) (CommaSymbol NormalIteration)?
+NormalIteration ::= IDENTIFIER (ArithmeticOperator | ArithmeticOperator IDENTIFIER | IDENTIFIER AssignmentOperator (NUMBER | STRING | LogicalType | IDENTIFIER)) (CommaSymbol NormalIteration)?
 
 whileLoop ::= while OpenBracket ControlFlowCondition CloseBracket OpenBrace Statement* CloseBrace
 
@@ -279,8 +302,6 @@ OpenBracket ::= '('
 
 CloseBracket ::= ')'
 
-PoundSymbol ::= '#'
-
 Semicolon ::= ';'
 
 Colon ::= ':'
@@ -298,26 +319,4 @@ NUM ::= NUMBER
 BreakStatement ::= break Semicolon
 
 ContinueStatement ::= continue Semicolon
-//-----------------------------------------------------------------------------------------------------------
-//TEST FEATURE
-/*TestGlobalKeyword ::= test OpenBrace TestExpression* CloseBrace
-
-TestExpression ::= TestVariableAssignmentExpression |
-                   TestParenthesisedExpression |
-                   TestBinaryExpression |
-                   TestMethodCallExpression |
-                   TestVariableExpression |
-                   TestLiteralExpression
-
-TestBinaryExpression ::= TestExpression Operator TestExpression
-
-TestParenthesisedExpression ::= OpenBracket TestExpression CloseBracket
-
-TestVariableExpression ::= Type IDENTIFIER Semicolon
-
-TestLiteralExpression ::= AllTypes
-
-TestVariableAssignmentExpression ::= Type IDENTIFIER Equals TestExpression Semicolon
-
-TestMethodCallExpression ::= IDENTIFIER OpenBracket FunctionParameter CloseBracket*/
 
