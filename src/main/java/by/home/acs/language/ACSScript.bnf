@@ -57,7 +57,7 @@ SpecialExpression ::= (NUMBER Colon FunctionInvocation) (CommaSymbol SpecialExpr
 
 FunctionDefinition ::= FunctionIdentifier FunctionReturnType FunctionNameAndParams FunctionBody
 
-ScriptDefinition ::= ScriptIdentifier ScriptName (ScriptPossibleParams | ScriptType) (NetType ClientsideType | NetType)? ScriptBody
+ScriptDefinition ::= ScriptIdentifier ScriptName (ScriptPossibleParams | ScriptType) (NetType ClientsideType | NetType | ClientsideType)? ScriptBody
 /**
     Directives statement
  */
