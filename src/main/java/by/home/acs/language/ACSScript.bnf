@@ -153,7 +153,7 @@ VoidType ::= VOID
 
 TerminateKeyword ::= terminate Semicolon
 
-Statement ::= (VariableDefinition | AssignmentStatement | FunctionInvocation | ControlFlowStatement | Loops | ReturnOperator | TerminateKeyword)
+Statement ::= (VariableDefinition | AssignmentStatement | FunctionInvocation Semicolon| ControlFlowStatement | Loops | ReturnOperator | TerminateKeyword)
 
 ScriptStatement ::= VariableDefinition | AssignmentStatement | FunctionInvocation Semicolon | ControlFlowStatement | Loops | TerminateKeyword
 
@@ -260,15 +260,27 @@ LogicalType ::= true | false
 
 ReturnOperator ::= return Semicolon | return BinaryExpression Semicolon | return IDENTIFIER Semicolon // Use something else but IDENTIFIER later
 
-ControlFlowStatement ::= IfThenElseStatement | IfThenStatement |  SwitchLoop
+/**
+    Control Flow Statements
+ */
 
-IfThenStatement ::= if OpenBracket ControlFlowCondition CloseBracket OpenBrace Statement* CloseBrace
+ControlFlowStatement ::= IfThenStatementNoShortIf | IfThenElseStatementNoShortIf | IfThenElseStatement | IfThenStatement |  SwitchLoop
+
+IfThenStatement ::= if OpenBracket ControlFlowCondition CloseBracket (Statement | IfThenStatement )
+
+IfThenElseStatement ::= IfThenStatement else (Statement  | IfThenElseStatement)
+
+IfThenStatementNoShortIf ::= if OpenBracket ControlFlowCondition CloseBracket OpenBrace Statement* CloseBrace
+
+IfThenElseStatementNoShortIf ::= IfThenStatementNoShortIf else (OpenBrace Statement* CloseBrace | IfThenElseStatementNoShortIf?)
+
+//IfThenStatement ::= if OpenBracket ControlFlowCondition CloseBracket OpenBrace Statement* CloseBrace
 
 private ControlFlowCondition ::= NormalCondition | ArithmeticCondition | BoolIdentifierStatement
 
 BoolIdentifierStatement ::= IDENTIFIER
 
-IfThenElseStatement ::= IfThenStatement else (OpenBrace Statement* CloseBrace | IfThenElseStatement?)
+//IfThenElseStatement ::= IfThenStatement else (OpenBrace Statement* CloseBrace | IfThenElseStatement?)
 
 SwitchLoop ::= switch OpenBracket (IDENTIFIER | NUMBER) CloseBracket OpenBrace CaseOperator CloseBrace
 
