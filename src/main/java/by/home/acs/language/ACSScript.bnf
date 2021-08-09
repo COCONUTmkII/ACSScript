@@ -117,9 +117,7 @@ ScriptBody ::= OpenBrace Statement* CloseBrace
  */
 FunctionIdentifier ::= FUNCTION
 
-//FunctionInvocation ::= IDENTIFIER OpenBracket CloseBracket Semicolon ReturnOperator?
-
-FunctionInvocation ::= IDENTIFIER OpenBracket FunctionInvokeParameters* CloseBracket ReturnOperator?
+FunctionInvocation ::= IDENTIFIER OpenBracket FunctionInvokeParameters* CloseBracket
 
 FunctionInvokeParameters ::= LiteralExpression (CommaSymbol LiteralExpression)*
 
@@ -153,7 +151,9 @@ VoidType ::= VOID
 
 TerminateKeyword ::= terminate Semicolon
 
-Statement ::= (CodeBlock | VariableDefinition | AssignmentStatement | FunctionInvocation Semicolon | IfThenElseStatement | IfThenStatement | Loops | SwitchLoop | TerminateKeyword)
+Statement ::= (StatementWithoutSub | VariableDefinition | AssignmentStatement | FunctionInvocation Semicolon | IfThenElseStatement | IfThenStatement | Loops | SwitchLoop)
+
+StatementWithoutSub ::= (CodeBlock | BreakStatement | ContinueStatement | ReturnOperator | TerminateKeyword)
 
 CodeBlock ::= OpenBrace Statement* CloseBrace
 
@@ -190,7 +190,7 @@ BitwiseOperator ::= ('&' | '|' | '^' | '~' | '<<' | '>>')
 
 Loops ::= ForLoop | whileLoop | untilLoop | doWhileLoop | doUntilLoop
 
-ForLoop ::= for OpenBracket Initialization Condition Iteration CloseBracket (Statement BreakStatement | Statement ContinueStatement | Statement)
+ForLoop ::= for OpenBracket Initialization Condition Iteration CloseBracket Statement
 
 private Initialization ::= EmptyInitialization | TypeInitialization
 
@@ -228,14 +228,6 @@ doWhileLoop ::= do Statement while OpenBracket ControlFlowCondition CloseBracket
 
 doUntilLoop ::= do Statement until OpenBracket ControlFlowCondition CloseBracket Semicolon
 
-LoopStatement ::= CodeBlock | VariableDefinition | VariableInitialization | AssignmentStatement | FunctionInvocation | LoopControlFlowStatement | Loops | TerminateKeyword
-
-LoopControlFlowStatement ::= LoopIfThenElseStatement | LoopIfThenStatement | Loops | SwitchLoop //delete this shit
-
-LoopIfThenStatement ::= if OpenBracket ControlFlowCondition CloseBracket (Statement (BreakStatement | ContinueStatement)? | LoopIfThenElseStatement)
-
-LoopIfThenElseStatement ::= if OpenBracket ControlFlowCondition CloseBracket Statement (BreakStatement | ContinueStatement)? else Statement*
-
 Type ::= (IntType | StringType | BoolType)
 
 private AllTypes ::= STRING | CHARACTER | EmptyString | LogicalType | ArrayInitializer | NUMBER | FLOAT
@@ -264,7 +256,7 @@ ReturnOperator ::= return Semicolon | return BinaryExpression Semicolon | return
 
 IfThenStatement ::= if OpenBracket ControlFlowCondition CloseBracket (Statement | IfThenElseStatement)
 
-IfThenElseStatement ::= if OpenBracket ControlFlowCondition CloseBracket Statement else Statement*
+IfThenElseStatement ::= if OpenBracket BinaryExpression CloseBracket Statement else Statement*
 
 private ControlFlowCondition ::= NormalCondition | ArithmeticCondition | BoolIdentifierStatement
 
@@ -272,22 +264,13 @@ BoolIdentifierStatement ::= IDENTIFIER
 
 SwitchLoop ::= switch OpenBracket (IDENTIFIER | NUMBER) CloseBracket OpenBrace CaseOperator CloseBrace
 
-CaseOperator ::=   CaseIdentifier ((SwitchStatement*  BreakStatement TerminateKeyword?) | SwitchStatement*)  (default Colon SwitchStatement*)? CaseOperator?
+CaseOperator ::=   CaseIdentifier Statement*  (default Colon Statement)? CaseOperator?
 
 private CaseIdentifier ::= case (IDENTIFIER | NUMBER | STRING) Colon
-
-SwitchStatement ::= VariableDefinition | VariableInitialization | AssignmentStatement | FunctionInvocation | SwitchControlFlowStatement | Loops | TerminateKeyword
-
-SwitchControlFlowStatement ::= BreakableIfThenElseStatement | BreakableIfThenStatement | SwitchLoop
-
-BreakableIfThenStatement ::= if OpenBracket ControlFlowCondition CloseBracket OpenBrace SwitchStatement* BreakStatement? CloseBrace
-
-BreakableIfThenElseStatement ::= BreakableIfThenStatement else (OpenBrace Statement* CloseBrace | BreakableIfThenElseStatement?)
 
 /*
     Key symbol's
  */
-
 Equals ::= '='
 
 Dot ::= '.' //not used
