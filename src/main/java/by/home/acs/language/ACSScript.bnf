@@ -2,6 +2,7 @@
   parserClass="by.home.acs.language.parser.ACSScriptParser"
 
   extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
   extends("ParenthesisedExpression|BinaryExpression|FunctionInvocation|LiteralExpression")=AssignmentExpression
   extends("DefineParenthesesExpression|DefineBinaryExpression|DefineLiteralExpression")=DefineExpression
 
@@ -161,7 +162,7 @@ BinaryExpression ::= AssignmentExpression Operator AssignmentExpression
 
 AssignmentExpression ::= (ParenthesisedExpression | BinaryExpression | FunctionInvocation | LiteralExpression)
 
-AssignmentStatement ::= IDENTIFIER Equals FunctionInvocation
+AssignmentStatement ::= IDENTIFIER Equals (FunctionInvocation Semicolon| VariableInitialization)
 
 VariableDefinition ::= StaticModifier? Type VariableName ArrayType? (Semicolon | (Equals VariableInitialization))
 
@@ -176,7 +177,7 @@ SimpleInitialization ::= AllTypes (CommaSymbol VariableName Equals AllTypes)*
 
 LiteralExpression ::= (AllTypes | IDENTIFIER)
 
-Operator ::= (BitwiseOperator | AssignmentOperator | RelationalOperator | ArithmeticOperator | LogicalOperator)
+Operator ::= (BitwiseOperator | RelationalOperator | AssignmentOperator | ArithmeticOperator | LogicalOperator)
 
 AssignmentOperator ::= ('=' | '*=' | '/=' | '%=' | '+=' | '-=' | '<<=' | '>>=' | '&=' | '^=' | '|=')
 
@@ -254,11 +255,13 @@ ReturnOperator ::= return Semicolon | return BinaryExpression Semicolon | return
     Control Flow Statements
  */
 
-IfThenStatement ::= if OpenBracket ControlFlowCondition CloseBracket (Statement | IfThenElseStatement)
+IfThenStatement ::= if OpenBracket AssignmentExpression CloseBracket (Statement | IfThenElseStatement)
 
-IfThenElseStatement ::= if OpenBracket BinaryExpression CloseBracket Statement else Statement*
+IfThenElseStatement ::= if OpenBracket AssignmentExpression CloseBracket Statement else Statement
 
-private ControlFlowCondition ::= NormalCondition | ArithmeticCondition | BoolIdentifierStatement
+private ControlFlowCondition ::= ControlFlowParen | NormalCondition | ArithmeticCondition | BoolIdentifierStatement | FunctionInvocation
+
+ControlFlowParen ::= OpenBracket ControlFlowCondition CloseBracket
 
 BoolIdentifierStatement ::= IDENTIFIER
 
