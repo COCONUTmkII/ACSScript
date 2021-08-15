@@ -42,6 +42,7 @@ OPEN_SQUARE_BRACKET = "["
 CLOSE_SQUARE_BRACKET = "]"
 SEMICOLON_SYMBOL = ";"
 COLON_SYMBOL = ":"
+%caseless
 FUNCTION = "function"
 SCRIPT = "script"
 VOID = "void"
