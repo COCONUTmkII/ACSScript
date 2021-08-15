@@ -38,7 +38,6 @@ ACSScriptFile ::= FileContainer
 
 private FileContainer ::= (COMMENT|Definition*)
 
-//TODO create short if and test all loops. Looks like there is a compile 'feature' with for loop
 Definition ::= (FunctionDefinition | ScriptDefinition | DirectivesDeclaration | GlobalModifier | SpecialDefinition | VariableDefinition)
  {  mixin="by.home.acs.language.psi.impl.ACSNamedElementImpl"
     implements="by.home.acs.language.psi.ACSNamedElement"
@@ -221,13 +220,13 @@ EmptyIteration ::= //not sure with this...
 
 NormalIteration ::= IDENTIFIER (ArithmeticOperator | ArithmeticOperator IDENTIFIER | IDENTIFIER AssignmentOperator (NUMBER | STRING | LogicalType | IDENTIFIER)) (CommaSymbol NormalIteration)?
 
-whileLoop ::= while OpenBracket ControlFlowCondition CloseBracket Statement
+whileLoop ::= while OpenBracket AssignmentExpression CloseBracket Statement
 
-untilLoop ::= until OpenBracket ControlFlowCondition CloseBracket Statement
+untilLoop ::= until OpenBracket AssignmentExpression CloseBracket Statement
 
-doWhileLoop ::= do Statement while OpenBracket ControlFlowCondition CloseBracket Semicolon
+doWhileLoop ::= do Statement while OpenBracket AssignmentExpression CloseBracket Semicolon
 
-doUntilLoop ::= do Statement until OpenBracket ControlFlowCondition CloseBracket Semicolon
+doUntilLoop ::= do Statement until OpenBracket AssignmentExpression CloseBracket Semicolon
 
 Type ::= (IntType | StringType | BoolType)
 
@@ -258,12 +257,6 @@ ReturnOperator ::= return Semicolon | return BinaryExpression Semicolon | return
 IfThenStatement ::= if OpenBracket AssignmentExpression CloseBracket (Statement | IfThenElseStatement)
 
 IfThenElseStatement ::= if OpenBracket AssignmentExpression CloseBracket Statement else Statement
-
-private ControlFlowCondition ::= ControlFlowParen | NormalCondition | ArithmeticCondition | BoolIdentifierStatement | FunctionInvocation
-
-ControlFlowParen ::= OpenBracket ControlFlowCondition CloseBracket
-
-BoolIdentifierStatement ::= IDENTIFIER
 
 SwitchLoop ::= switch OpenBracket (IDENTIFIER | NUMBER) CloseBracket OpenBrace CaseOperator CloseBrace
 
