@@ -163,12 +163,12 @@ AssignmentExpression ::= (ParenthesisedExpression | BinaryExpression | FunctionI
 
 AssignmentStatement ::= IDENTIFIER Equals (FunctionInvocation Semicolon| VariableInitialization)
 
-VariableDefinition ::= StaticModifier? Type VariableName ArrayType? (Semicolon | (Equals VariableInitialization))
+VariableDefinition ::= StaticModifier? Type VariableName ArrayType* (Semicolon | (Equals VariableInitialization))
 
 left VariableName ::=  IDENTIFIER  (CommaSymbol VariableName)*
 
 //VariableInitialization ::= AllTypes (CommaSymbol VariableName Equals AllTypes)*
-VariableInitialization ::= (AssignmentExpression | SimpleInitialization) Semicolon
+VariableInitialization ::= (SimpleInitialization | AssignmentExpression) Semicolon
 
 ParenthesisedExpression ::= OpenBracket AssignmentExpression CloseBracket
 
@@ -242,9 +242,9 @@ EmptyString ::= '""'
 
 ArrayType ::=  OpenSquareBracket NUM CloseSquareBracket
 
-ArrayInitializer ::= OpenBrace ArrayInitializers? CloseBrace
+ArrayInitializer ::= OpenBrace ArrayInitializers* CloseBrace (CommaSymbol ArrayInitializer)?
 
-ArrayInitializers ::= (NUMBER | STRING) (CommaSymbol ArrayInitializers)?
+ArrayInitializers ::= ArrayInitializer | (NUMBER | STRING) (CommaSymbol ArrayInitializers)?
 
 LogicalType ::= true | false
 
