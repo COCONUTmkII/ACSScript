@@ -3,7 +3,7 @@
 
   extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
 
-  extends("ParenthesisedExpression|BinaryExpression|FunctionInvocation|LiteralExpression")=AssignmentExpression
+  extends("ParenthesisedExpression|BinaryExpression|FunctionInvocation|IncrementOrDecrementExpression|NegationExpression|LiteralExpression")=AssignmentExpression
   extends("DefineParenthesesExpression|DefineBinaryExpression|DefineLiteralExpression")=DefineExpression
 
   psiClassPrefix="ACSScript"
@@ -159,7 +159,11 @@ CodeBlock ::= OpenBrace Statement* CloseBrace
 
 BinaryExpression ::= AssignmentExpression Operator AssignmentExpression
 
-AssignmentExpression ::= (ParenthesisedExpression | BinaryExpression | FunctionInvocation | LiteralExpression)
+AssignmentExpression ::= (ParenthesisedExpression | BinaryExpression | FunctionInvocation | IncrementOrDecrementExpression | NegationExpression | LiteralExpression)
+
+IncrementOrDecrementExpression ::= LiteralExpression '++' | LiteralExpression '--' | '++' LiteralExpression | '--' LiteralExpression
+
+NegationExpression ::= '!' LiteralExpression
 
 AssignmentStatement ::= IDENTIFIER Equals (FunctionInvocation Semicolon| VariableInitialization)
 
