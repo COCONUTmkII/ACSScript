@@ -62,19 +62,9 @@ public class VariableReferenceInspection extends AbstractBaseJavaLocalInspection
         //TODO refactor this mess...
         private void checkVariableTypes(PsiElement currentElement, PsiElement variableType, PsiElement variableInitializedType) {
             if (psiEquals(variableType, INT) && (!psiEquals(variableInitializedType, NUMBER, FLOAT, CHARACTER))) {
-                if ((variableInitializedType.getNode().getElementType().equals(LOGICAL_TYPE))) {
-                    myHolder.registerProblem(currentElement, DESCRIPTION, new ACSVariableTypeFix("bool", "int"));
-                } else {
-                    myHolder.registerProblem(currentElement, DESCRIPTION, new ACSVariableTypeFix("str", "int"));
-                }
+                myHolder.registerProblem(currentElement, DESCRIPTION, new ACSVariableTypeFix("str", "int"));
             } else if (psiEquals(variableType, STR) && (!psiEquals(variableInitializedType, STRING))) {
-                if ((variableInitializedType.getNode().getElementType().equals(LOGICAL_TYPE))) {
-                    myHolder.registerProblem(currentElement, DESCRIPTION, new ACSVariableTypeFix("bool", "str"));
-                } else {
-                    myHolder.registerProblem(currentElement, DESCRIPTION, new ACSVariableTypeFix("int", "str"));
-                }
-            } else if (psiEquals(variableType, INT) && (psiEquals(variableInitializedType, LOGICAL_TYPE))) {
-                myHolder.registerProblem(currentElement, DESCRIPTION, new ACSVariableTypeFix("bool", "int"));
+                myHolder.registerProblem(currentElement, DESCRIPTION, new ACSVariableTypeFix("int", "str"));
             } else if (psiEquals(variableType, BOOL) && psiEquals(variableInitializedType, STRING)) {
                 myHolder.registerProblem(currentElement, DESCRIPTION, new ACSVariableTypeFix("str", "bool"));
             }

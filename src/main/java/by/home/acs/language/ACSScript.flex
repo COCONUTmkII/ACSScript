@@ -88,8 +88,6 @@ NET="NET"
   {FUNCTION}                                                {yybegin(YYINITIAL);  return ACSScriptTypes.FUNCTION;}
   {SCRIPT}                                                  {yybegin(YYINITIAL); return ACSScriptTypes.SCRIPT;}
   ({CRLF}|{WHITE_SPACE})+                                   {yybegin(YYINITIAL); return TokenType.WHITE_SPACE;}
-  "true"                                                    {yybegin(YYINITIAL); return ACSScriptTypes.TRUE;}
-  "false"                                                   {yybegin(YYINITIAL); return ACSScriptTypes.FALSE;}
   "switch"                                                  {yybegin(YYINITIAL); return ACSScriptTypes.SWITCH;}
   "case"                                                    {yybegin(YYINITIAL); return ACSScriptTypes.CASE;}
   "for"                                                     {yybegin(YYINITIAL); return ACSScriptTypes.FOR;}
@@ -102,7 +100,7 @@ NET="NET"
   "else"                                                    {yybegin(YYINITIAL); return ACSScriptTypes.ELSE;}
   "return"                                                  {yybegin(YYINITIAL); return ACSScriptTypes.RETURN;}
   "terminate"                                               {yybegin(YYINITIAL); return ACSScriptTypes.TERMINATE;}
-
+  "suspend"                                                 {yybegin(YYINITIAL); return ACSScriptTypes.SUSPEND;}
   {NUMBER}                                                  {yybegin(YYINITIAL); return ACSScriptTypes.NUMBER;}
   {STRING}                                                  {yybegin(YYINITIAL); return ACSScriptTypes.STRING;}
   {END_LINE_COMMENT}                                        {yybegin(YYINITIAL); return ACSScriptTypes.COMMENT;}

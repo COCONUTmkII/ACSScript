@@ -3,7 +3,7 @@
 
   extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
 
-  extends("ParenthesisedExpression|BinaryExpression|FunctionInvocation|IncrementOrDecrementExpression|NegationExpression|LiteralExpression")=AssignmentExpression
+  extends("ParenthesisedExpression|BinaryExpression|FunctionInvocation|ArrayReferenceExpression|IncrementOrDecrementExpression|NegationExpression|LiteralExpression")=AssignmentExpression
   extends("DefineParenthesesExpression|DefineBinaryExpression|DefineLiteralExpression")=DefineExpression
 
   psiClassPrefix="ACSScript"
@@ -119,7 +119,7 @@ FunctionIdentifier ::= FUNCTION
 
 FunctionInvocation ::= IDENTIFIER OpenBracket FunctionInvokeParameters* CloseBracket
 
-FunctionInvokeParameters ::= LiteralExpression (CommaSymbol LiteralExpression)*
+FunctionInvokeParameters ::= BinaryExpression (CommaSymbol FunctionInvokeParameters)*
 
 FunctionReturnType ::= VoidType | Type
 
@@ -151,28 +151,34 @@ VoidType ::= VOID
 
 TerminateKeyword ::= terminate Semicolon
 
-Statement ::= (StatementWithoutSub | VariableDefinition | AssignmentStatement | FunctionInvocation Semicolon | IfThenElseStatement | IfThenStatement | Loops | SwitchLoop)
+SuspendKeyword ::= suspend Semicolon
 
-StatementWithoutSub ::= (CodeBlock | BreakStatement | ContinueStatement | ReturnOperator | TerminateKeyword)
+Statement ::= (StatementWithoutSub | IncrementOrDecrementExpression Semicolon | VariableDefinition | AssignmentStatement | FunctionInvocation Semicolon | IfThenElseStatement | IfThenStatement | Loops | SwitchLoop)
+
+StatementWithoutSub ::= (CodeBlock | BreakStatement | ContinueStatement | ReturnOperator | SuspendKeyword | TerminateKeyword)
 
 CodeBlock ::= OpenBrace Statement* CloseBrace
 
 BinaryExpression ::= AssignmentExpression Operator AssignmentExpression
 
-AssignmentExpression ::= (ParenthesisedExpression | BinaryExpression | FunctionInvocation | IncrementOrDecrementExpression | NegationExpression | LiteralExpression)
+AssignmentExpression ::= (ParenthesisedExpression | BinaryExpression | FunctionInvocation | ArrayReferenceExpression | IncrementOrDecrementExpression | NegationExpression | LiteralExpression)
+
+ArrayReferenceExpression ::= IDENTIFIER ArrayReference+
+
+ArrayReference ::= OpenSquareBracket (NUMBER | IDENTIFIER) CloseSquareBracket
 
 IncrementOrDecrementExpression ::= LiteralExpression '++' | LiteralExpression '--' | '++' LiteralExpression | '--' LiteralExpression
 
 NegationExpression ::= '!' LiteralExpression
 
-AssignmentStatement ::= IDENTIFIER Equals (FunctionInvocation Semicolon| VariableInitialization)
+AssignmentStatement ::= (ArrayReferenceExpression | IDENTIFIER) Equals (FunctionInvocation Semicolon| VariableInitialization)
 
 VariableDefinition ::= StaticModifier? Type VariableName ArrayType* (Semicolon | (Equals VariableInitialization))
 
 left VariableName ::=  IDENTIFIER  (CommaSymbol VariableName)*
 
 //VariableInitialization ::= AllTypes (CommaSymbol VariableName Equals AllTypes)*
-VariableInitialization ::= (SimpleInitialization | AssignmentExpression) Semicolon
+VariableInitialization ::= (AssignmentExpression | SimpleInitialization) Semicolon
 
 ParenthesisedExpression ::= OpenBracket AssignmentExpression CloseBracket
 
@@ -180,17 +186,17 @@ SimpleInitialization ::= AllTypes (CommaSymbol VariableName Equals AllTypes)*
 
 LiteralExpression ::= (AllTypes | IDENTIFIER)
 
-Operator ::= (BitwiseOperator | RelationalOperator | AssignmentOperator | ArithmeticOperator | LogicalOperator)
+Operator ::= (LogicalOperator | BitwiseOperator | RelationalOperator | AssignmentOperator | ArithmeticOperator )
 
 AssignmentOperator ::= ('=' | '*=' | '/=' | '%=' | '+=' | '-=' | '<<=' | '>>=' | '&=' | '^=' | '|=')
 
-RelationalOperator ::= ('>' | '<' | '==' | '!=' | '>=' | '<=')
+RelationalOperator ::= ('>=' | '<=' | '>' | '<' | '==' | '!=' )
 
 ArithmeticOperator ::= ( '++' | '--' | '+' | '-' | '/' | '%' | '*' )
 
 LogicalOperator ::= ('&&' | '||' | '!')
 
-BitwiseOperator ::= ('&' | '|' | '^' | '~' | '<<' | '>>')
+BitwiseOperator ::= ( '<<' | '>>' | '&' | '|' | '^' | '~')
 
 Loops ::= ForLoop | whileLoop | untilLoop | doWhileLoop | doUntilLoop
 
@@ -202,7 +208,7 @@ EmptyInitialization ::= Semicolon
 
 TypeInitialization ::= StaticModifier? Type VariableList  ArithmeticInitialization* Semicolon
 
-private VariableList ::= VariableName Equals (NUMBER | STRING | IDENTIFIER | LogicalType) (CommaSymbol VariableList)?//check logical type
+private VariableList ::= VariableName Equals (NUMBER | STRING | IDENTIFIER ) (CommaSymbol VariableList)?//check logical type
 
 private ArithmeticInitialization ::= ArithmeticOperator (NUMBER | STRING | IDENTIFIER)
 
@@ -210,7 +216,7 @@ private Condition ::= (EmptyCondition | (NormalCondition Semicolon) | Arithmetic
 
 private LogicalCondition ::= RelationalOperator
 
-private ComparisonCondition ::= (IDENTIFIER | NUMBER | STRING) LogicalCondition (IDENTIFIER ArithmeticInitialization*| NUMBER ArithmeticInitialization* | STRING ArithmeticInitialization*| LogicalType) (LogicalOperator ComparisonCondition)?
+private ComparisonCondition ::= (IDENTIFIER | NUMBER | STRING) LogicalCondition (IDENTIFIER ArithmeticInitialization*| NUMBER ArithmeticInitialization* | STRING ArithmeticInitialization*) (LogicalOperator ComparisonCondition)?
 
 NormalCondition ::= ComparisonCondition (LogicalCondition ComparisonCondition)?
 
@@ -222,7 +228,7 @@ private Iteration ::=  NormalIteration | EmptyIteration
 
 EmptyIteration ::= //not sure with this...
 
-NormalIteration ::= IDENTIFIER (ArithmeticOperator | ArithmeticOperator IDENTIFIER | IDENTIFIER AssignmentOperator (NUMBER | STRING | LogicalType | IDENTIFIER)) (CommaSymbol NormalIteration)?
+NormalIteration ::= IDENTIFIER (ArithmeticOperator | ArithmeticOperator IDENTIFIER | IDENTIFIER AssignmentOperator (NUMBER | STRING | IDENTIFIER)) (CommaSymbol NormalIteration)?
 
 whileLoop ::= while OpenBracket AssignmentExpression CloseBracket Statement
 
@@ -234,7 +240,7 @@ doUntilLoop ::= do Statement until OpenBracket AssignmentExpression CloseBracket
 
 Type ::= (IntType | StringType | BoolType)
 
-private AllTypes ::= STRING | CHARACTER | EmptyString | LogicalType | ArrayInitializer | NUMBER | FLOAT
+private AllTypes ::= STRING | CHARACTER | NUMBER | FLOAT | EmptyString | ArrayInitializer
 
 BoolType ::= BOOL
 
@@ -250,7 +256,7 @@ ArrayInitializer ::= OpenBrace ArrayInitializers* CloseBrace (CommaSymbol ArrayI
 
 ArrayInitializers ::= ArrayInitializer | (NUMBER | STRING) (CommaSymbol ArrayInitializers)?
 
-LogicalType ::= true | false
+
 
 ReturnOperator ::= return Semicolon | return BinaryExpression Semicolon | return IDENTIFIER Semicolon // Use something else but IDENTIFIER later
 
@@ -262,7 +268,7 @@ IfThenStatement ::= if OpenBracket AssignmentExpression CloseBracket (Statement 
 
 IfThenElseStatement ::= if OpenBracket AssignmentExpression CloseBracket Statement else Statement
 
-SwitchLoop ::= switch OpenBracket (IDENTIFIER | NUMBER) CloseBracket OpenBrace CaseOperator CloseBrace
+SwitchLoop ::= switch OpenBracket (FunctionInvocation | IDENTIFIER | NUMBER) CloseBracket OpenBrace CaseOperator CloseBrace
 
 CaseOperator ::=   CaseIdentifier Statement*  (default Colon Statement)? CaseOperator?
 

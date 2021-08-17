@@ -42,6 +42,7 @@ public class ACSScriptSyntaxAttributeKeySupplier {
         elements.put(ACSScriptTypes.SCRIPT, () -> new TextAttributesKey[]{KEY});
         elements.put(ACSScriptTypes.FUNCTION, () -> new TextAttributesKey[]{KEY});
         elements.put(ACSScriptTypes.TERMINATE, () -> new TextAttributesKey[]{KEY});
+        elements.put(ACSScriptTypes.SUSPEND, () -> new TextAttributesKey[]{KEY});
         elements.put(ACSScriptTypes.INT, () -> new TextAttributesKey[]{KEY});
         elements.put(ACSScriptTypes.VARIABLE_DEFINITION, () -> new TextAttributesKey[]{KEY});
         elements.put(ACSScriptTypes.STRING, () -> new TextAttributesKey[]{STRING_VALUE});
@@ -52,8 +53,6 @@ public class ACSScriptSyntaxAttributeKeySupplier {
         elements.put(ACSScriptTypes.STR, () -> new TextAttributesKey[]{KEY});
         elements.put(ACSScriptTypes.NUMBER, () -> new TextAttributesKey[]{INT_VALUE});
         elements.put(ACSScriptTypes.FLOAT, () -> new TextAttributesKey[]{INT_VALUE});
-        elements.put(ACSScriptTypes.TRUE, () -> new TextAttributesKey[]{KEY});
-        elements.put(ACSScriptTypes.FALSE, () -> new TextAttributesKey[]{KEY});
         elements.put(ACSScriptTypes.BREAK, () -> new TextAttributesKey[]{KEY});
         elements.put(ACSScriptTypes.DEFAULT, () -> new TextAttributesKey[]{KEY});
         elements.put(ACSScriptTypes.IF, () -> new TextAttributesKey[]{KEY});
