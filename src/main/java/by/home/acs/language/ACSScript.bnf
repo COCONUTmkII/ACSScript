@@ -110,7 +110,7 @@ ScriptParameterList ::= ScriptFormalParameter (CommaSymbol ScriptFormalParameter
 
 ScriptFormalParameter ::= IntType IDENTIFIER
 
-ScriptBody ::= OpenBrace Statement* CloseBrace
+ScriptBody ::= CodeBlock | Statement
 
 /**
     Function statements
@@ -186,17 +186,18 @@ SimpleInitialization ::= AllTypes (CommaSymbol VariableName Equals AllTypes)*
 
 LiteralExpression ::= (AllTypes | IDENTIFIER)
 
+//FIXME FIX THIS GOD DAMN OPERATORS!
 Operator ::= (LogicalOperator | BitwiseOperator | RelationalOperator | AssignmentOperator | ArithmeticOperator )
 
-AssignmentOperator ::= ('=' | '*=' | '/=' | '%=' | '+=' | '-=' | '<<=' | '>>=' | '&=' | '^=' | '|=')
+AssignmentOperator ::= ( '=' | '*=' | '/=' | '%=' | '+=' | '-=' | '<<=' | '>>=' | '&=' | '^=' | '|=' )
 
-RelationalOperator ::= ('>=' | '<=' | '>' | '<' | '==' | '!=' )
+RelationalOperator ::= ( '>=' | '<=' | '>' | '<' | '==' | '!=' )
 
 ArithmeticOperator ::= ( '++' | '--' | '+' | '-' | '/' | '%' | '*' )
 
-LogicalOperator ::= ('&&' | '||' | '!')
+LogicalOperator ::= ( '&&' | '||' | '!' )
 
-BitwiseOperator ::= ( '<<' | '>>' | '&' | '|' | '^' | '~')
+BitwiseOperator ::= ( '<<' | '>>' | '&' | '|' | '^' | '~' )
 
 Loops ::= ForLoop | whileLoop | untilLoop | doWhileLoop | doUntilLoop
 
