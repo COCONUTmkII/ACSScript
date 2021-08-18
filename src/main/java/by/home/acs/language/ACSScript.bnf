@@ -186,12 +186,13 @@ SimpleInitialization ::= AllTypes (CommaSymbol VariableName Equals AllTypes)*
 
 LiteralExpression ::= (AllTypes | IDENTIFIER)
 
-//FIXME FIX THIS GOD DAMN OPERATORS!
-Operator ::= (LogicalOperator | BitwiseOperator | RelationalOperator | AssignmentOperator | ArithmeticOperator )
+Operator ::= (EqualityOperator | AssignmentOperator | ComparisonOperator | LogicalOperator | BitwiseOperator | ArithmeticOperator )
 
 AssignmentOperator ::= ( '=' | '*=' | '/=' | '%=' | '+=' | '-=' | '<<=' | '>>=' | '&=' | '^=' | '|=' )
 
-RelationalOperator ::= ( '>=' | '<=' | '>' | '<' | '==' | '!=' )
+ComparisonOperator ::= ( '>=' | '<=' | '>' | '<' )
+
+EqualityOperator ::= ( '==' | '!=')
 
 ArithmeticOperator ::= ( '++' | '--' | '+' | '-' | '/' | '%' | '*' )
 
@@ -215,7 +216,7 @@ private ArithmeticInitialization ::= ArithmeticOperator (NUMBER | STRING | IDENT
 
 private Condition ::= (EmptyCondition | (NormalCondition Semicolon) | ArithmeticCondition)
 
-private LogicalCondition ::= RelationalOperator
+private LogicalCondition ::= ComparisonOperator
 
 private ComparisonCondition ::= (IDENTIFIER | NUMBER | STRING) LogicalCondition (IDENTIFIER ArithmeticInitialization*| NUMBER ArithmeticInitialization* | STRING ArithmeticInitialization*) (LogicalOperator ComparisonCondition)?
 
