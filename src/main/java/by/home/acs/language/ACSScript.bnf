@@ -186,7 +186,7 @@ SimpleInitialization ::= AllTypes (CommaSymbol VariableName Equals AllTypes)*
 
 LiteralExpression ::= (AllTypes | IDENTIFIER)
 
-Operator ::= (EqualityOperator | AssignmentOperator | ComparisonOperator | LogicalOperator | BitwiseOperator | ArithmeticOperator )
+Operator ::= (EqualityOperator | AssignmentOperator | LogicalOperator | UnaryOperator  | BitwiseOperator | ComparisonOperator | ArithmeticOperator )
 
 AssignmentOperator ::= ( '=' | '*=' | '/=' | '%=' | '+=' | '-=' | '<<=' | '>>=' | '&=' | '^=' | '|=' )
 
@@ -198,7 +198,9 @@ ArithmeticOperator ::= ( '++' | '--' | '+' | '-' | '/' | '%' | '*' )
 
 LogicalOperator ::= ( '&&' | '||' | '!' )
 
-BitwiseOperator ::= ( '<<' | '>>' | '&' | '|' | '^' | '~' )
+BitwiseOperator ::= ( '<<' | '>>' )
+
+UnaryOperator ::= ('&' | '|' | '^' | '~')
 
 Loops ::= ForLoop | whileLoop | untilLoop | doWhileLoop | doUntilLoop
 
