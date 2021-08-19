@@ -52,6 +52,11 @@
                          bundle="inspectionBundle.ACSInspectionBundle"
                          enabledByDefault="true" groupKey="acs.inspection"/>
         <lang.braceMatcher language="ACSScript" implementationClass="by.home.acs.language.ACSBraceMatcher"/>
+        <localInspection implementationClass="by.home.acs.language.inspection.ACSTestFuncInspection"
+                         displayName="Test"
+                         bundle="inspectionBundle.ACSInspectionBundle"
+                         enabledByDefault="true"
+                         groupKey="acs.inspection"/>
     </extensions>
 
     <actions>
