@@ -117,7 +117,42 @@ ScriptBody ::= CodeBlock | Statement
  */
 FunctionIdentifier ::= FUNCTION
 
-FunctionInvocation ::= IDENTIFIER OpenBracket FunctionInvokeParameters* CloseBracket
+FunctionInvocation ::= NormalFunctionInvocation | TypeCastFunctionInvocation | MixedCastFunctionInvocation
+
+NormalFunctionInvocation ::= IDENTIFIER OpenBracket FunctionInvokeParameters* CloseBracket
+
+TypeCastFunctionInvocation ::= IDENTIFIER OpenBracket TypeCastFunctionInvokeParameters CloseBracket
+
+MixedCastFunctionInvocation ::= IDENTIFIER OpenBracket MixedCastFunctionInvokeParameters CloseBracket
+
+TypeCastFunctionInvokeParameters ::= TypeCast Colon BinaryExpression (CommaSymbol TypeCastFunctionInvokeParameters)*
+
+MixedCastFunctionInvokeParameters ::= TypeCast Colon BinaryExpression (CommaSymbol TypeCastFunctionInvokeParameters | Semicolon FunctionInvokeParameters)*
+/**
+    TypeCasts parameters. All type cast parameters are case-sensitive. E.g. parameter 'S' instead of 's' will not work
+ */
+TypeCast ::= TypeCastArray | TypeCastBinary | TypeCastCharacter | TypeCastDecimal
+                | TypeCastFixedPointNumber | TypeCastKey | TypeCastLanguage | TypeCastName | TypeCastString | TypeCastHex
+
+TypeCastArray ::= 'a'
+
+TypeCastBinary ::= 'b'
+
+TypeCastCharacter ::= 'c'
+
+TypeCastDecimal ::= 'i' | 'd'
+
+TypeCastFixedPointNumber ::= 'f'
+
+TypeCastKey ::= 'k'
+
+TypeCastLanguage ::= 'l'
+
+TypeCastName ::= 'n'
+
+TypeCastString ::= 's'
+
+TypeCastHex ::= 'x'
 
 FunctionInvokeParameters ::= BinaryExpression (CommaSymbol FunctionInvokeParameters)*
 
@@ -153,9 +188,11 @@ TerminateKeyword ::= terminate Semicolon
 
 SuspendKeyword ::= suspend Semicolon
 
+RestartKeyword ::= restart Semicolon
+
 Statement ::= (StatementWithoutSub | IncrementOrDecrementExpression Semicolon | VariableDefinition | AssignmentStatement | FunctionInvocation Semicolon | IfThenElseStatement | IfThenStatement | Loops | SwitchLoop)
 
-StatementWithoutSub ::= (CodeBlock | BreakStatement | ContinueStatement | ReturnOperator | SuspendKeyword | TerminateKeyword)
+StatementWithoutSub ::= (CodeBlock | BreakStatement | ContinueStatement | ReturnOperator | SuspendKeyword | RestartKeyword | TerminateKeyword)
 
 CodeBlock ::= OpenBrace Statement* CloseBrace
 
@@ -165,7 +202,7 @@ AssignmentExpression ::= (ParenthesisedExpression | BinaryExpression | FunctionI
 
 ArrayReferenceExpression ::= IDENTIFIER ArrayReference+
 
-ArrayReference ::= OpenSquareBracket (NUMBER | IDENTIFIER) CloseSquareBracket
+ArrayReference ::= OpenSquareBracket (BinaryExpression) CloseSquareBracket
 
 IncrementOrDecrementExpression ::= LiteralExpression '++' | LiteralExpression '--' | '++' LiteralExpression | '--' LiteralExpression
 

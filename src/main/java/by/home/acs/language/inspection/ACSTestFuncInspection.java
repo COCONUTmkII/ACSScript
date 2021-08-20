@@ -41,7 +41,7 @@ public class ACSTestFuncInspection extends AbstractBaseJavaLocalInspectionTool {
             super.visitElement(element);
             if (element instanceof ACSScriptFunctionInvocation) {
                 try {
-                    PsiElement typeElement = element.getFirstChild();
+                    PsiElement typeElement = element.getFirstChild().getFirstChild();
                     checkSomething(typeElement);
                 } catch (NullPointerException ignored) {
 
@@ -54,7 +54,8 @@ public class ACSTestFuncInspection extends AbstractBaseJavaLocalInspectionTool {
             if (test) {
                 myHolder.registerProblem(element, "HEHE");
             } else {
-                System.out.println(element.getText());
+                System.out.println(element);
+
             }
         }
 

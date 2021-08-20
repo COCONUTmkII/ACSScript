@@ -9,9 +9,10 @@ public class ACSBuiltInMethods {
 
     static {
         Set<String> methods = new ConcurrentSkipListSet<>();
-        methods.add("print");
+        methods.add("Print");
         methods.add("ACS_NamedExecuteWithResult");
         methods.add("ACS_NamedExecute");
+//        methods
         allMethods = Collections.unmodifiableSet(methods);
     }
 
