@@ -1,6 +1,6 @@
 package by.home.acs.language.inspection;
 
-import by.home.acs.language.method.ACSBuiltInMethods;
+import by.home.acs.language.method.ACSZspecialMethodLoader;
 import by.home.acs.language.psi.ACSScriptFunctionInvocation;
 import com.intellij.codeInspection.AbstractBaseJavaLocalInspectionTool;
 import com.intellij.codeInspection.ProblemsHolder;
@@ -15,7 +15,7 @@ public class ACSTestFuncInspection extends AbstractBaseJavaLocalInspectionTool {
     @Nls(capitalization = Nls.Capitalization.Sentence)
     @NotNull
     public String getGroupDisplayName() {
-        return "ACS type-cast";
+        return "ACS zcommon methods";
     }
 
     @Override
@@ -42,21 +42,24 @@ public class ACSTestFuncInspection extends AbstractBaseJavaLocalInspectionTool {
             if (element instanceof ACSScriptFunctionInvocation) {
                 try {
                     PsiElement typeElement = element.getFirstChild().getFirstChild();
-                    checkSomething(typeElement);
+                    boolean isZspecialMethod = checkSomething(typeElement);
+                    if (isZspecialMethod) {
+                        PsiElement includeDeclaration = element.getContainingFile().getFirstChild();
+
+                        if (includeDeclaration != null) {
+                            System.out.println(includeDeclaration);
+                        } else {
+                            //System.out.println(element.getContainingFile().getNode().getPsi());
+                        }
+                    }
                 } catch (NullPointerException ignored) {
 
                 }
             }
         }
 
-        public void checkSomething(PsiElement element) {
-            boolean test = ACSBuiltInMethods.isBuiltInMethod(element.getText());
-            if (test) {
-                myHolder.registerProblem(element, "HEHE");
-            } else {
-                System.out.println(element);
-
-            }
+        public boolean checkSomething(PsiElement element) {
+            return ACSZspecialMethodLoader.checkZpecialMethod(element.getText());
         }
 
     }

@@ -1,0 +1,642 @@
+[
+  {
+    "parameter": "null",
+    "name": "ACS_ExecuteWait",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "ACS_NamedExecuteWait",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "Delay",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "NamedScriptWait",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "PolyWait",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "ScriptWait",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "TagWait",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "cos",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "FixedDiv",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "FixedMul",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "Random",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "sin",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "StrLen",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "VectorAngle",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "ActivatorTID",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "CheckActorCeilingTexture",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "CheckActorFloorTexture",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "CheckPlayerCamera",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "ClassifyActor",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "GameSkill",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "GameType",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "GetActorAngle",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "GetActorCeilingZ",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "GetActorFloorZ",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "GetActorLightLevel",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "GetActorPitch",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "GetActorProperty",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "GetActorX",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "GetActorY",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "GetActorZ",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "GetAmmoCapacity",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "GetCVar",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "GetLevelInfo",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "GetLineRowOffset",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "GetPlayerInfo",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "GetPlayerInput",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "GetScreenHeight",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "GetScreenWidth",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "GetSectorCeilingZ",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "GetSectorFloorZ",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "GetSectorLightLevel",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "GetSigilPieces",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "LineSide",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "PlayerClass",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "PlayerCount",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "PlayerFrags",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "PlayerInGame",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "PlayerIsBot",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "PlayerNumber",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "SetResultValue",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "StrCmp",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "StrIcmp",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "ThingCount",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "ThingCountName",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "ThingCountNameSector",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "ThingCountSector",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "Timer",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "ActivatorSound",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "AmbientSound",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "LocalAmbientSound",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "LocalSetMusic",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "SectorSound",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "SetMusic",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "SoundSequence",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "ThingSound",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "CheckActorInventory",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "CheckInventory",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "CheckWeapon",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "ClearActorInventory",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "ClearInventory",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "GiveActorInventory",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "GiveInventory",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "SetWeapon",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "TakeActorInventory",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "TakeInventory",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "UseActorInventory",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "UseInventory",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "HudMessage",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "HudMessageBold",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "Log",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "Print",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "PrintBold",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "SetFont",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "SetHudClipRect",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "SetHudSize",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "SetHudWrapWidth",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "SetMugShotState",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "StrParam",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "StrCpy",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "ChangeCeiling",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "ChangeFloor",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "ChangeLevel",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "ChangeSky",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "ClearLineSpecial",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "Radius_Quake2",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "ReplaceTextures",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "SectorDamage",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "SetAirControl",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "SetCameraToTexture",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "SetCeilingTrigger",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "SetFloorTrigger",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "SetGravity",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "SetLineBlocking",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "SetLineMonsterBlocking",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "SetLineSpecial",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "SetLineTexture",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "CancelFade",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "CreateTranslation",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "FadeRange",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "FadeTo",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "MorphActor",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "SetActorAngle",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "SetActorPitch",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "SetActorPosition",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "SetActorProperty",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "SetActorState",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "SetAmmoCapacity",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "SetMarineSprite",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "SetMarineWeapon",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "SetSubtitleNumber",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "SetThingSpecial",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "Spawn",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "SpawnProjectile",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "SpawnSpot",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "SpawnSpotFacing",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "Thing_Damage2",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "Thing_Projectile2",
+    "returnType": "null"
+  },
+  {
+    "parameter": "null",
+    "name": "UnMorphActor",
+    "returnType": "null"
+  }
+]
