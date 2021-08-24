@@ -52,7 +52,7 @@
                          bundle="inspectionBundle.ACSInspectionBundle"
                          enabledByDefault="true" groupKey="acs.inspection"/>
         <lang.braceMatcher language="ACSScript" implementationClass="by.home.acs.language.ACSBraceMatcher"/>
-        <localInspection implementationClass="by.home.acs.language.inspection.ACSTestFuncInspection"
+        <localInspection implementationClass="by.home.acs.language.inspection.ACSZcommonFunctionInspection"
                          displayName="Test"
                          bundle="inspectionBundle.ACSInspectionBundle"
                          enabledByDefault="true"
