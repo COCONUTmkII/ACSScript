@@ -1,4 +1,4 @@
-package by.home.acs.language.psi.impl;
+package by.home.acs.language.util.psi;
 
 import by.home.acs.language.ACSScriptTypes;
 import by.home.acs.language.psi.ACSScriptDefinition;

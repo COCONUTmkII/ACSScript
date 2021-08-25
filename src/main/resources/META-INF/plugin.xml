@@ -53,10 +53,16 @@
                          enabledByDefault="true" groupKey="acs.inspection"/>
         <lang.braceMatcher language="ACSScript" implementationClass="by.home.acs.language.ACSBraceMatcher"/>
         <localInspection implementationClass="by.home.acs.language.inspection.ACSZcommonFunctionInspection"
-                         displayName="Test"
+                         displayName="ACSZcommonBuiltInFunctionInspection"
                          bundle="inspectionBundle.ACSInspectionBundle"
                          enabledByDefault="true"
-                         groupKey="acs.inspection"/>
+                         groupName="Functions"/>
+        <localInspection
+                groupName="Functions"
+                implementationClass="by.home.acs.language.inspection.ACSFunctionIsInvokedButNotCreatedInspection"
+                displayName="ACSFunctionIsInvokedButNotCreatedInspection"
+                bundle="inspectionBundle.ACSInspectionBundle"
+                enabledByDefault="true"/>
     </extensions>
 
     <actions>

@@ -2,7 +2,7 @@ package by.home.acs.language.annotator;
 
 import by.home.acs.language.ACSScriptTypes;
 import by.home.acs.language.psi.ACSScriptScriptName;
-import by.home.acs.language.util.PsiHelper;
+import by.home.acs.language.util.psi.PsiHelper;
 import com.intellij.codeInspection.ProblemHighlightType;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.annotation.AnnotationHolder;

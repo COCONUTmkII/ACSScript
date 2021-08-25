@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Optional;
 
 import static by.home.acs.language.completion.lookup.VariableLookupElement.createLookupElementWithTailAndIcon;
-import static by.home.acs.language.util.PsiHelper.psiEquals;
+import static by.home.acs.language.util.psi.PsiHelper.psiEquals;
 import static com.intellij.openapi.util.IconLoader.getIcon;
 
 public class ACSScriptTypeCompletionContributor extends CompletionContributor {

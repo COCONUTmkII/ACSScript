@@ -15,7 +15,7 @@
   elementTypeClass="by.home.acs.language.psi.ACSScriptElementType"
   tokenTypeClass="by.home.acs.language.psi.ACSScriptTokenType"
 
-  psiImplUtilClass="by.home.acs.language.psi.impl.ACSScriptPsiImplUtil"
+  psiImplUtilClass="by.home.acs.language.util.psi.ACSScriptPsiImplUtil"
   generate=[tokens="yes"]
 
   tokens = [

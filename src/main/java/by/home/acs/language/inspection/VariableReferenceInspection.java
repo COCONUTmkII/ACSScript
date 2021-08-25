@@ -15,7 +15,7 @@ import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 
 import static by.home.acs.language.ACSScriptTypes.*;
-import static by.home.acs.language.util.PsiHelper.psiEquals;
+import static by.home.acs.language.util.psi.PsiHelper.psiEquals;
 
 public class VariableReferenceInspection extends AbstractBaseJavaLocalInspectionTool {
     public static final String DESCRIPTION = "typecast compilable, but it may lead to errors";

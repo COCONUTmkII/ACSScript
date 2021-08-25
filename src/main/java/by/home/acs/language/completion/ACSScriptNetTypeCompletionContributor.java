@@ -12,7 +12,7 @@ import java.util.Optional;
 
 import static by.home.acs.language.completion.lookup.VariableLookupElement.createBoldLookupElement;
 import static by.home.acs.language.completion.lookup.VariableLookupElement.createLookupElementWithTailAndIcon;
-import static by.home.acs.language.util.PsiHelper.psiEquals;
+import static by.home.acs.language.util.psi.PsiHelper.psiEquals;
 import static com.intellij.patterns.PsiJavaPatterns.psiElement;
 
 public class ACSScriptNetTypeCompletionContributor extends CompletionContributor {

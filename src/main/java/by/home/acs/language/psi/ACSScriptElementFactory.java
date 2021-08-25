@@ -29,4 +29,12 @@ public class ACSScriptElementFactory {
         return PsiFileFactory.getInstance(project)
                 .createFileFromText(ACS_DUMMY, ACSScriptLanguage.INSTANCE, "#include \"" + includeFileName + "\"\n\n");
     }
+
+    public static PsiElement createFunctionWithProvidedName(Project project, String functionName, String functionReturnType, String... parameters) {
+//        JavaPsiFacade
+        ACSScriptFunctionDefinition functionDefinition = (ACSScriptFunctionDefinition) PsiFileFactory.getInstance(project)
+                .createFileFromText(ACS_DUMMY, ACSScriptLanguage.INSTANCE, "function " + functionReturnType
+                        + " " + functionName + "(" + parameters[0] + ")" + "{" + "}");
+        return functionDefinition;
+    }
 }

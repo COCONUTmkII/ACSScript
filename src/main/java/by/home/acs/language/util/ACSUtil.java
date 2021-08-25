@@ -1,9 +1,11 @@
 package by.home.acs.language.util;
 
 import by.home.acs.language.ACSScriptType;
+import by.home.acs.language.method.ACSZspecialMethodLoader;
 import by.home.acs.language.psi.*;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiManager;
 import com.intellij.psi.search.FileTypeIndex;
 import com.intellij.psi.search.GlobalSearchScope;
@@ -96,5 +98,9 @@ public class ACSUtil {
             }
         }
         return result;
+    }
+
+    public static boolean checkPsiElementIsZspecialFunction(PsiElement element) {
+        return ACSZspecialMethodLoader.checkZpecialMethod(element.getText());
     }
 }

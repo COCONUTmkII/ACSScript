@@ -1,9 +1,9 @@
 package by.home.acs.language.inspection;
 
-import by.home.acs.language.method.ACSZspecialMethodLoader;
 import by.home.acs.language.psi.ACSScriptElementFactory;
 import by.home.acs.language.psi.ACSScriptFunctionInvocation;
 import by.home.acs.language.psi.ACSScriptIncludeDeclaration;
+import by.home.acs.language.psi.visitor.ACSIncludeDeclarationVisitor;
 import com.intellij.codeInspection.*;
 import com.intellij.codeInspection.util.IntentionFamilyName;
 import com.intellij.openapi.project.Project;
@@ -16,6 +16,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 
+import static by.home.acs.language.util.ACSUtil.checkPsiElementIsZspecialFunction;
+
 public class ACSZcommonFunctionInspection extends AbstractBaseJavaLocalInspectionTool {
     private static final String DESCRIPTION = "'zcommon.acs' is not included to use this function";
 
@@ -24,7 +26,7 @@ public class ACSZcommonFunctionInspection extends AbstractBaseJavaLocalInspectio
     @Nls(capitalization = Nls.Capitalization.Sentence)
     @NotNull
     public String getGroupDisplayName() {
-        return "ACS zcommon methods";
+        return "ACS zcommon functions";
     }
 
     @Override
@@ -38,6 +40,7 @@ public class ACSZcommonFunctionInspection extends AbstractBaseJavaLocalInspectio
         return new ACSPsiVisitor(holder);
     }
 
+    //maybe I can refactor everything with ACSIncludeDeclarationVisitor instead of static class?
     public static class ACSPsiVisitor extends PsiElementVisitor {
         private final ProblemsHolder myHolder;
 
@@ -49,20 +52,17 @@ public class ACSZcommonFunctionInspection extends AbstractBaseJavaLocalInspectio
         public void visitElement(@NotNull PsiElement element) {
             super.visitElement(element);
             if (element instanceof ACSScriptFunctionInvocation) {
-                try {
-                    PsiElement typeElement = element.getFirstChild().getFirstChild();
-                    boolean isZspecialMethod = checkSomething(typeElement);
-                    if (isZspecialMethod) {
-                        PsiElement psiDefinition = element.getContainingFile().getFirstChild();
-                        Collection<ACSScriptIncludeDeclaration> includeDeclarations = PsiTreeUtil.findChildrenOfType(psiDefinition, ACSScriptIncludeDeclaration.class);
-                        if (includeDeclarations.size() == 0) {
-                            registerIncludeProblem(myHolder, element);
-                        } else {
-                            checkIncludeZcommonACSStatement(includeDeclarations, element);
-                        }
+                PsiElement typeElement = element.getFirstChild().getFirstChild();
+                boolean isZspecialFunction = checkPsiElementIsZspecialFunction(typeElement);
+                if (isZspecialFunction) {
+                    PsiElement psiFile = element.getContainingFile();
+                    psiFile.accept(new ACSIncludeDeclarationVisitor());
+                    Collection<ACSScriptIncludeDeclaration> includeDeclarations = PsiTreeUtil.findChildrenOfType(psiFile, ACSScriptIncludeDeclaration.class);
+                    if (includeDeclarations.size() == 0) {
+                        registerIncludeProblem(myHolder, element);
+                    } else {
+                        checkIncludeZcommonACSStatement(includeDeclarations, element);
                     }
-                } catch (NullPointerException ignored) {
-
                 }
             }
         }
@@ -72,17 +72,12 @@ public class ACSZcommonFunctionInspection extends AbstractBaseJavaLocalInspectio
                 String includedACS = acsScriptIncludeDeclaration.getString()
                         .getText().substring(1, acsScriptIncludeDeclaration.getString().getText().length() - 1);
                 if (!(includedACS.equalsIgnoreCase("zcommon.acs"))) {
-                    System.out.println(includedACS);
                     registerIncludeProblem(myHolder, function);
                 }
             });
         }
 
-        public boolean checkSomething(PsiElement element) {
-            return ACSZspecialMethodLoader.checkZpecialMethod(element.getText());
-        }
-
-        public void registerIncludeProblem(ProblemsHolder holder, PsiElement function) {
+        private void registerIncludeProblem(ProblemsHolder holder, PsiElement function) {
             holder.registerProblem(function, DESCRIPTION, ProblemHighlightType.LIKE_UNKNOWN_SYMBOL, new ACSZcommonIncludeFix());
         }
     }

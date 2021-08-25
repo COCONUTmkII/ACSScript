@@ -1,4 +1,4 @@
-package by.home.acs.language.util;
+package by.home.acs.language.util.psi;
 
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.IElementType;
