@@ -140,7 +140,7 @@ public class ACSBuiltInMethodLoader {
         methods = Collections.unmodifiableSet(methodSet);
     }
 
-    public boolean checkBuiltInMethods(String currentFunction) {
+    public static boolean checkBuiltInMethods(String currentFunction) {
         return methods.stream().anyMatch(acsZcommonMethod -> acsZcommonMethod.getName().equalsIgnoreCase(currentFunction));
     }
 }

@@ -3,6 +3,7 @@ package by.home.acs.language.inspection;
 import by.home.acs.language.psi.ACSScriptElementFactory;
 import by.home.acs.language.psi.ACSScriptFunctionDefinition;
 import by.home.acs.language.psi.ACSScriptFunctionInvocation;
+import by.home.acs.language.psi.ACSScriptFunctionInvokeParameters;
 import by.home.acs.language.psi.visitor.ACSFunctionDefinitionVisitor;
 import by.home.acs.language.util.ACSUtil;
 import com.intellij.codeInspection.*;
@@ -12,12 +13,12 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiWhiteSpace;
-import com.intellij.psi.impl.source.tree.PsiWhiteSpaceImpl;
 import com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
+import java.util.List;
 
 public class ACSFunctionIsInvokedButNotCreatedInspection extends AbstractBaseJavaLocalInspectionTool {
 
@@ -50,44 +51,53 @@ public class ACSFunctionIsInvokedButNotCreatedInspection extends AbstractBaseJav
         public void visitElement(@NotNull PsiElement element) {
             super.visitElement(element);
             if (element instanceof ACSScriptFunctionInvocation) {
-                boolean isZspecialFunction = checkIsFunctionBuiltInWithZcommon(element);
-                if (!isZspecialFunction) {
-                    checkIsFunctionDeclared(element);
+                List<ACSScriptFunctionInvokeParameters> nameAndParams = ((ACSScriptFunctionInvocation) element).getNormalFunctionInvocation().getFunctionInvokeParametersList();
+                if (nameAndParams.size() != 0) {
+                    nameAndParams.forEach(invokes -> System.out.println(invokes.getFirstChild().getFirstChild()));
+                }
+                PsiElement functionName = element.getFirstChild().getFirstChild();
+                boolean isZspecialFunction = checkIsFunctionBuiltInWithZcommon(functionName);
+                boolean isBuiltInFunction = checkIsFunctionBuiltIn(functionName);
+                if (!(isZspecialFunction || isBuiltInFunction)) {
+                    checkIsFunctionDeclared(functionName);
                 }
             }
         }
 
-        private boolean checkIsFunctionBuiltInWithZcommon(PsiElement functionInvocation) {
-            PsiElement functionName = functionInvocation.getFirstChild().getFirstChild();
+        private boolean checkIsFunctionBuiltInWithZcommon(PsiElement functionName) {
             return ACSUtil.checkPsiElementIsZspecialFunction(functionName);
         }
 
-        private void checkIsFunctionDeclared(PsiElement element) {
-            PsiFile currentFile = element.getContainingFile();
+        private boolean checkIsFunctionBuiltIn(PsiElement functionName) {
+            return ACSUtil.checkPsiElementIsBuiltInFunction(functionName);
+        }
+
+        private void checkIsFunctionDeclared(PsiElement functionName) {
+            PsiFile currentFile = functionName.getContainingFile();
             String fileName = currentFile.getName();
             currentFile.accept(new ACSFunctionDefinitionVisitor());
             Collection<ACSScriptFunctionDefinition> functionDefinitions = PsiTreeUtil.findChildrenOfType(currentFile, ACSScriptFunctionDefinition.class);
-            String functionName = element.getFirstChild().getFirstChild().getText();
-            String DESCRIPTION = ACSInspectionBundle.message("acs.inspection.function.invoke.not.created", functionName, fileName);
-
+            String functionNameAsString = functionName.getText();
+            String DESCRIPTION = ACSInspectionBundle.message("acs.inspection.function.invoke.not.created", functionNameAsString, fileName);
             if (functionDefinitions.size() == 0) {
-                checkIsFunctionDeclaredInImport(element);
-                registerFunctionInvokeProblem(element, DESCRIPTION, functionName, fileName);
+                checkIsFunctionDeclaredInImport(functionName);
+                registerFunctionInvokeProblem(functionName, DESCRIPTION, functionNameAsString, fileName);
             } else {
-                boolean isFind = findInvokedFunctionInFunctionDefinitions(functionDefinitions, functionName);
+                boolean isFind = findInvokedFunctionInFunctionDefinitions(functionDefinitions, functionNameAsString);
                 if (!isFind) {
-                    registerFunctionInvokeProblem(element, DESCRIPTION, functionName, fileName);
+                    registerFunctionInvokeProblem(functionName, DESCRIPTION, functionNameAsString, fileName);
                 }
             }
         }
 
         //TODO find info how to do that. Maybe reference contributor?
         private void checkIsFunctionDeclaredInImport(PsiElement element) {
-//
+
         }
 
+
         private void registerFunctionInvokeProblem(PsiElement element, String description, String functionName, String fileName) {
-            holder.registerProblem(element, description, ProblemHighlightType.GENERIC_ERROR, new ACSFunctionIsInvokedButNotCreatedFix(functionName, fileName));
+            holder.registerProblem(element, description, ProblemHighlightType.GENERIC_ERROR, new ACSFunctionIsInvokedButNotCreatedFix(functionName, fileName, "void", "void"));
         }
 
         private boolean findInvokedFunctionInFunctionDefinitions(Collection<ACSScriptFunctionDefinition> functionDefinitions, String currentFunction) {
@@ -98,10 +108,14 @@ public class ACSFunctionIsInvokedButNotCreatedInspection extends AbstractBaseJav
         private static class ACSFunctionIsInvokedButNotCreatedFix implements LocalQuickFix {
             private final String functionName;
             private final String fileName;
+            private final String functionReturnType;
+            private final String[] functionParameter;
 
-            public ACSFunctionIsInvokedButNotCreatedFix(String functionName, String fileName) {
+            public ACSFunctionIsInvokedButNotCreatedFix(String functionName, String fileName, String functionReturnType, String... functionParameter) {
                 this.functionName = functionName;
                 this.fileName = fileName;
+                this.functionReturnType = functionReturnType;
+                this.functionParameter = functionParameter;
             }
 
             @Override
@@ -111,25 +125,18 @@ public class ACSFunctionIsInvokedButNotCreatedInspection extends AbstractBaseJav
                 return ACSInspectionBundle.message("acs.inspection.function.invoke.create", functionName, fileName);
             }
 
+
             @Override
             public void applyFix(@NotNull Project project, @NotNull ProblemDescriptor descriptor) {
                 PsiFile psiFile = descriptor.getPsiElement().getContainingFile();
                 PsiElement lastChild = psiFile.getLastChild();
+                ACSScriptFunctionDefinition functionWithProvidedName = ACSScriptElementFactory.createFunctionWithProvidedName(project, functionName, functionReturnType, functionParameter);
                 if (lastChild instanceof PsiWhiteSpace) {
-                    lastChild.addAfter(ACSScriptElementFactory.createFunctionWithProvidedName(project, functionName, "void", "void"), new PsiWhiteSpaceImpl(""));
-                    System.out.println("==============================");
-                    System.out.println(lastChild);
-                    System.out.println("==============================");
-
-                    System.out.println("==============================");
-                    /*PsiElement newLastChild = descriptor.getPsiElement().getContainingFile().getLastChild();
-                    lastChild.addAfter(newLastChild, ACSScriptElementFactory
-                            .createFunctionWithProvidedName(project, functionName, "void", "void"));*/
-//                    lastChild.addAfter(ACSScriptElementFactory.createFunctionWithProvidedName(project, functionName, "void", "void"));
+                    lastChild.replace(functionWithProvidedName);
+                } else {
+                    lastChild.addAfter(functionWithProvidedName, lastChild);
                 }
-//                System.out.println(lastChild);
             }
-
         }
     }
 }
