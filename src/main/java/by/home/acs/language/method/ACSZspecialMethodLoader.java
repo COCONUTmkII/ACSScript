@@ -424,7 +424,9 @@ public class ACSZspecialMethodLoader {
         zspecialMethods = Collections.unmodifiableSet(methodSet);
     }
 
-    public static boolean checkZpecialMethod(String methodName) {
-        return zspecialMethods.stream().anyMatch(acsMethod -> acsMethod.getName().equalsIgnoreCase(methodName));
+    public static boolean checkZspecialFunction(String functionName) {
+        return zspecialMethods.stream().anyMatch(acsMethod -> acsMethod.getName().equalsIgnoreCase(functionName));
     }
+
+
 }

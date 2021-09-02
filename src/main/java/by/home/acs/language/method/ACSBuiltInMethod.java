@@ -4,8 +4,9 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ACSBuiltInMethods {
+public class ACSBuiltInMethod {
     private static final Set<ACSMethod> methods;
+
     static {
         final Set<ACSMethod> methodSet = new HashSet<>();
         methodSet.add(new ACSMethod("ACS_ExecuteWait", "null", "null"));

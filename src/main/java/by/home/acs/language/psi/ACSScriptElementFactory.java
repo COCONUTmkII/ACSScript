@@ -6,13 +6,15 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFileFactory;
 import com.intellij.psi.PsiManager;
 
+import java.util.List;
+
 public class ACSScriptElementFactory {
     private static final String ACS_DUMMY = "script.acs";
 
-    public static ACSScriptDefinition createScript(Project project, String name) {
+    public static ACSScriptScriptDefinition createScript(Project project, String name) {
         final ACSScriptFile file = createACSFile(project, name);
 
-        return (ACSScriptDefinition) file.getFirstChild(); //maybe not first child here
+        return (ACSScriptScriptDefinition) file.getFirstChild(); //maybe not first child here
     }
 
     public static ACSScriptFile createACSFile(Project project, String text) {
@@ -30,9 +32,10 @@ public class ACSScriptElementFactory {
                 .createFileFromText(ACS_DUMMY, ACSScriptLanguage.INSTANCE, "#include \"" + includeFileName + "\"\n\n");
     }
 
-    public static ACSScriptFunctionDefinition createFunctionWithProvidedName(Project project, String functionName, String functionReturnType, String... parameters) {
+    //TODO check parameters. If not void - create extra field with parameter name
+    public static ACSScriptFunctionDefinition createFunctionWithProvidedName(Project project, String functionName, String functionReturnType, List<String> parameters) {
         return (ACSScriptFunctionDefinition) PsiFileFactory.getInstance(project)
                 .createFileFromText(ACS_DUMMY, ACSScriptLanguage.INSTANCE, "function " + functionReturnType
-                        + " " + functionName + "(" + parameters[0] + ")" + "{" + "}").getFirstChild().getFirstChild();
+                        + " " + functionName + "(" + "int a" + ")" + "{" + "}").getFirstChild().getFirstChild();
     }
 }

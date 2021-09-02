@@ -1,6 +1,5 @@
 package by.home.acs.language.reference;
 
-import by.home.acs.language.psi.ACSScriptScriptName;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.patterns.PlatformPatterns;
 import com.intellij.psi.*;
@@ -19,11 +18,8 @@ public class ACSNameReferenceContributor extends PsiReferenceContributor {
                         PsiLiteralExpression test = (PsiLiteralExpression) element;
                         Integer testName = test.getValue() instanceof Integer ? (Integer) test.getValue() : null;
                         if (testName != null) {
-                            System.out.println("S");
                             TextRange textRange = new TextRange(element.getTextRange().getStartOffset(), element.getTextRange().getEndOffset());
                             return new PsiReference[]{new ACSNameReference(element, textRange)};
-                        } else {
-                            System.out.println(element.getNode());
                         }
                         return PsiReference.EMPTY_ARRAY;
                     }

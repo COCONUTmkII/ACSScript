@@ -100,7 +100,6 @@ public class ACSZcommonFunctionInspection extends AbstractBaseJavaLocalInspectio
             } else {
                 descriptor.getPsiElement().getContainingFile().addBefore(includeStatement, psi);
             }
-            System.out.println(psi);
         }
     }
 

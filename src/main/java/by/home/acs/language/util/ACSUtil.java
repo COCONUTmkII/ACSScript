@@ -2,6 +2,7 @@ package by.home.acs.language.util;
 
 import by.home.acs.language.ACSScriptType;
 import by.home.acs.language.method.ACSBuiltInMethodLoader;
+import by.home.acs.language.method.ACSTypeCastMethodLoader;
 import by.home.acs.language.method.ACSZspecialMethodLoader;
 import by.home.acs.language.psi.*;
 import com.intellij.openapi.project.Project;
@@ -102,10 +103,14 @@ public class ACSUtil {
     }
 
     public static boolean checkPsiElementIsZspecialFunction(PsiElement element) {
-        return ACSZspecialMethodLoader.checkZpecialMethod(element.getText());
+        return ACSZspecialMethodLoader.checkZspecialFunction(element.getText());
     }
 
     public static boolean checkPsiElementIsBuiltInFunction(PsiElement element) {
-        return ACSBuiltInMethodLoader.checkBuiltInMethods(element.getText());
+        return ACSBuiltInMethodLoader.checkBuiltInFunction(element.getText());
+    }
+
+    public static boolean checkPsiElementIsTypeCastBuiltInFunction(PsiElement element) {
+        return ACSTypeCastMethodLoader.checkTypeCastBuiltInMethod(element.getText());
     }
 }

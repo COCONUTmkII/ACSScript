@@ -1,30 +1,33 @@
 package by.home.acs.language.util.psi;
 
 import by.home.acs.language.ACSScriptTypes;
-import by.home.acs.language.psi.ACSScriptDefinition;
-import by.home.acs.language.psi.ACSScriptElementFactory;
-import by.home.acs.language.psi.ACSScriptScriptDefinition;
+import by.home.acs.language.psi.*;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiFile;
+import com.intellij.psi.util.PsiTreeUtil;
 
 public class ACSScriptPsiImplUtil {
     public static String getName(ACSScriptDefinition scriptElement) {
-        ASTNode scriptNode = scriptElement.getNode().findChildByType(ACSScriptTypes.SCRIPT_NAME);
-        if (scriptNode != null) {
-            return scriptNode.getText().replaceAll("\\\\ ", "");
+        PsiFile containingFile = scriptElement.getContainingFile();
+        ACSScriptScriptName scriptName = PsiTreeUtil.findChildOfType(containingFile, ACSScriptScriptName.class);
+        if (scriptName != null) {
+            System.out.println(scriptName.getText());
+            return scriptName.getText().replaceAll("\\\\ ", "");
         } else {
             return null;
         }
     }
 
+    //FIXME throws exception
     public static PsiElement setName(ACSScriptDefinition scriptWord, String newScriptName) {
-        ASTNode currentNameNode = scriptWord.getNode().findChildByType(ACSScriptTypes.SCRIPT_NAME);
-        if (currentNameNode != null) {
-            ACSScriptDefinition acsScriptDefinition = ACSScriptElementFactory.createScript(scriptWord.getProject(), newScriptName);
-            ASTNode newNameNode = acsScriptDefinition.getFirstChild().getNode(); //maybe change this
-            scriptWord.getNode().replaceChild(currentNameNode, newNameNode);
+        PsiFile containingFile = scriptWord.getContainingFile();
+        ACSScriptScriptName scriptName = PsiTreeUtil.findChildOfType(containingFile, ACSScriptScriptName.class);
+        if (scriptName != null) {
+            ACSScriptScriptDefinition acsScriptDefinition = ACSScriptElementFactory.createScript(scriptWord.getProject(), newScriptName);
+            scriptName.replace(acsScriptDefinition);
         } else {
-            System.out.println("null");
+            System.out.println("Null");
         }
         return scriptWord;
     }
@@ -40,6 +43,7 @@ public class ACSScriptPsiImplUtil {
     }
 
     public static String getFunctionKeyword(ACSScriptDefinition element) {
+        System.out.println("LOLOLOLO");
         ASTNode functionKeywordNode = element.getNode().findChildByType(ACSScriptTypes.FUNCTION);
         if (functionKeywordNode != null) {
             return functionKeywordNode.getText();
@@ -61,6 +65,18 @@ public class ACSScriptPsiImplUtil {
         ASTNode keyNode = scriptWord.getNode().findChildByType(ACSScriptTypes.SCRIPT_NAME);
         if (keyNode != null) {
             return keyNode.getPsi();
+        } else {
+            return null;
+        }
+    }
+
+    public static PsiElement getFunctionInvocation(ACSScriptDefinition element) {
+        System.out.println("SSS?");
+        PsiFile containingFile = element.getContainingFile();
+        ACSScriptFunctionInvocation functionInvocation = PsiTreeUtil.findChildOfType(containingFile, ACSScriptFunctionInvocation.class);
+        if (functionInvocation != null) {
+            System.out.println("HEHE BOI");
+            return functionInvocation;
         } else {
             return null;
         }

@@ -1,17 +1,25 @@
 package by.home.acs.language.method;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 public class ACSMethod {
     private String name;
     private String returnType;
-    private String[] parameter;
+    private List<String> parameter = new ArrayList<>();
 
     public ACSMethod(String name, String returnType, String... parameter) {
         this.name = name;
         this.returnType = returnType;
-        this.parameter = parameter;
+        this.parameter.addAll(Arrays.asList(parameter));
+    }
+
+    public ACSMethod(String name, String returnType, List<String> typeCastParameters) {
+        this.name = name;
+        this.returnType = returnType;
+        this.parameter = typeCastParameters;
     }
 
     public String getName() {
@@ -30,11 +38,11 @@ public class ACSMethod {
         this.returnType = returnType;
     }
 
-    public String[] getParameter() {
+    public List<String> getParameter() {
         return parameter;
     }
 
-    public void setParameter(String[] parameter) {
+    public void setParameter(List<String> parameter) {
         this.parameter = parameter;
     }
 
@@ -42,14 +50,12 @@ public class ACSMethod {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ACSMethod that = (ACSMethod) o;
-        return Objects.equals(name, that.name) && Objects.equals(returnType, that.returnType) && Arrays.equals(parameter, that.parameter);
+        ACSMethod acsMethod = (ACSMethod) o;
+        return Objects.equals(name, acsMethod.name) && Objects.equals(returnType, acsMethod.returnType) && Objects.equals(parameter, acsMethod.parameter);
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(name, returnType);
-        result = 31 * result + Arrays.hashCode(parameter);
-        return result;
+        return Objects.hash(name, returnType, parameter);
     }
 }

@@ -14,7 +14,6 @@ public class ACSVariableCompletionContributor extends CompletionContributor {
             @Override
             protected void addCompletions(@NotNull CompletionParameters parameters, @NotNull ProcessingContext context, @NotNull CompletionResultSet result) {
                 {
-                    System.out.println(true);
                     result.addElement(LookupElementBuilder.create("int"));
                     result.addElement(LookupElementBuilder.create("str"));
                     result.addElement(LookupElementBuilder.create("bool"));

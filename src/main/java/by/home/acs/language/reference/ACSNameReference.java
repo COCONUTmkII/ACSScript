@@ -27,7 +27,6 @@ public class ACSNameReference extends PsiReferenceBase<PsiElement> implements Ps
         final List<ACSScriptScriptName> properties = ACSUtil.findScriptName(project);
         List<ResolveResult> results = new ArrayList<>();
         properties.forEach(property -> results.add(new PsiElementResolveResult(property)));
-        System.out.println(properties.size());
         return results.toArray(new ResolveResult[results.size()]);
     }
 

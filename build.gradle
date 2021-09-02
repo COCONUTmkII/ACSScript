@@ -6,7 +6,7 @@ plugins {
 group 'by.home'
 version '1.0-SNAPSHOT'
 
-sourceCompatibility = 1.8
+sourceCompatibility = 1.11
 
 repositories {
     mavenCentral()
@@ -38,3 +38,4 @@ sourceSets {
         }
     }
 }
+targetCompatibility = JavaVersion.VERSION_11

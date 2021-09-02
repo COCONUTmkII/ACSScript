@@ -63,6 +63,9 @@
                 displayName="ACSFunctionIsInvokedButNotCreatedInspection"
                 bundle="inspectionBundle.ACSInspectionBundle"
                 enabledByDefault="true"/>
+        <codeInsight.parameterNameHints language="ACSScript"
+                                        implementationClass="by.home.acs.language.hint.ACSTypeCastMethodHint"/>
+        <colorSettingsPage implementation="by.home.acs.language.highlight.ACSColourSettingsPage"/>
     </extensions>
 
     <actions>

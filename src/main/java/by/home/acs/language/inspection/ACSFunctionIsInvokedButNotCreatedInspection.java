@@ -3,7 +3,6 @@ package by.home.acs.language.inspection;
 import by.home.acs.language.psi.ACSScriptElementFactory;
 import by.home.acs.language.psi.ACSScriptFunctionDefinition;
 import by.home.acs.language.psi.ACSScriptFunctionInvocation;
-import by.home.acs.language.psi.ACSScriptFunctionInvokeParameters;
 import by.home.acs.language.psi.visitor.ACSFunctionDefinitionVisitor;
 import by.home.acs.language.util.ACSUtil;
 import com.intellij.codeInspection.*;
@@ -51,10 +50,6 @@ public class ACSFunctionIsInvokedButNotCreatedInspection extends AbstractBaseJav
         public void visitElement(@NotNull PsiElement element) {
             super.visitElement(element);
             if (element instanceof ACSScriptFunctionInvocation) {
-                List<ACSScriptFunctionInvokeParameters> nameAndParams = ((ACSScriptFunctionInvocation) element).getNormalFunctionInvocation().getFunctionInvokeParametersList();
-                if (nameAndParams.size() != 0) {
-                    nameAndParams.forEach(invokes -> System.out.println(invokes.getFirstChild().getFirstChild()));
-                }
                 PsiElement functionName = element.getFirstChild().getFirstChild();
                 boolean isZspecialFunction = checkIsFunctionBuiltInWithZcommon(functionName);
                 boolean isBuiltInFunction = checkIsFunctionBuiltIn(functionName);
@@ -87,6 +82,7 @@ public class ACSFunctionIsInvokedButNotCreatedInspection extends AbstractBaseJav
                 if (!isFind) {
                     registerFunctionInvokeProblem(functionName, DESCRIPTION, functionNameAsString, fileName);
                 }
+
             }
         }
 
@@ -97,7 +93,7 @@ public class ACSFunctionIsInvokedButNotCreatedInspection extends AbstractBaseJav
 
 
         private void registerFunctionInvokeProblem(PsiElement element, String description, String functionName, String fileName) {
-            holder.registerProblem(element, description, ProblemHighlightType.GENERIC_ERROR, new ACSFunctionIsInvokedButNotCreatedFix(functionName, fileName, "void", "void"));
+            holder.registerProblem(element, description, ProblemHighlightType.GENERIC_ERROR, new ACSFunctionIsInvokedButNotCreatedFix(functionName, fileName, "void", List.of("void")));
         }
 
         private boolean findInvokedFunctionInFunctionDefinitions(Collection<ACSScriptFunctionDefinition> functionDefinitions, String currentFunction) {
@@ -109,9 +105,9 @@ public class ACSFunctionIsInvokedButNotCreatedInspection extends AbstractBaseJav
             private final String functionName;
             private final String fileName;
             private final String functionReturnType;
-            private final String[] functionParameter;
+            private final List<String> functionParameter;
 
-            public ACSFunctionIsInvokedButNotCreatedFix(String functionName, String fileName, String functionReturnType, String... functionParameter) {
+            public ACSFunctionIsInvokedButNotCreatedFix(String functionName, String fileName, String functionReturnType, List<String> functionParameter) {
                 this.functionName = functionName;
                 this.fileName = fileName;
                 this.functionReturnType = functionReturnType;
