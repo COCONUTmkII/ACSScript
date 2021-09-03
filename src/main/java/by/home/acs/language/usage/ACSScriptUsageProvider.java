@@ -2,7 +2,7 @@ package by.home.acs.language.usage;
 
 import by.home.acs.language.ACSScriptLexerAdapter;
 import by.home.acs.language.ACSScriptTypes;
-import by.home.acs.language.psi.ACSScriptScriptDefinition;
+import by.home.acs.language.psi.ACSScriptDefinition;
 import com.intellij.lang.cacheBuilder.DefaultWordsScanner;
 import com.intellij.lang.cacheBuilder.WordsScanner;
 import com.intellij.lang.findUsages.FindUsagesProvider;
@@ -20,6 +20,7 @@ public class ACSScriptUsageProvider implements FindUsagesProvider {
                 TokenSet.create(ACSScriptTypes.DEFINITION),
                 TokenSet.create(ACSScriptTypes.COMMENT),
                 TokenSet.create(ACSScriptTypes.IDENTIFIER),
+                TokenSet.create(ACSScriptTypes.FUNCTION_INVOCATION),
                 TokenSet.EMPTY);
     }
 
@@ -37,7 +38,7 @@ public class ACSScriptUsageProvider implements FindUsagesProvider {
     @NotNull
     @Override
     public String getType(@NotNull PsiElement element) {
-        if (element instanceof ACSScriptScriptDefinition) {
+        if (element instanceof ACSScriptDefinition) {
             return "element";
         } else {
             return "";
@@ -47,7 +48,7 @@ public class ACSScriptUsageProvider implements FindUsagesProvider {
     @NotNull
     @Override
     public String getDescriptiveName(@NotNull PsiElement element) {
-        if (element instanceof ACSScriptScriptDefinition) {
+        if (element instanceof ACSScriptDefinition) {
             return element.getText();
         } else {
             return "";
@@ -57,7 +58,7 @@ public class ACSScriptUsageProvider implements FindUsagesProvider {
     @NotNull
     @Override
     public String getNodeText(@NotNull PsiElement element, boolean useFullName) {
-        if (element instanceof ACSScriptScriptDefinition) {
+        if (element instanceof ACSScriptDefinition) {
             return element.getText();
         } else {
             return "";

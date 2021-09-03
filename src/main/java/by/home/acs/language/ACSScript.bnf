@@ -15,7 +15,7 @@
   elementTypeClass="by.home.acs.language.psi.ACSScriptElementType"
   tokenTypeClass="by.home.acs.language.psi.ACSScriptTokenType"
 
-  psiImplUtilClass="by.home.acs.language.util.psi.ACSScriptPsiImplUtil"
+  psiImplUtilClass="by.home.acs.language.util.psi.ACSBnfPsiImplUtil"
   generate=[tokens="yes"]
 
   tokens = [
@@ -39,10 +39,7 @@ ACSScriptFile ::= FileContainer
 private FileContainer ::= (COMMENT|Definition*)
 
 Definition ::= (FunctionDefinition | ScriptDefinition | DirectivesDeclaration | GlobalModifier | SpecialDefinition | VariableDefinition)
- {  mixin="by.home.acs.language.psi.impl.ACSNamedElementImpl"
-    implements="by.home.acs.language.psi.ACSNamedElement"
-    methods=[getName setName getNameIdentifier getNameIdentifier getFunctionKeyword getFunctionStatementReturnType getFunctionInvocation]
- }
+
 
 /**
     Specials declaration
@@ -58,6 +55,11 @@ SpecialExpression ::= (NUMBER Colon FunctionInvocation) (CommaSymbol SpecialExpr
 FunctionDefinition ::= FunctionIdentifier FunctionReturnType FunctionNameAndParams FunctionBody
 
 ScriptDefinition ::= ScriptIdentifier ScriptName (ScriptPossibleParams | ScriptType) (NetType ClientsideType | NetType | ClientsideType)? ScriptBody
+{
+    mixin="by.home.acs.language.psi.impl.ACSNamedElementImpl"
+        implements="by.home.acs.language.psi.ACSNamedElement"
+        methods=[getName setName getNameIdentifier]
+}
 /**
     Directives statement
  */

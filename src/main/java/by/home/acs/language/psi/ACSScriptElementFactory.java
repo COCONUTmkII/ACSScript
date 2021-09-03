@@ -11,12 +11,6 @@ import java.util.List;
 public class ACSScriptElementFactory {
     private static final String ACS_DUMMY = "script.acs";
 
-    public static ACSScriptScriptDefinition createScript(Project project, String name) {
-        final ACSScriptFile file = createACSFile(project, name);
-
-        return (ACSScriptScriptDefinition) file.getFirstChild(); //maybe not first child here
-    }
-
     public static ACSScriptFile createACSFile(Project project, String text) {
         return (ACSScriptFile) PsiFileFactory.getInstance(project)
                 .createFileFromText(ACS_DUMMY, ACSScriptLanguage.INSTANCE, text);
@@ -37,5 +31,10 @@ public class ACSScriptElementFactory {
         return (ACSScriptFunctionDefinition) PsiFileFactory.getInstance(project)
                 .createFileFromText(ACS_DUMMY, ACSScriptLanguage.INSTANCE, "function " + functionReturnType
                         + " " + functionName + "(" + "int a" + ")" + "{" + "}").getFirstChild().getFirstChild();
+    }
+
+    public static ACSScriptScriptDefinition createScript(Project project, String newScriptName) {
+        return (ACSScriptScriptDefinition) PsiFileFactory.getInstance(project)
+                .createFileFromText(ACS_DUMMY, ACSScriptLanguage.INSTANCE, "script \"" + newScriptName + "\" OPEN NET {}").getFirstChild().getFirstChild();
     }
 }
