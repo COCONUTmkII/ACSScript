@@ -6,7 +6,6 @@ import by.home.acs.language.psi.ACSScriptFunctionInvocation;
 import by.home.acs.language.util.ACSUtil;
 import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
-import com.intellij.model.SymbolResolveResult;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
@@ -31,8 +30,8 @@ public class ACSFunctionReference extends PsiReferenceBase<PsiElement> implement
         final List<ACSScriptFunctionDefinition> functionDefinitions = ACSUtil.findFunctionDefinition(project, functionName);
         final List<ACSScriptFunctionInvocation> functionInvocations = ACSUtil.findFunctionInvocation(project, functionName);
         List<ResolveResult> results = new ArrayList<>();
-        functionDefinitions.forEach(acsScriptFunctionDefinition -> results.add(new PsiElementResolveResult(acsScriptFunctionDefinition)));
-        functionInvocations.forEach(acsScriptFunctionInvocation -> results.add(new PsiElementResolveResult(acsScriptFunctionInvocation)));
+        functionDefinitions.forEach(acsScriptFunctionDefinition -> results.add(new PsiElementResolveResult(acsScriptFunctionDefinition.getFunctionName())));
+        functionInvocations.forEach(acsScriptFunctionInvocation -> results.add(new PsiElementResolveResult(acsScriptFunctionInvocation.getFunctionName())));
         return results.toArray(new ResolveResult[results.size()]);
     }
 
@@ -63,5 +62,6 @@ public class ACSFunctionReference extends PsiReferenceBase<PsiElement> implement
         System.out.println(variants.size());
         return variants.toArray();
     }
+
 
 }

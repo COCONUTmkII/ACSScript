@@ -27,8 +27,28 @@ public class ACSBnfPsiImplUtil {
         }
     }
 
+    public static String getName(ACSScriptFunctionInvocation functionElement) {
+        ASTNode scriptName = functionElement.getNode().findChildByType(ACSScriptTypes.FUNCTION_NAME);
+        if (scriptName != null) {
+            return scriptName.getText();
+        } else {
+            return null;
+        }
+    }
 
     public static ACSScriptScriptDefinition setName(ACSScriptScriptDefinition scriptWord, String newScriptName) {
+        ASTNode scriptName = scriptWord.getNode().findChildByType(ACSScriptTypes.SCRIPT_NAME);
+        if (scriptName != null) {
+            ACSScriptScriptDefinition acsScriptDefinition = ACSScriptElementFactory.createScript(scriptWord.getProject(), newScriptName);
+            PsiElement psi = scriptName.getPsi();
+            psi.replace(acsScriptDefinition.getScriptName());
+        } else {
+            return null;
+        }
+        return scriptWord;
+    }
+
+    public static ACSScriptFunctionInvocation setName(ACSScriptFunctionInvocation scriptWord, String newScriptName) {
         ASTNode scriptName = scriptWord.getNode().findChildByType(ACSScriptTypes.SCRIPT_NAME);
         if (scriptName != null) {
             ACSScriptScriptDefinition acsScriptDefinition = ACSScriptElementFactory.createScript(scriptWord.getProject(), newScriptName);
@@ -99,6 +119,15 @@ public class ACSBnfPsiImplUtil {
         }
     }
 
+    public static PsiElement getNameIdentifier(ACSScriptFunctionInvocation scriptWord) {
+        ASTNode keyNode = scriptWord.getNode().findChildByType(ACSScriptTypes.SCRIPT_NAME);
+        if (keyNode != null) {
+            return keyNode.getPsi();
+        } else {
+            return null;
+        }
+    }
+
 
     public static PsiElement getFunctionInvocation(ACSScriptDefinition element) {
         System.out.println("SSS?");
@@ -107,6 +136,33 @@ public class ACSBnfPsiImplUtil {
         if (functionInvocation != null) {
             System.out.println("HEHE BOI");
             return functionInvocation;
+        } else {
+            return null;
+        }
+    }
+
+    public static PsiElement getNameIdentifier(ACSScriptFunctionName functionName) {
+        if (functionName != null) {
+            return functionName;
+        } else {
+            return null;
+        }
+    }
+
+    public static ACSScriptFunctionName setName(ACSScriptFunctionName functionDefinition, String newScriptName) {
+        if (functionDefinition != null) {
+            ACSScriptFunctionDefinition acsScriptDefinition = ACSScriptElementFactory.createSimpleFunction(functionDefinition.getProject(), newScriptName);
+            functionDefinition.replace(acsScriptDefinition.getFunctionName());
+        } else {
+            System.out.println("function name null");
+            return null;
+        }
+        return functionDefinition;
+    }
+
+    public static String getName(ACSScriptFunctionName functionElement) {
+        if (functionElement != null) {
+            return functionElement.getText();
         } else {
             return null;
         }

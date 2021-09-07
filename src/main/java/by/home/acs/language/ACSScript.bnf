@@ -53,13 +53,6 @@ SpecialExpression ::= (NUMBER Colon FunctionInvocation) (CommaSymbol SpecialExpr
 
 
 FunctionDefinition ::= FunctionIdentifier FunctionReturnType FunctionName FunctionParameters FunctionBody
-{
-    mixin="by.home.acs.language.psi.impl.ACSNamedElementImpl"
-    implements="by.home.acs.language.psi.ACSNamedElement"
-    methods=[getName setName getNameIdentifier]
-}
-
-
 
 ScriptDefinition ::= ScriptIdentifier ScriptName (ScriptPossibleParams | ScriptType) (NetType ClientsideType | NetType | ClientsideType)? ScriptBody
 {
@@ -170,6 +163,12 @@ FunctionReturnType ::= VoidType | Type
 FunctionParameterWithVoid ::= VoidType
 
 FunctionName ::= IDENTIFIER
+{
+    mixin="by.home.acs.language.psi.impl.ACSNamedElementImpl"
+    implements="by.home.acs.language.psi.ACSNamedElement"
+    methods=[getName getNameIdentifier setName]
+}
+
 
 FunctionParameters ::= OpenBracket FunctionParameter CloseBracket
 

@@ -1,6 +1,6 @@
 package by.home.acs.language.refactor;
 
-import by.home.acs.language.psi.ACSScriptFunctionIdentifier;
+import by.home.acs.language.psi.ACSScriptFunctionName;
 import com.intellij.lang.refactoring.RefactoringSupportProvider;
 import com.intellij.psi.PsiElement;
 import org.jetbrains.annotations.NotNull;
@@ -10,6 +10,13 @@ public class ACSTestRefactoring extends RefactoringSupportProvider {
 
     @Override
     public boolean isMemberInplaceRenameAvailable(@NotNull PsiElement element, @Nullable PsiElement context) {
-        return (element instanceof ACSScriptFunctionIdentifier);
+        System.out.println(element);
+        if (element instanceof ACSScriptFunctionName) {
+            System.out.println("element true");
+            return true;
+        } else {
+            System.out.println(element);
+        }
+        return false;
     }
 }

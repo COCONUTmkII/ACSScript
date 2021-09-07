@@ -21,7 +21,7 @@ public class ACSFunctionReferenceContributor extends PsiReferenceContributor {
                         String functionName = function.getValue() instanceof String ? (String) function.getValue() : null;
                         if ((functionName != null)) {
                             System.out.println("AHAHAHA");
-                            TextRange property = new TextRange(functionName.length(), functionName.length());
+                            TextRange property = new TextRange(1, functionName.length() + 1);
                             return new PsiReference[]{new ACSFunctionReference(element, property)};
                         }
                         return PsiReference.EMPTY_ARRAY;

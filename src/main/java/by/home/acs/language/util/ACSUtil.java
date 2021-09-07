@@ -14,7 +14,11 @@ import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class ACSUtil {
     public static List<ACSScriptScriptDefinition> findScript(Project project, String number) {
@@ -94,8 +98,8 @@ public class ACSUtil {
             ACSScriptFile acsFile = (ACSScriptFile) PsiManager.getInstance(project).findFile(virtualFile);
             if (acsFile != null) {
                 Collection<ACSScriptFunctionInvocation> functionInvocations = PsiTreeUtil.findChildrenOfType(acsFile, ACSScriptFunctionInvocation.class);
-                Optional<ACSScriptFunctionInvocation> first = functionInvocations.stream().filter(acsScriptFunctionInvocation -> acsScriptFunctionInvocation.getFunctionName().textMatches(functionName)).findFirst();
-                first.ifPresent(result::add);
+                List<ACSScriptFunctionInvocation> first = functionInvocations.stream().filter(acsScriptFunctionInvocation -> acsScriptFunctionInvocation.getFunctionName().textMatches(functionName)).collect(Collectors.toList());
+                result.addAll(first);
             }
 
         }
