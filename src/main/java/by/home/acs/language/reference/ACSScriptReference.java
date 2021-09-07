@@ -2,6 +2,7 @@ package by.home.acs.language.reference;
 
 import by.home.acs.language.ACSScriptIcon;
 import by.home.acs.language.psi.ACSScriptDefinition;
+import by.home.acs.language.psi.ACSScriptScriptDefinition;
 import by.home.acs.language.util.ACSUtil;
 import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
@@ -33,7 +34,7 @@ public class ACSScriptReference extends PsiReferenceBase<PsiElement> implements 
     @Override
     public ResolveResult[] multiResolve(boolean incompleteCode) {
         Project project = myElement.getProject();
-        final List<ACSScriptDefinition> properties = ACSUtil.findScript(project, script);
+        final List<ACSScriptScriptDefinition> properties = ACSUtil.findScript(project, script);
         List<ResolveResult> results = new ArrayList<>();
         properties.forEach(property -> results.add(new PsiElementResolveResult(property)));
         return results.toArray(new ResolveResult[results.size()]);

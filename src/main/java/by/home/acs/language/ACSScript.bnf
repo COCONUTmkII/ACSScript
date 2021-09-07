@@ -52,7 +52,14 @@ SpecialIdentifier ::= special
 SpecialExpression ::= (NUMBER Colon FunctionInvocation) (CommaSymbol SpecialExpression)*
 
 
-FunctionDefinition ::= FunctionIdentifier FunctionReturnType FunctionNameAndParams FunctionBody
+FunctionDefinition ::= FunctionIdentifier FunctionReturnType FunctionName FunctionParameters FunctionBody
+{
+    mixin="by.home.acs.language.psi.impl.ACSNamedElementImpl"
+    implements="by.home.acs.language.psi.ACSNamedElement"
+    methods=[getName setName getNameIdentifier]
+}
+
+
 
 ScriptDefinition ::= ScriptIdentifier ScriptName (ScriptPossibleParams | ScriptType) (NetType ClientsideType | NetType | ClientsideType)? ScriptBody
 {
@@ -119,13 +126,13 @@ ScriptBody ::= CodeBlock | Statement
  */
 FunctionIdentifier ::= FUNCTION
 
-FunctionInvocation ::= NormalFunctionInvocation | TypeCastFunctionInvocation | MixedCastFunctionInvocation
+FunctionInvocation ::= FunctionName (NormalFunctionInvocation | TypeCastFunctionInvocation | MixedCastFunctionInvocation)
 
-NormalFunctionInvocation ::= IDENTIFIER OpenBracket FunctionInvokeParameters* CloseBracket
+NormalFunctionInvocation ::=  OpenBracket FunctionInvokeParameters* CloseBracket
 
-TypeCastFunctionInvocation ::= IDENTIFIER OpenBracket TypeCastFunctionInvokeParameters CloseBracket
+TypeCastFunctionInvocation ::=  OpenBracket TypeCastFunctionInvokeParameters CloseBracket
 
-MixedCastFunctionInvocation ::= IDENTIFIER OpenBracket MixedCastFunctionInvokeParameters CloseBracket
+MixedCastFunctionInvocation ::=  OpenBracket MixedCastFunctionInvokeParameters CloseBracket
 
 TypeCastFunctionInvokeParameters ::= TypeCast Colon BinaryExpression (CommaSymbol TypeCast Colon BinaryExpression)*
 
@@ -162,7 +169,9 @@ FunctionReturnType ::= VoidType | Type
 
 FunctionParameterWithVoid ::= VoidType
 
-FunctionNameAndParams ::= IDENTIFIER OpenBracket FunctionParameter CloseBracket
+FunctionName ::= IDENTIFIER
+
+FunctionParameters ::= OpenBracket FunctionParameter CloseBracket
 
 FunctionParameter ::=  (FunctionParameterWithVoid | FunctionParameterList)
 

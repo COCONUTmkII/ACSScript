@@ -6,8 +6,8 @@ import com.intellij.psi.*;
 import com.intellij.util.ProcessingContext;
 import org.jetbrains.annotations.NotNull;
 
-public class ACSScriptReferenceContributor extends PsiReferenceContributor {
-    private static final String SCRIPT_IDENTIFIER = "script";
+public class ACSFunctionReferenceContributor extends PsiReferenceContributor {
+    private static final String FUNCTION_IDENTIFIER = "function";
 
     @Override
     public void registerReferenceProviders(@NotNull PsiReferenceRegistrar registrar) {
@@ -17,12 +17,12 @@ public class ACSScriptReferenceContributor extends PsiReferenceContributor {
                     @Override
                     public PsiReference[] getReferencesByElement(@NotNull PsiElement element,
                                                                  @NotNull ProcessingContext context) {
-                        PsiLiteralExpression scriptName = (PsiLiteralExpression) element;
-                        String scriptNameValue = scriptName.getValue() instanceof String ? (String) scriptName.getValue() : null;
-                        if (scriptNameValue != null) {
-                            System.out.println("YES");
-                            TextRange textRange = new TextRange(scriptNameValue.length(), scriptNameValue.length());
-                            return new PsiReference[]{new ACSScriptReference(element, textRange)};
+                        PsiLiteralExpression function = (PsiLiteralExpression) element;
+                        String functionName = function.getValue() instanceof String ? (String) function.getValue() : null;
+                        if ((functionName != null)) {
+                            System.out.println("AHAHAHA");
+                            TextRange property = new TextRange(functionName.length(), functionName.length());
+                            return new PsiReference[]{new ACSFunctionReference(element, property)};
                         }
                         return PsiReference.EMPTY_ARRAY;
                     }

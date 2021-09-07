@@ -14,14 +14,11 @@ import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class ACSUtil {
-    public static List<ACSScriptDefinition> findScript(Project project, String number) {
-        List<ACSScriptDefinition> result = new ArrayList<>();
+    public static List<ACSScriptScriptDefinition> findScript(Project project, String number) {
+        List<ACSScriptScriptDefinition> result = new ArrayList<>();
         Collection<VirtualFile> virtualFiles =
                 FileTypeIndex.getFiles(by.home.acs.language.ACSScriptType.INSTANCE, GlobalSearchScope.allScope(project));
         for (VirtualFile virtualFile : virtualFiles) {
@@ -30,8 +27,11 @@ public class ACSUtil {
                 ACSScriptDefinition[] scriptWord = PsiTreeUtil.getChildrenOfType(acsFile, ACSScriptDefinition.class);
                 if (scriptWord != null) {
                     for (ACSScriptDefinition acs : scriptWord) {
-                        if (number.equals(acs.getText())) {
-                            result.add(acs);
+                        ACSScriptScriptDefinition scriptDefinition = acs.getScriptDefinition();
+                        if (scriptDefinition != null) {
+                            if (scriptDefinition.getScriptName().textMatches(number)) {
+                                result.add(scriptDefinition);
+                            }
                         }
                     }
                 }
@@ -39,6 +39,69 @@ public class ACSUtil {
         }
         return result;
     }
+
+    public static List<ACSScriptFunctionDefinition> findFunctionDefinition(Project project, String functionName) {
+        List<ACSScriptFunctionDefinition> result = new ArrayList<>();
+        Collection<VirtualFile> virtualFiles =
+                FileTypeIndex.getFiles(by.home.acs.language.ACSScriptType.INSTANCE, GlobalSearchScope.allScope(project));
+        for (VirtualFile virtualFile : virtualFiles) {
+            ACSScriptFile acsFile = (ACSScriptFile) PsiManager.getInstance(project).findFile(virtualFile);
+            if (acsFile != null) {
+                ACSScriptDefinition[] functionDefinitions = PsiTreeUtil.getChildrenOfType(acsFile, ACSScriptDefinition.class);
+                if (functionDefinitions != null) {
+                    for (ACSScriptDefinition acs : functionDefinitions) {
+                        ACSScriptFunctionDefinition functionDefinition = acs.getFunctionDefinition();
+                        if (functionDefinition != null) {
+                            if (functionDefinition.getFunctionName().textMatches(functionName)) {
+                                result.add(functionDefinition);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    public static List<ACSScriptFunctionDefinition> findFunctionDefinition(Project project) {
+        List<ACSScriptFunctionDefinition> result = new ArrayList<>();
+        Collection<VirtualFile> virtualFiles =
+                FileTypeIndex.getFiles(by.home.acs.language.ACSScriptType.INSTANCE, GlobalSearchScope.allScope(project));
+        for (VirtualFile virtualFile : virtualFiles) {
+            ACSScriptFile acsFile = (ACSScriptFile) PsiManager.getInstance(project).findFile(virtualFile);
+            if (acsFile != null) {
+                ACSScriptDefinition[] functionDefinitions = PsiTreeUtil.getChildrenOfType(acsFile, ACSScriptDefinition.class);
+                List<ACSScriptFunctionDefinition> foundFunctionDefinitions = new ArrayList<>();
+                if (functionDefinitions != null) {
+                    for (ACSScriptDefinition acs : functionDefinitions) {
+                        ACSScriptFunctionDefinition functionDefinition = acs.getFunctionDefinition();
+                        if (functionDefinition != null) {
+                            foundFunctionDefinitions.add(functionDefinition);
+                        }
+                    }
+                }
+                result.addAll(foundFunctionDefinitions);
+            }
+        }
+        return result;
+    }
+
+    public static List<ACSScriptFunctionInvocation> findFunctionInvocation(Project project, String functionName) {
+        List<ACSScriptFunctionInvocation> result = new ArrayList<>();
+        Collection<VirtualFile> virtualFiles =
+                FileTypeIndex.getFiles(by.home.acs.language.ACSScriptType.INSTANCE, GlobalSearchScope.allScope(project));
+        for (VirtualFile virtualFile : virtualFiles) {
+            ACSScriptFile acsFile = (ACSScriptFile) PsiManager.getInstance(project).findFile(virtualFile);
+            if (acsFile != null) {
+                Collection<ACSScriptFunctionInvocation> functionInvocations = PsiTreeUtil.findChildrenOfType(acsFile, ACSScriptFunctionInvocation.class);
+                Optional<ACSScriptFunctionInvocation> first = functionInvocations.stream().filter(acsScriptFunctionInvocation -> acsScriptFunctionInvocation.getFunctionName().textMatches(functionName)).findFirst();
+                first.ifPresent(result::add);
+            }
+
+        }
+        return result;
+    }
+
 
     public static List<ACSScriptDefinition> findScript(Project project) {
         List<ACSScriptDefinition> result = new ArrayList<>();
@@ -113,4 +176,6 @@ public class ACSUtil {
     public static boolean checkPsiElementIsTypeCastBuiltInFunction(PsiElement element) {
         return ACSTypeCastMethodLoader.checkTypeCastBuiltInMethod(element.getText());
     }
+
+
 }

@@ -1,10 +1,7 @@
 package by.home.acs.language.util.psi;
 
 import by.home.acs.language.ACSScriptTypes;
-import by.home.acs.language.psi.ACSScriptDefinition;
-import by.home.acs.language.psi.ACSScriptElementFactory;
-import by.home.acs.language.psi.ACSScriptFunctionInvocation;
-import by.home.acs.language.psi.ACSScriptScriptDefinition;
+import by.home.acs.language.psi.*;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
@@ -14,12 +11,22 @@ public class ACSBnfPsiImplUtil {
     public static String getName(ACSScriptScriptDefinition scriptElement) {
         ASTNode scriptName = scriptElement.getNode().findChildByType(ACSScriptTypes.SCRIPT_NAME);
         if (scriptName != null) {
-            System.out.println(scriptName.getText());
             return scriptName.getText().replaceAll("\\\\ ", "");
         } else {
             return null;
         }
     }
+
+    public static String getName(ACSScriptFunctionDefinition functionElement) {
+        ASTNode scriptName = functionElement.getNode().findChildByType(ACSScriptTypes.FUNCTION_NAME);
+        if (scriptName != null) {
+            return scriptName.getText();
+        } else {
+            System.out.println("NULL");
+            return null;
+        }
+    }
+
 
     public static ACSScriptScriptDefinition setName(ACSScriptScriptDefinition scriptWord, String newScriptName) {
         ASTNode scriptName = scriptWord.getNode().findChildByType(ACSScriptTypes.SCRIPT_NAME);
@@ -33,6 +40,17 @@ public class ACSBnfPsiImplUtil {
         return scriptWord;
     }
 
+    public static ACSScriptFunctionDefinition setName(ACSScriptFunctionDefinition functionDefinition, String newScriptName) {
+        ASTNode scriptName = functionDefinition.getNode().findChildByType(ACSScriptTypes.FUNCTION_NAME);
+        if (scriptName != null) {
+            ACSScriptFunctionDefinition acsScriptDefinition = ACSScriptElementFactory.createSimpleFunction(functionDefinition.getProject(), newScriptName);
+            PsiElement psi = scriptName.getPsi();
+            psi.replace(acsScriptDefinition.getFunctionName());
+        } else {
+            return null;
+        }
+        return functionDefinition;
+    }
 
     public static String getIdentifier(ACSScriptScriptDefinition element) {
         ASTNode identifier = element.getNode().findChildByType(ACSScriptTypes.IDENTIFIER);
@@ -70,6 +88,17 @@ public class ACSBnfPsiImplUtil {
             return null;
         }
     }
+
+
+    public static PsiElement getNameIdentifier(ACSScriptFunctionDefinition scriptWord) {
+        ASTNode keyNode = scriptWord.getNode().findChildByType(ACSScriptTypes.FUNCTION_NAME);
+        if (keyNode != null) {
+            return keyNode.getPsi();
+        } else {
+            return null;
+        }
+    }
+
 
     public static PsiElement getFunctionInvocation(ACSScriptDefinition element) {
         System.out.println("SSS?");

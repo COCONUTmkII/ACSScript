@@ -37,4 +37,9 @@ public class ACSScriptElementFactory {
         return (ACSScriptScriptDefinition) PsiFileFactory.getInstance(project)
                 .createFileFromText(ACS_DUMMY, ACSScriptLanguage.INSTANCE, "script \"" + newScriptName + "\" OPEN NET {}").getFirstChild().getFirstChild();
     }
+
+    public static ACSScriptFunctionDefinition createSimpleFunction(Project project, String functionName) {
+        return (ACSScriptFunctionDefinition) PsiFileFactory.getInstance(project)
+                .createFileFromText(ACS_DUMMY, ACSScriptLanguage.INSTANCE, "function void "+ functionName + "(void){}").getFirstChild().getFirstChild();
+    }
 }

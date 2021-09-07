@@ -97,7 +97,7 @@ public class ACSFunctionIsInvokedButNotCreatedInspection extends AbstractBaseJav
         }
 
         private boolean findInvokedFunctionInFunctionDefinitions(Collection<ACSScriptFunctionDefinition> functionDefinitions, String currentFunction) {
-            return functionDefinitions.stream().anyMatch(acsScriptFunctionDefinition -> acsScriptFunctionDefinition.getFunctionNameAndParams().getIdentifier().getText().equals(currentFunction));
+            return functionDefinitions.stream().anyMatch(acsScriptFunctionDefinition -> acsScriptFunctionDefinition.getFunctionName().getText().equals(currentFunction));
         }
 
 
