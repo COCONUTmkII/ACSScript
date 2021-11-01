@@ -51,17 +51,9 @@ public class ACSUtil {
         for (VirtualFile virtualFile : virtualFiles) {
             ACSScriptFile acsFile = (ACSScriptFile) PsiManager.getInstance(project).findFile(virtualFile);
             if (acsFile != null) {
-                ACSScriptDefinition[] functionDefinitions = PsiTreeUtil.getChildrenOfType(acsFile, ACSScriptDefinition.class);
-                if (functionDefinitions != null) {
-                    for (ACSScriptDefinition acs : functionDefinitions) {
-                        ACSScriptFunctionDefinition functionDefinition = acs.getFunctionDefinition();
-                        if (functionDefinition != null) {
-                            if (functionDefinition.getFunctionName().textMatches(functionName)) {
-                                result.add(functionDefinition);
-                            }
-                        }
-                    }
-                }
+                Collection<ACSScriptFunctionDefinition> functionInvocations = PsiTreeUtil.findChildrenOfType(acsFile, ACSScriptFunctionDefinition.class);
+                List<ACSScriptFunctionDefinition> first = functionInvocations.stream().filter(acsScriptFunctionInvocation -> acsScriptFunctionInvocation.getFunctionName().textMatches(functionName)).collect(Collectors.toList());
+                result.addAll(first);
             }
         }
         return result;
@@ -74,17 +66,11 @@ public class ACSUtil {
         for (VirtualFile virtualFile : virtualFiles) {
             ACSScriptFile acsFile = (ACSScriptFile) PsiManager.getInstance(project).findFile(virtualFile);
             if (acsFile != null) {
-                ACSScriptDefinition[] functionDefinitions = PsiTreeUtil.getChildrenOfType(acsFile, ACSScriptDefinition.class);
-                List<ACSScriptFunctionDefinition> foundFunctionDefinitions = new ArrayList<>();
+                ACSScriptFunctionDefinition[] functionDefinitions = PsiTreeUtil.getChildrenOfType(acsFile, ACSScriptFunctionDefinition.class);
                 if (functionDefinitions != null) {
-                    for (ACSScriptDefinition acs : functionDefinitions) {
-                        ACSScriptFunctionDefinition functionDefinition = acs.getFunctionDefinition();
-                        if (functionDefinition != null) {
-                            foundFunctionDefinitions.add(functionDefinition);
-                        }
-                    }
+                    Collections.addAll(result, functionDefinitions);
                 }
-                result.addAll(foundFunctionDefinitions);
+
             }
         }
         return result;
@@ -180,6 +166,5 @@ public class ACSUtil {
     public static boolean checkPsiElementIsTypeCastBuiltInFunction(PsiElement element) {
         return ACSTypeCastMethodLoader.checkTypeCastBuiltInMethod(element.getText());
     }
-
 
 }

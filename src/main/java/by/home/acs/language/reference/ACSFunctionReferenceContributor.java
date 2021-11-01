@@ -7,7 +7,6 @@ import com.intellij.util.ProcessingContext;
 import org.jetbrains.annotations.NotNull;
 
 public class ACSFunctionReferenceContributor extends PsiReferenceContributor {
-    private static final String FUNCTION_IDENTIFIER = "function";
 
     @Override
     public void registerReferenceProviders(@NotNull PsiReferenceRegistrar registrar) {
@@ -20,7 +19,6 @@ public class ACSFunctionReferenceContributor extends PsiReferenceContributor {
                         PsiLiteralExpression function = (PsiLiteralExpression) element;
                         String functionName = function.getValue() instanceof String ? (String) function.getValue() : null;
                         if ((functionName != null)) {
-                            System.out.println("AHAHAHA");
                             TextRange property = new TextRange(1, functionName.length() + 1);
                             return new PsiReference[]{new ACSFunctionReference(element, property)};
                         }

@@ -3,6 +3,7 @@ package by.home.acs.language.usage;
 import by.home.acs.language.ACSScriptLexerAdapter;
 import by.home.acs.language.ACSScriptTypes;
 import by.home.acs.language.psi.ACSScriptDefinition;
+import by.home.acs.language.psi.ACSScriptFunctionName;
 import com.intellij.lang.cacheBuilder.DefaultWordsScanner;
 import com.intellij.lang.cacheBuilder.WordsScanner;
 import com.intellij.lang.findUsages.FindUsagesProvider;
@@ -17,10 +18,8 @@ public class ACSScriptUsageProvider implements FindUsagesProvider {
     @Override
     public WordsScanner getWordsScanner() {
         return new DefaultWordsScanner(new ACSScriptLexerAdapter(),
-                TokenSet.create(ACSScriptTypes.DEFINITION),
+                TokenSet.create(ACSScriptTypes.FUNCTION_DEFINITION),
                 TokenSet.create(ACSScriptTypes.COMMENT),
-                TokenSet.create(ACSScriptTypes.IDENTIFIER),
-                TokenSet.create(ACSScriptTypes.FUNCTION_INVOCATION),
                 TokenSet.EMPTY);
     }
 
@@ -48,17 +47,17 @@ public class ACSScriptUsageProvider implements FindUsagesProvider {
     @NotNull
     @Override
     public String getDescriptiveName(@NotNull PsiElement element) {
-        if (element instanceof ACSScriptDefinition) {
-            return element.getText();
+        if (element instanceof ACSScriptFunctionName) {
+            return "function" + ((ACSScriptFunctionName) element).getName();
         } else {
-            return "";
+            return "element";
         }
     }
 
     @NotNull
     @Override
     public String getNodeText(@NotNull PsiElement element, boolean useFullName) {
-        if (element instanceof ACSScriptDefinition) {
+        if (element instanceof ACSScriptFunctionName) {
             return element.getText();
         } else {
             return "";

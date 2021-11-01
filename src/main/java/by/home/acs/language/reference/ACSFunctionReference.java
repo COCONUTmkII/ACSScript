@@ -3,12 +3,15 @@ package by.home.acs.language.reference;
 import by.home.acs.language.ACSScriptIcon;
 import by.home.acs.language.psi.ACSScriptFunctionDefinition;
 import by.home.acs.language.psi.ACSScriptFunctionInvocation;
+import by.home.acs.language.psi.ACSScriptFunctionName;
 import by.home.acs.language.util.ACSUtil;
 import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
+import com.intellij.util.IncorrectOperationException;
+import kotlin.jvm.Throws;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -46,22 +49,36 @@ public class ACSFunctionReference extends PsiReferenceBase<PsiElement> implement
     public Object[] getVariants() {
         Project project = myElement.getProject();
         List<ACSScriptFunctionDefinition> definitions = ACSUtil.findFunctionDefinition(project);
-        System.out.println("In get vatiants method");
         List<LookupElement> variants = new ArrayList<>();
         for (final ACSScriptFunctionDefinition property : definitions) {
             if (property != null) {
-                System.out.println("property is not null");
                 variants.add(LookupElementBuilder
-                        .create(property).withIcon(ACSScriptIcon.FILE)
-                        .withTypeText(property.getContainingFile().getName())
+                        .create(property.getFunctionName()).withIcon(ACSScriptIcon.FILE)
                 );
-            } else {
-                System.out.println("property null");
             }
         }
-        System.out.println(variants.size());
         return variants.toArray();
     }
 
+    @Override
+    public boolean isReferenceTo(@NotNull PsiElement element) {
+        if (element instanceof ACSScriptFunctionName) {
+            String name = ((ACSScriptFunctionName) element).getName();
+            assert name != null;
+            return name.equals(functionName);
+        }
+        return false;
+    }
 
+    @Override
+    @Throws(exceptionClasses = IncorrectOperationException.class)
+    public PsiElement bindToElement(@NotNull PsiElement element) throws IncorrectOperationException {
+        if (element instanceof ACSScriptFunctionName) {
+            String name = ((ACSScriptFunctionName) element).getName();
+            return name != null ? super.handleElementRename(name) : element;
+        } else {
+            System.out.println(element);
+        }
+        return element;
+    }
 }
