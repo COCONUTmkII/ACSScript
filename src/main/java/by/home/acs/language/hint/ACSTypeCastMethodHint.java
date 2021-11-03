@@ -70,7 +70,7 @@ public class ACSTypeCastMethodHint implements InlayParameterHintsProvider {
     }
 
     private List<InlayInfo> doGetParameterList(PsiElement element) {
-        String functionName = element.getFirstChild().getText();
+        String functionName = element.getParent().getFirstChild().getText();
         boolean isTypeCastBuiltIn = ACSTypeCastMethodLoader.checkTypeCastBuiltInMethod(functionName);
         if (isTypeCastBuiltIn) {
             List<InlayInfo> hints = new ArrayList<>();

@@ -1,26 +1,36 @@
 package by.home.acs.language.search;
 
-import by.home.acs.language.reference.ACSFunctionReference;
+import by.home.acs.language.psi.ACSScriptFunctionName;
+import com.intellij.openapi.extensions.ExtensionPointName;
 import com.intellij.psi.search.searches.ExtensibleQueryFactory;
 import com.intellij.util.Query;
+import com.intellij.util.QueryExecutor;
+import org.jetbrains.annotations.NotNull;
 
-//I have no idea what am I doing
-public class ACSFunctionSearch extends ExtensibleQueryFactory<ACSFunctionReference, ACSFunctionSearch.Something> {
+
+public class ACSFunctionSearch extends ExtensibleQueryFactory<ACSScriptFunctionName, ACSFunctionSearch.SearchParameters> {
+    public static final ExtensionPointName<QueryExecutor<ACSScriptFunctionName, SearchParameters>> EP_NAME = ExtensionPointName.create("by.home.ACSScript.acsFunctionSearch");
     public static final ACSFunctionSearch INSTANCE = new ACSFunctionSearch();
 
 
-    protected static class Something {
-        private final ACSFunctionReference functionReference;
-        private final boolean isDeap;
+    private ACSFunctionSearch() {
+        super(EP_NAME);
+    }
 
-        public Something(ACSFunctionReference reference, boolean deep) {
+    @NotNull
+    public static Query<ACSScriptFunctionName> search(ACSScriptFunctionName reference) {
+        return INSTANCE.createUniqueResultsQuery(new SearchParameters(reference));
+    }
+
+    protected static class SearchParameters {
+        private final ACSScriptFunctionName functionReference;
+
+        public SearchParameters(ACSScriptFunctionName reference) {
             functionReference = reference;
-            isDeap = deep;
         }
 
-
-        public static Query<ACSFunctionReference> search(ACSFunctionReference reference, boolean isDead) {
-            return INSTANCE.createUniqueResultsQuery(new Something(reference, isDead));
+        public ACSScriptFunctionName getFunctionReference() {
+            return functionReference;
         }
 
     }

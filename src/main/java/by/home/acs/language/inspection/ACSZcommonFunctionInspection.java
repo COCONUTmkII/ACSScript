@@ -17,6 +17,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Collection;
 
 import static by.home.acs.language.util.ACSUtil.checkPsiElementIsZspecialFunction;
+import static by.home.acs.language.util.ACSFileConstants.*;
 
 public class ACSZcommonFunctionInspection extends AbstractBaseJavaLocalInspectionTool {
     private static final String DESCRIPTION = "'zcommon.acs' is not included to use this function";
@@ -52,26 +53,37 @@ public class ACSZcommonFunctionInspection extends AbstractBaseJavaLocalInspectio
         public void visitElement(@NotNull PsiElement element) {
             super.visitElement(element);
             if (element instanceof ACSScriptFunctionInvocation) {
-                PsiElement typeElement = element.getFirstChild().getFirstChild();
-                boolean isZspecialFunction = checkPsiElementIsZspecialFunction(typeElement);
-                if (isZspecialFunction) {
-                    PsiElement psiFile = element.getContainingFile();
-                    psiFile.accept(new ACSIncludeDeclarationVisitor());
-                    Collection<ACSScriptIncludeDeclaration> includeDeclarations = PsiTreeUtil.findChildrenOfType(psiFile, ACSScriptIncludeDeclaration.class);
-                    if (includeDeclarations.size() == 0) {
-                        registerIncludeProblem(myHolder, element);
-                    } else {
-                        checkIncludeZcommonACSStatement(includeDeclarations, element);
-                    }
+                boolean userInZspecialFile = checkIsUserInZspecialFile(element);
+                if (!userInZspecialFile) {
+                    ACSScriptFunctionInvocation acsScriptFunctionInvocation = (ACSScriptFunctionInvocation) element;
+                    checkFunctionIsZspecial((acsScriptFunctionInvocation.getFunctionName()));
                 }
             }
+        }
+
+        private void checkFunctionIsZspecial(@NotNull PsiElement element) {
+            boolean isZspecialFunction = checkPsiElementIsZspecialFunction(element);
+            if (isZspecialFunction) {
+                PsiElement psiFile = element.getContainingFile();
+                psiFile.accept(new ACSIncludeDeclarationVisitor());
+                Collection<ACSScriptIncludeDeclaration> includeDeclarations = PsiTreeUtil.findChildrenOfType(psiFile, ACSScriptIncludeDeclaration.class);
+                if (includeDeclarations.isEmpty()) {
+                    registerIncludeProblem(myHolder, element);
+                } else {
+                    checkIncludeZcommonACSStatement(includeDeclarations, element);
+                }
+            }
+        }
+
+        private boolean checkIsUserInZspecialFile(PsiElement functionName) {
+            return functionName.getContainingFile().getName().equals(ZSPECIAL_FILE);
         }
 
         private void checkIncludeZcommonACSStatement(Collection<ACSScriptIncludeDeclaration> allIncludes, PsiElement function) {
             allIncludes.forEach(acsScriptIncludeDeclaration -> {
                 String includedACS = acsScriptIncludeDeclaration.getString()
                         .getText().substring(1, acsScriptIncludeDeclaration.getString().getText().length() - 1);
-                if (!(includedACS.equalsIgnoreCase("zcommon.acs"))) {
+                if (!(includedACS.equalsIgnoreCase(ZCOMMON_FILE))) {
                     registerIncludeProblem(myHolder, function);
                 }
             });
@@ -93,7 +105,7 @@ public class ACSZcommonFunctionInspection extends AbstractBaseJavaLocalInspectio
 
         @Override
         public void applyFix(@NotNull Project project, @NotNull ProblemDescriptor descriptor) {
-            PsiElement includeStatement = ACSScriptElementFactory.createIncludeStatement(project, "zcommon.acs");
+            PsiElement includeStatement = ACSScriptElementFactory.createIncludeStatement(project, ZCOMMON_FILE);
             PsiElement psi = descriptor.getPsiElement().getContainingFile().getFirstChild();
             if (psi instanceof PsiWhiteSpace) {
                 psi.replace(includeStatement);

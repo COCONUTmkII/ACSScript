@@ -74,7 +74,7 @@ public class ACSFunctionIsInvokedButNotCreatedInspection extends AbstractBaseJav
             Collection<ACSScriptFunctionDefinition> functionDefinitions = PsiTreeUtil.findChildrenOfType(currentFile, ACSScriptFunctionDefinition.class);
             String functionNameAsString = functionName.getText();
             String DESCRIPTION = ACSInspectionBundle.message("acs.inspection.function.invoke.not.created", functionNameAsString, fileName);
-            if (functionDefinitions.size() == 0) {
+            if (functionDefinitions.isEmpty()) {
                 checkIsFunctionDeclaredInImport(functionName);
                 registerFunctionInvokeProblem(functionName, DESCRIPTION, functionNameAsString, fileName);
             } else {
@@ -126,7 +126,9 @@ public class ACSFunctionIsInvokedButNotCreatedInspection extends AbstractBaseJav
             public void applyFix(@NotNull Project project, @NotNull ProblemDescriptor descriptor) {
                 PsiFile psiFile = descriptor.getPsiElement().getContainingFile();
                 PsiElement lastChild = psiFile.getLastChild();
-                ACSScriptFunctionDefinition functionWithProvidedName = ACSScriptElementFactory.createFunctionWithProvidedName(project, functionName, functionReturnType, functionParameter);
+                ACSScriptFunctionDefinition functionWithProvidedName =
+                   ACSScriptElementFactory
+                           .createFunctionWithProvidedName(project, functionName, functionReturnType, functionParameter);
                 if (lastChild instanceof PsiWhiteSpace) {
                     lastChild.replace(functionWithProvidedName);
                 } else {

@@ -69,6 +69,14 @@
         <findUsagesHandlerFactory implementation="by.home.acs.language.usage.ACSFindUsagesHandlerFactory"/>
     </extensions>
 
+<!--    <extensionPoints>-->
+<!--        <extensionPoint name="acsFunctionSearch" interface="com.intellij.util.QueryExecutor" dynamic="true"/>-->
+<!--    </extensionPoints>-->
+
+<!--    <extensions defaultExtensionNs="by.home.ACSScript">-->
+<!--        <acsFunctionSearch implementation="by.home.acs.language.search.ACSFunctionSearchExecutor"/>-->
+<!--    </extensions>-->
+
     <actions>
         <!-- Add your actions here -->
     </actions>

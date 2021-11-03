@@ -53,7 +53,8 @@ public class ACSFunctionReference extends PsiReferenceBase<PsiElement> implement
         for (final ACSScriptFunctionDefinition property : definitions) {
             if (property != null) {
                 variants.add(LookupElementBuilder
-                        .create(property.getFunctionName()).withIcon(ACSScriptIcon.FILE)
+                        .create(property).withIcon(ACSScriptIcon.FILE)
+                        .withTypeText(property.getContainingFile().getName())
                 );
             }
         }
