@@ -2,6 +2,7 @@ package by.home.acs.language;
 
 import by.home.acs.language.parser.ACSScriptParser;
 import by.home.acs.language.psi.ACSScriptFile;
+import by.home.acs.language.stub.ACSFileElementType;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.ParserDefinition;
 import com.intellij.lang.PsiParser;
@@ -19,7 +20,7 @@ public class ACSScriptFileDefinition implements ParserDefinition {
     public static final TokenSet WHITE_SPACES = TokenSet.create(TokenType.WHITE_SPACE);
     public static final TokenSet COMMENTS = TokenSet.create(ACSScriptTypes.COMMENT);
 
-    public static final IFileElementType FILE = new IFileElementType(ACSScriptLanguage.INSTANCE);
+    public static final ACSFileElementType FILE = new ACSFileElementType(ACSScriptLanguage.INSTANCE);
 
     @NotNull
     @Override

@@ -55,11 +55,6 @@ SpecialExpression ::= (NUMBER Colon FunctionInvocation) (CommaSymbol SpecialExpr
 FunctionDefinition ::= FunctionIdentifier FunctionReturnType FunctionName FunctionParameters FunctionBody
 
 ScriptDefinition ::= ScriptIdentifier ScriptName (ScriptPossibleParams | ScriptType) (NetType ClientsideType | NetType | ClientsideType)? ScriptBody
-{
-    mixin="by.home.acs.language.psi.impl.ACSNamedElementImpl"
-        implements="by.home.acs.language.psi.ACSNamedElement"
-        methods=[getName setName getNameIdentifier]
-}
 /**
     Directives statement
  */
@@ -164,9 +159,9 @@ FunctionParameterWithVoid ::= VoidType
 
 FunctionName ::= IDENTIFIER
 {
-    mixin="by.home.acs.language.psi.impl.ACSNamedElementImpl"
-    implements="by.home.acs.language.psi.ACSNamedElement"
+    implements="by.home.acs.language.psi.ACSFunctionElement"
     methods=[getName getNameIdentifier setName]
+    stubClass="by.home.acs.language.stub.ACSFunctionStub"
 }
 
 

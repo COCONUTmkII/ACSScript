@@ -161,6 +161,7 @@ public class ACSBnfPsiImplUtil {
     }
 
     public static String getName(ACSScriptFunctionName functionElement) {
+
         if (functionElement != null) {
             return functionElement.getText();
         } else {

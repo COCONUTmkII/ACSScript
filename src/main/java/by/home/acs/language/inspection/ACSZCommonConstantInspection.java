@@ -7,7 +7,7 @@ import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 
 //TODO this inspection would be a nightmare without references
-public class ACSZZCommonConstantInspection extends AbstractBaseJavaLocalInspectionTool {
+public class ACSZCommonConstantInspection extends AbstractBaseJavaLocalInspectionTool {
     @Override
     public @Nls(capitalization = Nls.Capitalization.Sentence)
     @NotNull

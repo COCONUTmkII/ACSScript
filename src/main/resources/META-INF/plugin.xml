@@ -66,16 +66,16 @@
                                         implementationClass="by.home.acs.language.hint.ACSTypeCastMethodHint"/>
         <colorSettingsPage implementation="by.home.acs.language.highlight.ACSColourSettingsPage"/>
         <psi.referenceContributor implementation="by.home.acs.language.reference.ACSFunctionReferenceContributor"/>
-        <findUsagesHandlerFactory implementation="by.home.acs.language.usage.ACSFindUsagesHandlerFactory"/>
+        <stubElementTypeHolder class="by.home.acs.language.stub.ACSStubElementType"/>
     </extensions>
 
-<!--    <extensionPoints>-->
-<!--        <extensionPoint name="acsFunctionSearch" interface="com.intellij.util.QueryExecutor" dynamic="true"/>-->
-<!--    </extensionPoints>-->
+    <extensionPoints>
+        <extensionPoint name="acsFunctionSearch" interface="com.intellij.util.QueryExecutor" dynamic="true"/>
+    </extensionPoints>
 
-<!--    <extensions defaultExtensionNs="by.home.ACSScript">-->
-<!--        <acsFunctionSearch implementation="by.home.acs.language.search.ACSFunctionSearchExecutor"/>-->
-<!--    </extensions>-->
+    <extensions defaultExtensionNs="by.home.ACSScript">
+        <acsFunctionSearch implementation="by.home.acs.language.search.ACSFunctionSearchExecutor"/>
+    </extensions>
 
     <actions>
         <!-- Add your actions here -->
