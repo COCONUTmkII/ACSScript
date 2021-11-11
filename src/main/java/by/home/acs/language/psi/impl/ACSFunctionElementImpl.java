@@ -1,6 +1,5 @@
 package by.home.acs.language.psi.impl;
 
-import by.home.acs.language.ACSScriptTypes;
 import by.home.acs.language.psi.ACSFunctionElement;
 import by.home.acs.language.psi.ACSFunctionEscaper;
 import by.home.acs.language.psi.ACSManipulator;
@@ -12,6 +11,8 @@ import com.intellij.psi.LiteralTextEscaper;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiLanguageInjectionHost;
 import com.intellij.psi.PsiNameIdentifierOwner;
+import com.intellij.psi.search.GlobalSearchScope;
+import com.intellij.psi.search.SearchScope;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
@@ -69,7 +70,7 @@ public class ACSFunctionElementImpl extends ACSStubElementImpl<ACSFunctionStub> 
 
     @Nullable
     public ASTNode getFunctionNamesNode() {
-        return getNode().findChildByType(ACSScriptTypes.FUNCTION);
+        return getNode();
     }
 
     @Override
@@ -80,4 +81,29 @@ public class ACSFunctionElementImpl extends ACSStubElementImpl<ACSFunctionStub> 
         return null;
     }
 
+
+    @Override
+    public String toString() {
+        return "ACSFunctionElementImpl{ name + " + getName() + " }";
+    }
+
+    @Override
+    public @NotNull SearchScope getUseScope() {
+        return GlobalSearchScope.allScope(getProject());
+    }
+
+
+    @Override
+    public String getFunctionName() {
+        final ACSFunctionStub stub = getStub();
+        if (stub != null) {
+            return stub.getFunctionName();
+        }
+        final ASTNode node = getFunctionNamesNode();
+        if (node == null) {
+            System.out.println("node is null");
+            return null;
+        }
+        return node.getText();
+    }
 }

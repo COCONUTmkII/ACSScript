@@ -6,5 +6,5 @@ import com.intellij.psi.PsiNameIdentifierOwner;
 import com.intellij.psi.StubBasedPsiElement;
 
 public interface ACSFunctionElement extends PsiNameIdentifierOwner, StubBasedPsiElement<ACSFunctionStub>, NavigatablePsiElement {
-
+    String getFunctionName();
 }
