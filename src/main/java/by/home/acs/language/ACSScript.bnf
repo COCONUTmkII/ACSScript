@@ -161,7 +161,7 @@ FunctionName ::= IDENTIFIER
 {
     mixin="by.home.acs.language.psi.impl.ACSFunctionElementImpl"
     implements="by.home.acs.language.psi.ACSFunctionElement"
-    methods=[getName getNameIdentifier setName]
+    methods=[getName getNameIdentifier changeName]
     stubClass="by.home.acs.language.stub.ACSFunctionStub"
 }
 
@@ -218,9 +218,12 @@ AssignmentStatement ::= (ArrayReferenceExpression | IDENTIFIER) Equals (Function
 
 VariableDefinition ::= StaticModifier? Type VariableName ArrayType* (Semicolon | (Equals VariableInitialization))
 
-left VariableName ::=  IDENTIFIER  (CommaSymbol VariableName)*
+VariableName ::=  IDENTIFIER  (CommaSymbol VariableName)*
+{
+    implements="by.home.acs.language.psi.ACSVariableDefElement"
+    methods=[getName setName getNameIdentifier getReference]
+}
 
-//VariableInitialization ::= AllTypes (CommaSymbol VariableName Equals AllTypes)*
 VariableInitialization ::= (AssignmentExpression | SimpleInitialization) Semicolon
 
 ParenthesisedExpression ::= OpenBracket AssignmentExpression CloseBracket

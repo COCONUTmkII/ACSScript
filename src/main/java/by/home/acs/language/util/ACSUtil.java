@@ -8,6 +8,7 @@ import by.home.acs.language.psi.*;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
 import com.intellij.psi.search.FileTypeIndex;
 import com.intellij.psi.search.GlobalSearchScope;
@@ -152,6 +153,14 @@ public class ACSUtil {
                 result.addAll(scriptNames);
             }
         }
+        return result;
+    }
+
+    public static Collection<ACSScriptVariableName> findAllVarNames(PsiFile file, String varName) {
+        List<ACSScriptVariableName> result;
+        Collection<VirtualFile> virtualFiles =
+                FileTypeIndex.getFiles(ACSScriptType.INSTANCE, GlobalSearchScope.fileScope(file));
+        result = virtualFiles.stream().map(virtualFile -> PsiTreeUtil.findChildrenOfType(file, ACSScriptVariableName.class)).map(allVars -> allVars.stream().filter(var -> var.getName().equals(varName)).collect(Collectors.toList())).flatMap(Collection::stream).collect(Collectors.toList());
         return result;
     }
 

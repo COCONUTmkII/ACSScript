@@ -2,10 +2,16 @@ package by.home.acs.language.util.psi;
 
 import by.home.acs.language.ACSScriptTypes;
 import by.home.acs.language.psi.*;
+import by.home.acs.language.reference.ACSVariableDefReference;
+import by.home.acs.language.util.ACSUtil;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiReference;
 import com.intellij.psi.util.PsiTreeUtil;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Collection;
 
 public class ACSBnfPsiImplUtil {
     public static String getName(ACSScriptScriptDefinition scriptElement) {
@@ -36,7 +42,7 @@ public class ACSBnfPsiImplUtil {
         }
     }
 
-    public static ACSScriptScriptDefinition setName(ACSScriptScriptDefinition scriptWord, String newScriptName) {
+    public static ACSScriptScriptDefinition changeName(ACSScriptScriptDefinition scriptWord, String newScriptName) {
         ASTNode scriptName = scriptWord.getNode().findChildByType(ACSScriptTypes.SCRIPT_NAME);
         if (scriptName != null) {
             ACSScriptScriptDefinition acsScriptDefinition = ACSScriptElementFactory.createScript(scriptWord.getProject(), newScriptName);
@@ -48,7 +54,7 @@ public class ACSBnfPsiImplUtil {
         return scriptWord;
     }
 
-    public static ACSScriptFunctionInvocation setName(ACSScriptFunctionInvocation scriptWord, String newScriptName) {
+    public static ACSScriptFunctionInvocation changeName(ACSScriptFunctionInvocation scriptWord, String newScriptName) {
         ASTNode scriptName = scriptWord.getNode().findChildByType(ACSScriptTypes.SCRIPT_NAME);
         if (scriptName != null) {
             ACSScriptScriptDefinition acsScriptDefinition = ACSScriptElementFactory.createScript(scriptWord.getProject(), newScriptName);
@@ -60,7 +66,7 @@ public class ACSBnfPsiImplUtil {
         return scriptWord;
     }
 
-    public static ACSScriptFunctionDefinition setName(ACSScriptFunctionDefinition functionDefinition, String newScriptName) {
+    public static ACSScriptFunctionDefinition changeName(ACSScriptFunctionDefinition functionDefinition, String newScriptName) {
         ASTNode scriptName = functionDefinition.getNode().findChildByType(ACSScriptTypes.FUNCTION_NAME);
         if (scriptName != null) {
             ACSScriptFunctionDefinition acsScriptDefinition = ACSScriptElementFactory.createSimpleFunction(functionDefinition.getProject(), newScriptName);
@@ -149,7 +155,7 @@ public class ACSBnfPsiImplUtil {
         }
     }
 
-    public static ACSScriptFunctionName setName(ACSScriptFunctionName functionDefinition, String newScriptName) {
+    public static ACSScriptFunctionName changeName(ACSScriptFunctionName functionDefinition, String newScriptName) {
         if (functionDefinition != null) {
             ACSScriptFunctionDefinition acsScriptDefinition = ACSScriptElementFactory.createSimpleFunction(functionDefinition.getProject(), newScriptName);
             functionDefinition.replace(acsScriptDefinition.getFunctionName());
@@ -161,11 +167,39 @@ public class ACSBnfPsiImplUtil {
     }
 
     public static String getName(ACSScriptFunctionName functionElement) {
+        return functionElement != null ? functionElement.getFunctionName() : null;
+    }
 
-        if (functionElement != null) {
-            return functionElement.getText();
-        } else {
-            return null;
+    public static String getName(ACSScriptVariableName variableDefinition) {
+        return variableDefinition != null ? variableDefinition.getText() : null;
+    }
+
+    public static ACSScriptVariableName setName(ACSScriptVariableName variableName, String newVariableName) {
+        ASTNode childByType = variableName.getNode().findChildByType(ACSScriptTypes.VARIABLE_NAME);
+        if (childByType != null) {
+            ACSScriptVariableDefinition dummyVariable = ACSScriptElementFactory.createDummyVariable(variableName.getProject(), newVariableName);
+            variableName.replace(dummyVariable.getVariableName());
         }
+        return variableName;
+    }
+
+    public static PsiElement getNameIdentifier(ACSScriptVariableName variableDefinition) {
+        return variableDefinition.getIdentifier();
+    }
+
+    public static PsiReference getReference(ACSScriptVariableName varName) {
+        return new ACSVariableDefReference(varName) {
+            @Nullable
+            @Override
+            public PsiElement resolve() {
+                Collection<ACSScriptVariableName> childrenOfType = ACSUtil.findAllVarNames(varName.getContainingFile(), varName.getName());
+                if (!childrenOfType.isEmpty()) {
+                    for (ACSScriptVariableName variableName : childrenOfType) {
+                        return variableName;
+                    }
+                }
+                return null;
+            }
+        };
     }
 }

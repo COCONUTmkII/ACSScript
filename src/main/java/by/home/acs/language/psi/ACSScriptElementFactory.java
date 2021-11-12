@@ -40,6 +40,11 @@ public class ACSScriptElementFactory {
 
     public static ACSScriptFunctionDefinition createSimpleFunction(Project project, String functionName) {
         return (ACSScriptFunctionDefinition) PsiFileFactory.getInstance(project)
-                .createFileFromText(ACS_DUMMY, ACSScriptLanguage.INSTANCE, "function void "+ functionName + "(void){}").getFirstChild().getFirstChild();
+                .createFileFromText(ACS_DUMMY, ACSScriptLanguage.INSTANCE, "function void " + functionName + "(void){}").getFirstChild().getFirstChild();
+    }
+
+    public static ACSScriptVariableDefinition createDummyVariable(Project project, String variableName) {
+        return (ACSScriptVariableDefinition) PsiFileFactory.getInstance(project)
+                .createFileFromText(ACS_DUMMY, ACSScriptLanguage.INSTANCE, "int " + variableName + " ;");
     }
 }

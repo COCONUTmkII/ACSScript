@@ -1,9 +1,6 @@
 package by.home.acs.language.psi.impl;
 
-import by.home.acs.language.psi.ACSFunctionElement;
-import by.home.acs.language.psi.ACSFunctionEscaper;
-import by.home.acs.language.psi.ACSManipulator;
-import by.home.acs.language.psi.ACSScriptElementFactory;
+import by.home.acs.language.psi.*;
 import by.home.acs.language.stub.ACSFunctionStub;
 import by.home.acs.language.stub.ACSStubElementImpl;
 import com.intellij.lang.ASTNode;
@@ -56,13 +53,10 @@ public class ACSFunctionElementImpl extends ACSStubElementImpl<ACSFunctionStub> 
 
     @Override
     public PsiElement setName(@NotNull String name) throws IncorrectOperationException {
-        ACSFunctionElementImpl functionName = (ACSFunctionElementImpl) ACSScriptElementFactory.createFunctionWithProvidedName(getProject(), name, "void", List.of("void"));
+        ACSScriptFunctionDefinition functionWithProvidedName = ACSScriptElementFactory.createFunctionWithProvidedName(getProject(), name, "void", List.of("void"));
         ASTNode node = getFunctionNamesNode();
-        ASTNode newNode = functionName.getFunctionNamesNode();
-        System.out.println(newNode != null);
+        ASTNode newNode = functionWithProvidedName.getFunctionName().getNode();
         if (node != null) {
-            getNode().addChild(newNode);
-        } else {
             getNode().replaceChild(node, newNode);
         }
         return this;
