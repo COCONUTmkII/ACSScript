@@ -65,7 +65,6 @@
         <codeInsight.parameterNameHints language="ACSScript"
                                         implementationClass="by.home.acs.language.hint.ACSTypeCastMethodHint"/>
         <colorSettingsPage implementation="by.home.acs.language.highlight.ACSColourSettingsPage"/>
-        <psi.referenceContributor implementation="by.home.acs.language.reference.ACSFunctionReferenceContributor"/>
         <stubElementTypeHolder class="by.home.acs.language.stub.parsing.ACSFunctionElementTypes"/>
         <stubIndex implementation="by.home.acs.language.stub.index.ACSStubFunctionIndex"/>
     </extensions>

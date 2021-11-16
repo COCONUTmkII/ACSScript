@@ -1,21 +1,21 @@
 package by.home.acs.language.reference;
 
-import by.home.acs.language.psi.ACSVariableDefElement;
+import by.home.acs.language.psi.ACSFunctionElement;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReferenceBase;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class ACSVariableDefReference extends PsiReferenceBase<ACSVariableDefElement> {
+public abstract class NewFunctionRef extends PsiReferenceBase<ACSFunctionElement> {
 
-    public ACSVariableDefReference(@NotNull ACSVariableDefElement element) {
+    public NewFunctionRef(@NotNull ACSFunctionElement element) {
         super(element);
     }
 
     @Override
-    public @NotNull
-    TextRange getRangeInElement() {
+    @NotNull
+    public TextRange getRangeInElement() {
         return TextRange.from(0, myElement.getTextLength());
     }
 
@@ -24,4 +24,5 @@ public abstract class ACSVariableDefReference extends PsiReferenceBase<ACSVariab
     public PsiElement resolve() {
         return myElement;
     }
+
 }

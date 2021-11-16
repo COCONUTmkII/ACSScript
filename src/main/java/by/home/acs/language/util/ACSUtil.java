@@ -48,7 +48,7 @@ public class ACSUtil {
     public static List<ACSScriptFunctionDefinition> findFunctionDefinition(Project project, String functionName) {
         List<ACSScriptFunctionDefinition> result = new ArrayList<>();
         Collection<VirtualFile> virtualFiles =
-                FileTypeIndex.getFiles(by.home.acs.language.ACSScriptType.INSTANCE, GlobalSearchScope.allScope(project));
+                FileTypeIndex.getFiles(by.home.acs.language.ACSScriptType.INSTANCE, GlobalSearchScope.projectScope(project));
         for (VirtualFile virtualFile : virtualFiles) {
             ACSScriptFile acsFile = (ACSScriptFile) PsiManager.getInstance(project).findFile(virtualFile);
             if (acsFile != null) {
@@ -63,7 +63,7 @@ public class ACSUtil {
     public static List<ACSScriptFunctionDefinition> findFunctionDefinition(Project project) {
         List<ACSScriptFunctionDefinition> result = new ArrayList<>();
         Collection<VirtualFile> virtualFiles =
-                FileTypeIndex.getFiles(by.home.acs.language.ACSScriptType.INSTANCE, GlobalSearchScope.allScope(project));
+                FileTypeIndex.getFiles(by.home.acs.language.ACSScriptType.INSTANCE, GlobalSearchScope.projectScope(project));
         for (VirtualFile virtualFile : virtualFiles) {
             ACSScriptFile acsFile = (ACSScriptFile) PsiManager.getInstance(project).findFile(virtualFile);
             if (acsFile != null) {
@@ -160,7 +160,11 @@ public class ACSUtil {
         List<ACSScriptVariableName> result;
         Collection<VirtualFile> virtualFiles =
                 FileTypeIndex.getFiles(ACSScriptType.INSTANCE, GlobalSearchScope.fileScope(file));
-        result = virtualFiles.stream().map(virtualFile -> PsiTreeUtil.findChildrenOfType(file, ACSScriptVariableName.class)).map(allVars -> allVars.stream().filter(var -> var.getName().equals(varName)).collect(Collectors.toList())).flatMap(Collection::stream).collect(Collectors.toList());
+        result = virtualFiles.stream()
+                .map(virtualFile -> PsiTreeUtil.findChildrenOfType(file, ACSScriptVariableName.class))
+                .map(allVars -> allVars.stream()
+                        .filter(var -> var.getName().equals(varName)).collect(Collectors.toList()))
+                .flatMap(Collection::stream).collect(Collectors.toList());
         return result;
     }
 

@@ -53,6 +53,10 @@ SpecialExpression ::= (NUMBER Colon FunctionInvocation) (CommaSymbol SpecialExpr
 
 
 FunctionDefinition ::= FunctionIdentifier FunctionReturnType FunctionName FunctionParameters FunctionBody
+/*{
+    implements="by.home.acs.language.reference.NewFunElement"
+    methods=[getName setName getNameIdentifier getReference]
+}*/
 
 ScriptDefinition ::= ScriptIdentifier ScriptName (ScriptPossibleParams | ScriptType) (NetType ClientsideType | NetType | ClientsideType)? ScriptBody
 /**
@@ -161,7 +165,7 @@ FunctionName ::= IDENTIFIER
 {
     mixin="by.home.acs.language.psi.impl.ACSFunctionElementImpl"
     implements="by.home.acs.language.psi.ACSFunctionElement"
-    methods=[getName getNameIdentifier changeName]
+    methods=[getName getNameIdentifier changeName getReference]
     stubClass="by.home.acs.language.stub.ACSFunctionStub"
 }
 

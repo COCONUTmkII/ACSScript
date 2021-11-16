@@ -3,6 +3,7 @@ package by.home.acs.language.util.psi;
 import by.home.acs.language.ACSScriptTypes;
 import by.home.acs.language.psi.*;
 import by.home.acs.language.reference.ACSVariableDefReference;
+import by.home.acs.language.reference.NewFunctionRef;
 import by.home.acs.language.util.ACSUtil;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
@@ -125,6 +126,10 @@ public class ACSBnfPsiImplUtil {
         }
     }
 
+    public static PsiElement setName(ACSScriptFunctionDefinition definition, String functionDefinition) {
+        return definition.getFunctionName();
+    }
+
     public static PsiElement getNameIdentifier(ACSScriptFunctionInvocation scriptWord) {
         ASTNode keyNode = scriptWord.getNode().findChildByType(ACSScriptTypes.SCRIPT_NAME);
         if (keyNode != null) {
@@ -197,6 +202,26 @@ public class ACSBnfPsiImplUtil {
                     for (ACSScriptVariableName variableName : childrenOfType) {
                         return variableName;
                     }
+                }
+                return null;
+            }
+        };
+    }
+
+    public static PsiReference getReference(ACSFunctionElement functionDefinition) {
+        return new NewFunctionRef(functionDefinition) {
+            @Nullable
+            @Override
+            public PsiElement resolve() {
+                Collection<ACSScriptFunctionDefinition> definitions = ACSUtil.findFunctionDefinition(functionDefinition.getProject(), functionDefinition.getFunctionName());
+                for (ACSScriptFunctionDefinition defs : definitions) {
+                    System.out.println(definitions.size());
+                    return defs.getFunctionName();
+                }
+                Collection<ACSScriptFunctionInvocation> invocations = ACSUtil.findFunctionInvocation(functionDefinition.getProject(), functionDefinition.getFunctionName());
+                for (ACSScriptFunctionInvocation invoke : invocations) {
+                    System.out.println("also here");
+                    return invoke.getFunctionName();
                 }
                 return null;
             }

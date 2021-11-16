@@ -3,15 +3,12 @@ package by.home.acs.language.reference;
 import by.home.acs.language.ACSScriptIcon;
 import by.home.acs.language.psi.ACSScriptFunctionDefinition;
 import by.home.acs.language.psi.ACSScriptFunctionInvocation;
-import by.home.acs.language.psi.ACSScriptFunctionName;
 import by.home.acs.language.util.ACSUtil;
 import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
-import com.intellij.util.IncorrectOperationException;
-import kotlin.jvm.Throws;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -30,8 +27,8 @@ public class ACSFunctionReference extends PsiReferenceBase<PsiElement> implement
     @NotNull
     public ResolveResult[] multiResolve(boolean incompleteCode) {
         Project project = myElement.getProject();
-        final List<ACSScriptFunctionDefinition> functionDefinitions = ACSUtil.findFunctionDefinition(project, functionName);
-        final List<ACSScriptFunctionInvocation> functionInvocations = ACSUtil.findFunctionInvocation(project, functionName);
+        List<ACSScriptFunctionDefinition> functionDefinitions = ACSUtil.findFunctionDefinition(project, functionName);
+        List<ACSScriptFunctionInvocation> functionInvocations = ACSUtil.findFunctionInvocation(project, functionName);
         List<ResolveResult> results = new ArrayList<>();
         functionDefinitions.forEach(acsScriptFunctionDefinition -> results.add(new PsiElementResolveResult(acsScriptFunctionDefinition.getFunctionName())));
         functionInvocations.forEach(acsScriptFunctionInvocation -> results.add(new PsiElementResolveResult(acsScriptFunctionInvocation.getFunctionName())));
@@ -40,8 +37,20 @@ public class ACSFunctionReference extends PsiReferenceBase<PsiElement> implement
 
     @Override
     public @Nullable PsiElement resolve() {
-        ResolveResult[] resolveResults = multiResolve(false);
-        return resolveResults.length == 1 ? resolveResults[0].getElement() : null;
+        /*ResolveResult[] resolveResults = multiResolve(false);
+        System.out.println(resolveResults.length);
+        return resolveResults.length == 1 ? resolveResults[0].getElement() : null;*/
+        Project project = myElement.getProject();
+        List<ACSScriptFunctionDefinition> functionDefinitions = ACSUtil.findFunctionDefinition(project, functionName);
+        List<ACSScriptFunctionInvocation> functionInvocations = ACSUtil.findFunctionInvocation(project, functionName);
+        System.out.println("in resolve definitions" + functionDefinitions.size());
+        List<ResolveResult> results = new ArrayList<>();
+        functionDefinitions.forEach(acsScriptFunctionDefinition -> results.add(new PsiElementResolveResult(acsScriptFunctionDefinition.getFunctionName())));
+        functionInvocations.forEach(acsScriptFunctionInvocation -> results.add(new PsiElementResolveResult(acsScriptFunctionInvocation.getFunctionName())));
+        for (ResolveResult result : results) {
+            return result.getElement();
+        }
+        return null;
     }
 
     @Override
@@ -61,7 +70,7 @@ public class ACSFunctionReference extends PsiReferenceBase<PsiElement> implement
         return variants.toArray();
     }
 
-    @Override
+/*    @Override
     public boolean isReferenceTo(@NotNull PsiElement element) {
         if (element instanceof ACSScriptFunctionName) {
             String name = ((ACSScriptFunctionName) element).getName();
@@ -69,9 +78,9 @@ public class ACSFunctionReference extends PsiReferenceBase<PsiElement> implement
             return name.equals(functionName);
         }
         return false;
-    }
+    }*/
 
-    @Override
+    /*@Override
     @Throws(exceptionClasses = IncorrectOperationException.class)
     public PsiElement bindToElement(@NotNull PsiElement element) throws IncorrectOperationException {
         if (element instanceof ACSScriptFunctionName) {
@@ -81,5 +90,11 @@ public class ACSFunctionReference extends PsiReferenceBase<PsiElement> implement
             System.out.println(element);
         }
         return element;
+    }*/
+
+    @Override
+    public @NotNull
+    TextRange getRangeInElement() {
+        return TextRange.from(1, myElement.getTextLength());
     }
 }
