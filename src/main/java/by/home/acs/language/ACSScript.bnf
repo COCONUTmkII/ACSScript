@@ -322,9 +322,11 @@ IfThenStatement ::= if OpenBracket AssignmentExpression CloseBracket (Statement 
 
 IfThenElseStatement ::= if OpenBracket AssignmentExpression CloseBracket Statement else Statement
 
-SwitchLoop ::= switch OpenBracket (FunctionInvocation | IDENTIFIER | NUMBER) CloseBracket OpenBrace CaseOperator CloseBrace
+SwitchLoop ::= switch OpenBracket (FunctionInvocation | IDENTIFIER | NUMBER) CloseBracket OpenBrace CaseOperator* DefaultOnly? CloseBrace
 
-CaseOperator ::=   CaseIdentifier Statement*  (default Colon Statement)? CaseOperator?
+CaseOperator ::=   CaseIdentifier Statement*
+
+private DefaultOnly ::= default Colon Statement
 
 private CaseIdentifier ::= case (IDENTIFIER | NUMBER | STRING) Colon
 
