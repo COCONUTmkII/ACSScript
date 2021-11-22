@@ -1,16 +1,22 @@
 package by.home.acs.language.reference;
 
+import by.home.acs.language.psi.ACSScriptElementFactory;
 import by.home.acs.language.psi.ACSScriptFunctionDefinition;
 import by.home.acs.language.psi.ACSScriptFunctionName;
 import by.home.acs.language.util.ACSUtil;
+import com.intellij.codeInsight.lookup.LookupElement;
+import com.intellij.codeInsight.lookup.LookupElementBuilder;
+import com.intellij.icons.AllIcons;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
+import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class FunctionReference extends PsiReferenceBase<ACSScriptFunctionName> implements PsiPolyVariantReference {
 
@@ -27,7 +33,6 @@ public class FunctionReference extends PsiReferenceBase<ACSScriptFunctionName> i
     @Override
     public @Nullable
     PsiElement resolve() {
-        List<ACSScriptFunctionDefinition> functionDefinitions = ACSUtil.findFunctionDefinition(myElement.getProject(), myElement.getName());
         ResolveResult[] resolveResults = multiResolve(false);
         for (ResolveResult result : resolveResults) {
             return result.getElement();
@@ -48,5 +53,29 @@ public class FunctionReference extends PsiReferenceBase<ACSScriptFunctionName> i
     @Override
     public boolean isReferenceTo(@NotNull PsiElement element) {
         return element instanceof ACSScriptFunctionName;
+    }
+
+
+    @Override
+    public PsiElement handleElementRename(@NotNull String newElementName) throws IncorrectOperationException {
+        final ACSScriptFunctionDefinition functionWithProvidedName = ACSScriptElementFactory.createSimpleFunction(myElement.getProject(), newElementName);
+        ACSScriptFunctionName functionName = functionWithProvidedName.getFunctionName();
+        myElement.replace(functionName);
+        return myElement;
+    }
+
+    @NotNull
+    @Override
+    public Object[] getVariants() {
+        List<LookupElement> variants = new ArrayList<>();
+        List<ACSScriptFunctionName> definitions =
+                ACSUtil.findFunctionDefinition(myElement.getProject()).stream()
+                        .map(ACSScriptFunctionDefinition::getFunctionName).collect(Collectors.toList());
+        definitions.forEach(defs -> variants.add(
+                LookupElementBuilder.create(defs).withIcon(AllIcons.Nodes.Function)
+                        .withTypeText(defs.getContainingFile().getText())
+
+        ));
+        return variants.toArray();
     }
 }

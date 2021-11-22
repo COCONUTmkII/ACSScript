@@ -2,8 +2,8 @@ package by.home.acs.language.usage;
 
 import by.home.acs.language.ACSScriptLexerAdapter;
 import by.home.acs.language.ACSScriptTypes;
-import by.home.acs.language.psi.ACSScriptDefinition;
 import by.home.acs.language.psi.ACSScriptFunctionName;
+import by.home.acs.language.psi.ACSScriptVariableName;
 import com.intellij.lang.cacheBuilder.DefaultWordsScanner;
 import com.intellij.lang.cacheBuilder.WordsScanner;
 import com.intellij.lang.findUsages.FindUsagesProvider;
@@ -37,10 +37,12 @@ public class ACSScriptUsageProvider implements FindUsagesProvider {
     @NotNull
     @Override
     public String getType(@NotNull PsiElement element) {
-        if (element instanceof ACSScriptDefinition) {
-            return "element";
+        if (element instanceof ACSScriptFunctionName) {
+            return "function";
+        } else if (element instanceof ACSScriptVariableName) {
+            return "variable";
         } else {
-            return "";
+            return "element";
         }
     }
 
@@ -48,7 +50,7 @@ public class ACSScriptUsageProvider implements FindUsagesProvider {
     @Override
     public String getDescriptiveName(@NotNull PsiElement element) {
         if (element instanceof ACSScriptFunctionName) {
-            return "function" + ((ACSScriptFunctionName) element).getName();
+            return ((ACSScriptFunctionName) element).getName();
         } else {
             return "element";
         }
@@ -60,7 +62,7 @@ public class ACSScriptUsageProvider implements FindUsagesProvider {
         if (element instanceof ACSScriptFunctionName) {
             return element.getText();
         } else {
-            return "";
+            return "element";
         }
     }
 }

@@ -1,5 +1,6 @@
 package by.home.acs.language.psi.impl;
 
+import by.home.acs.language.ACSScriptTypes;
 import by.home.acs.language.psi.*;
 import by.home.acs.language.stub.ACSFunctionStub;
 import by.home.acs.language.stub.ACSStubElementImpl;
@@ -14,9 +15,6 @@ import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
-
 
 public class ACSFunctionElementImpl extends ACSStubElementImpl<ACSFunctionStub> implements ACSFunctionElement, PsiLanguageInjectionHost, PsiNameIdentifierOwner {
 
@@ -53,10 +51,10 @@ public class ACSFunctionElementImpl extends ACSStubElementImpl<ACSFunctionStub> 
 
     @Override
     public PsiElement setName(@NotNull String name) throws IncorrectOperationException {
-        ACSScriptFunctionDefinition functionWithProvidedName = ACSScriptElementFactory.createFunctionWithProvidedName(getProject(), name, "void", List.of("void"));
-        ASTNode node = getFunctionNamesNode();
-        ASTNode newNode = functionWithProvidedName.getFunctionName().getNode();
-        if (node != null) {
+        final ACSScriptFunctionDefinition functionWithProvidedName = ACSScriptElementFactory.createSimpleFunction(getProject(), name);
+        ASTNode node = getNode().findChildByType(ACSScriptTypes.FUNCTION_NAME);
+        ASTNode newNode = functionWithProvidedName.getNode().findChildByType(ACSScriptTypes.FUNCTION_NAME);
+        if (node != null && newNode != null) {
             getNode().replaceChild(node, newNode);
         }
         return this;
