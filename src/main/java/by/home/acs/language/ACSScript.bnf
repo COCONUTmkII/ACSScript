@@ -53,10 +53,6 @@ SpecialExpression ::= (NUMBER Colon FunctionInvocation) (CommaSymbol SpecialExpr
 
 
 FunctionDefinition ::= FunctionIdentifier FunctionReturnType FunctionName FunctionParameters FunctionBody
-/*{
-    implements="by.home.acs.language.reference.NewFunElement"
-    methods=[getName setName getNameIdentifier getReference]
-}*/
 
 ScriptDefinition ::= ScriptIdentifier ScriptName (ScriptPossibleParams | ScriptType) (NetType ClientsideType | NetType | ClientsideType)? ScriptBody
 /**
