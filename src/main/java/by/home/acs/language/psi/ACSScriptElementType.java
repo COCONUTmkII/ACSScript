@@ -2,7 +2,6 @@ package by.home.acs.language.psi;
 
 import by.home.acs.language.ACSScriptLanguage;
 import by.home.acs.language.stub.ACSFileElementType;
-import by.home.acs.language.stub.ACSStubElementType;
 import com.intellij.psi.tree.IElementType;
 import org.jetbrains.annotations.NotNull;
 

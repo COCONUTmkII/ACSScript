@@ -1,4 +1,4 @@
-package by.home.acs.language.stub;
+package by.home.acs.language.stub.function;
 
 import by.home.acs.language.psi.ACSFunctionElement;
 import com.intellij.psi.stubs.StubElement;

@@ -162,7 +162,7 @@ FunctionName ::= IDENTIFIER
     mixin="by.home.acs.language.psi.impl.ACSFunctionElementImpl"
     implements="by.home.acs.language.psi.ACSFunctionElement"
     methods=[getName getNameIdentifier changeName getReference]
-    stubClass="by.home.acs.language.stub.ACSFunctionStub"
+    stubClass="by.home.acs.language.stub.function.ACSFunctionStub"
 }
 
 

@@ -1,8 +1,7 @@
-package by.home.acs.language.stub.impl;
+package by.home.acs.language.stub.function;
 
 import by.home.acs.language.psi.ACSFunctionElement;
 import by.home.acs.language.stub.ACSFileElementType;
-import by.home.acs.language.stub.ACSFunctionStub;
 import com.intellij.psi.stubs.StubBase;
 import com.intellij.psi.stubs.StubElement;
 import org.jetbrains.annotations.NotNull;

@@ -2,8 +2,8 @@ package by.home.acs.language.psi.impl;
 
 import by.home.acs.language.ACSScriptTypes;
 import by.home.acs.language.psi.*;
-import by.home.acs.language.stub.ACSFunctionStub;
 import by.home.acs.language.stub.ACSStubElementImpl;
+import by.home.acs.language.stub.function.ACSFunctionStub;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.LiteralTextEscaper;
 import com.intellij.psi.PsiElement;

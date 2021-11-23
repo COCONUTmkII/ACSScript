@@ -1,25 +1,23 @@
-package by.home.acs.language.stub;
+package by.home.acs.language.stub.function;
 
 import by.home.acs.language.ACSScriptLanguage;
 import by.home.acs.language.ACSScriptTypes;
 import by.home.acs.language.psi.ACSFunctionElement;
 import by.home.acs.language.psi.impl.ACSFunctionElementImpl;
-import by.home.acs.language.stub.impl.ACSFunctionStubImpl;
 import by.home.acs.language.stub.index.ACSStubIndexKeys;
 import com.intellij.lang.LighterAST;
 import com.intellij.lang.LighterASTNode;
 import com.intellij.lang.LighterASTTokenNode;
 import com.intellij.psi.impl.source.tree.LightTreeUtil;
 import com.intellij.psi.stubs.*;
-import com.intellij.psi.tree.ILightStubFileElementType;
 import com.intellij.util.CharTable;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 
-public class ACSStubElementType extends ILightStubElementType<ACSFunctionStub, ACSFunctionElement> {
+public class ACSFunctionStubElementType extends ILightStubElementType<ACSFunctionStub, ACSFunctionElement> {
 
-    public ACSStubElementType() {
+    public ACSFunctionStubElementType() {
         super("FUNCTION_NAME", ACSScriptLanguage.INSTANCE);
     }
 
