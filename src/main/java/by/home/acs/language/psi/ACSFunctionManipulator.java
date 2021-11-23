@@ -8,7 +8,7 @@ import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class ACSManipulator extends AbstractElementManipulator<ACSFunctionElementImpl> {
+public class ACSFunctionManipulator extends AbstractElementManipulator<ACSFunctionElementImpl> {
     @Override
     public @Nullable
     ACSFunctionElementImpl handleContentChange(@NotNull ACSFunctionElementImpl element, @NotNull TextRange range, String newContent) throws IncorrectOperationException {

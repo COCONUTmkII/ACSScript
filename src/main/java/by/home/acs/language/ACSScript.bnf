@@ -220,7 +220,7 @@ VariableDefinition ::= StaticModifier? Type VariableName ArrayType* (Semicolon |
 
 VariableName ::=  IDENTIFIER  (CommaSymbol VariableName)*
 {
-    implements="by.home.acs.language.psi.ACSVariableDefElement"
+    implements="by.home.acs.language.psi.ACSVariableElement"
     methods=[getName setName getNameIdentifier getReference]
 }
 

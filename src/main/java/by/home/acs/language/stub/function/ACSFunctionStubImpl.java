@@ -11,7 +11,7 @@ public class ACSFunctionStubImpl extends StubBase<ACSFunctionElement> implements
     private final String myFunctionName;
 
     public ACSFunctionStubImpl(final StubElement parent, String elementType) {
-        super(parent, ACSFileElementType.stub);
+        super(parent, ACSFileElementType.FUNCTION_STUB);
         myFunctionName = elementType;
     }
 

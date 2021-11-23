@@ -33,7 +33,7 @@ public class ACSFunctionElementImpl extends ACSStubElementImpl<ACSFunctionStub> 
 
     @Override
     public PsiLanguageInjectionHost updateText(@NotNull String text) {
-        return new ACSManipulator().handleContentChange(this, text);
+        return new ACSFunctionManipulator().handleContentChange(this, text);
     }
 
     @Override
@@ -93,7 +93,6 @@ public class ACSFunctionElementImpl extends ACSStubElementImpl<ACSFunctionStub> 
         }
         final ASTNode node = getFunctionNamesNode();
         if (node == null) {
-            System.out.println("node is null");
             return null;
         }
         return node.getText();

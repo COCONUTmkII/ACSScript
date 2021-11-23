@@ -36,7 +36,7 @@ public class ACSFunctionStubElementType extends ILightStubElementType<ACSFunctio
     @Override
     public @NotNull
     String getExternalId() {
-        return "actioncodescript.acs";
+        return "function.acs";
     }
 
     @Override

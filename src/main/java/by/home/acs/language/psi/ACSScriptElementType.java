@@ -12,7 +12,9 @@ public class ACSScriptElementType extends IElementType {
 
     public static IElementType createTypes(String type) {
         if (type.equals("FUNCTION_NAME")) {
-            return ACSFileElementType.stub;
+            return ACSFileElementType.FUNCTION_STUB;
+        } else if (type.equals("VARIABLE_NAME")) {
+            return ACSFileElementType.VARIABLE_STUB;
         } else {
             return new ACSScriptElementType(type);
         }
