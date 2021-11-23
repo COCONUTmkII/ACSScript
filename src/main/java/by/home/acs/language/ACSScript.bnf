@@ -216,19 +216,23 @@ NegationExpression ::= '!' LiteralExpression
 
 AssignmentStatement ::= (ArrayReferenceExpression | IDENTIFIER) Equals (FunctionInvocation Semicolon| VariableInitialization)
 
-VariableDefinition ::= StaticModifier? Type VariableName ArrayType* (Semicolon | (Equals VariableInitialization))
+VariableDefinition ::= StaticModifier? Type RepeatableVariable ArrayType* (Semicolon | (Equals VariableInitialization))
 
-VariableName ::=  IDENTIFIER  (CommaSymbol VariableName)*
+VariableName ::=  IDENTIFIER
 {
     implements="by.home.acs.language.psi.ACSVariableElement"
-    methods=[getName setName getNameIdentifier getReference]
+    mixin="by.home.acs.language.psi.impl.ACSVariableElementImpl"
+    methods=[getName getNameIdentifier getReference]
+    stubClass="by.home.acs.language.stub.variable.ACSVariableStub"
 }
+
+RepeatableVariable ::= VariableName (CommaSymbol RepeatableVariable)*
 
 VariableInitialization ::= (AssignmentExpression | SimpleInitialization) Semicolon
 
 ParenthesisedExpression ::= OpenBracket AssignmentExpression CloseBracket
 
-SimpleInitialization ::= AllTypes (CommaSymbol VariableName Equals AllTypes)*
+SimpleInitialization ::= AllTypes (CommaSymbol RepeatableVariable Equals AllTypes)*
 
 LiteralExpression ::= (AllTypes | IDENTIFIER)
 
@@ -258,7 +262,7 @@ EmptyInitialization ::= Semicolon
 
 TypeInitialization ::= StaticModifier? Type VariableList  ArithmeticInitialization* Semicolon
 
-private VariableList ::= VariableName Equals (NUMBER | STRING | IDENTIFIER ) (CommaSymbol VariableList)?//check logical type
+private VariableList ::= RepeatableVariable Equals (NUMBER | STRING | IDENTIFIER ) (CommaSymbol VariableList)?//check logical type
 
 private ArithmeticInitialization ::= ArithmeticOperator (NUMBER | STRING | IDENTIFIER)
 

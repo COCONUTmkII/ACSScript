@@ -105,7 +105,7 @@ public class ACSBnfPsiImplUtil {
         ASTNode childByType = variableName.getNode().findChildByType(ACSScriptTypes.VARIABLE_NAME);
         if (childByType != null) {
             ACSScriptVariableDefinition dummyVariable = ACSScriptElementFactory.createDummyVariable(variableName.getProject(), newVariableName);
-            variableName.replace(dummyVariable.getVariableName());
+            variableName.replace(dummyVariable.getRepeatableVariable().getVariableName());
         }
         return variableName;
     }
