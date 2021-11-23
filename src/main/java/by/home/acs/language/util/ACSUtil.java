@@ -156,18 +156,6 @@ public class ACSUtil {
         return result;
     }
 
-    public static Collection<ACSScriptVariableName> findAllVarNames(PsiFile file, String varName) {
-        List<ACSScriptVariableName> result;
-        Collection<VirtualFile> virtualFiles =
-                FileTypeIndex.getFiles(ACSScriptType.INSTANCE, GlobalSearchScope.fileScope(file));
-        result = virtualFiles.stream()
-                .map(virtualFile -> PsiTreeUtil.findChildrenOfType(file, ACSScriptVariableName.class))
-                .map(allVars -> allVars.stream()
-                        .filter(var -> var.getName().equals(varName)).collect(Collectors.toList()))
-                .flatMap(Collection::stream).collect(Collectors.toList());
-        return result;
-    }
-
     public static boolean checkPsiElementIsZspecialFunction(PsiElement element) {
         return ACSZspecialMethodLoader.checkZspecialFunction(element.getText());
     }
@@ -180,4 +168,22 @@ public class ACSUtil {
         return ACSTypeCastMethodLoader.checkTypeCastBuiltInMethod(element.getText());
     }
 
+    public static Collection<ACSScriptVariableDefinition> findVariableDefinitions(PsiFile containingFile, String variableName) {
+        Collection<VirtualFile> virtualFiles =
+                FileTypeIndex.getFiles(ACSScriptType.INSTANCE, GlobalSearchScope.fileScope(containingFile));
+        return virtualFiles.stream()
+                .map(virtualFile -> PsiTreeUtil.findChildrenOfType(containingFile, ACSScriptVariableDefinition.class))
+                .map(acsScriptVariableDefinitions -> acsScriptVariableDefinitions.stream()
+                        .filter(variableDefinition -> variableDefinition.getRepeatableVariable().getVariableName().textMatches(variableName)).collect(Collectors.toList()))
+                .flatMap(Collection::stream).collect(Collectors.toList());
+    }
+
+    public static List<ACSScriptVariableDefinition> findVariableDefinitions(PsiFile containingFile) {
+        Collection<VirtualFile> virtualFiles =
+                FileTypeIndex.getFiles(ACSScriptType.INSTANCE, GlobalSearchScope.fileScope(containingFile));
+        return virtualFiles.stream()
+                .map(virtualFile -> PsiTreeUtil.findChildrenOfType(containingFile, ACSScriptVariableDefinition.class))
+                .collect(Collectors.toList())
+                .stream().flatMap(Collection::stream).collect(Collectors.toList());
+    }
 }

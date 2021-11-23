@@ -2,15 +2,11 @@ package by.home.acs.language.util.psi;
 
 import by.home.acs.language.ACSScriptTypes;
 import by.home.acs.language.psi.*;
-import by.home.acs.language.reference.ACSVariableDefReference;
+import by.home.acs.language.reference.ACSVariableReference;
 import by.home.acs.language.reference.FunctionReference;
-import by.home.acs.language.util.ACSUtil;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.Collection;
 
 public class ACSBnfPsiImplUtil {
     public static String getName(ACSScriptScriptDefinition scriptElement) {
@@ -115,19 +111,7 @@ public class ACSBnfPsiImplUtil {
     }
 
     public static PsiReference getReference(ACSScriptVariableName varName) {
-        return new ACSVariableDefReference(varName) {
-            @Nullable
-            @Override
-            public PsiElement resolve() {
-                Collection<ACSScriptVariableName> childrenOfType = ACSUtil.findAllVarNames(varName.getContainingFile(), varName.getName());
-                if (!childrenOfType.isEmpty()) {
-                    for (ACSScriptVariableName variableName : childrenOfType) {
-                        return variableName;
-                    }
-                }
-                return null;
-            }
-        };
+        return new ACSVariableReference(varName);
     }
 
     public static PsiReference getReference(ACSScriptFunctionName functionDefinition) {

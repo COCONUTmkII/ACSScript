@@ -68,14 +68,12 @@ public class FunctionReference extends PsiReferenceBase<ACSScriptFunctionName> i
     @Override
     public Object[] getVariants() {
         List<LookupElement> variants = new ArrayList<>();
-        List<ACSScriptFunctionName> definitions =
+        List<ACSScriptFunctionName> functionNames =
                 ACSUtil.findFunctionDefinition(myElement.getProject()).stream()
                         .map(ACSScriptFunctionDefinition::getFunctionName).collect(Collectors.toList());
-        definitions.forEach(defs -> variants.add(
-                LookupElementBuilder.create(defs).withIcon(AllIcons.Nodes.Function)
-                        .withTypeText(defs.getContainingFile().getText())
-
-        ));
+        functionNames.forEach(function -> variants.add(
+                LookupElementBuilder.create(function).withIcon(AllIcons.Nodes.Function)
+                        .withTypeText(function.getContainingFile().getText())));
         return variants.toArray();
     }
 }
