@@ -45,6 +45,6 @@ public class ACSScriptElementFactory {
 
     public static ACSScriptVariableDefinition createDummyVariable(Project project, String variableName) {
         return (ACSScriptVariableDefinition) PsiFileFactory.getInstance(project)
-                .createFileFromText(ACS_DUMMY, ACSScriptLanguage.INSTANCE, "int " + variableName + " ;");
+                .createFileFromText(ACS_DUMMY, ACSScriptLanguage.INSTANCE, "int " + variableName + " =1;").getFirstChild().getFirstChild();
     }
 }

@@ -1,15 +1,13 @@
 package by.home.acs.language.reference;
 
-import by.home.acs.language.psi.ACSScriptRepeatableVariable;
-import by.home.acs.language.psi.ACSScriptVariableDefinition;
-import by.home.acs.language.psi.ACSScriptVariableName;
-import by.home.acs.language.psi.ACSVariableElement;
+import by.home.acs.language.psi.*;
 import by.home.acs.language.util.ACSUtil;
 import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
+import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -18,9 +16,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ACSVariableReference extends PsiReferenceBase<ACSVariableElement> implements PsiPolyVariantReference {
+public class VariableReference extends PsiReferenceBase<ACSVariableElement> implements PsiPolyVariantReference {
 
-    public ACSVariableReference(@NotNull ACSVariableElement element) {
+    public VariableReference(@NotNull ACSVariableElement element) {
         super(element);
     }
 
@@ -30,9 +28,9 @@ public class ACSVariableReference extends PsiReferenceBase<ACSVariableElement> i
         return TextRange.from(0, myElement.getTextLength());
     }
 
+    @Nullable
     @Override
-    public @Nullable
-    PsiElement resolve() {
+    public PsiElement resolve() {
         ResolveResult[] resolveResults = multiResolve(false);
         for (ResolveResult result : resolveResults) {
             return result.getElement();
@@ -51,7 +49,7 @@ public class ACSVariableReference extends PsiReferenceBase<ACSVariableElement> i
 
     @Override
     public boolean isReferenceTo(@NotNull PsiElement element) {
-        return element instanceof ACSVariableElement;
+        return element instanceof ACSScriptVariableName;
     }
 
     @NotNull
@@ -67,6 +65,14 @@ public class ACSVariableReference extends PsiReferenceBase<ACSVariableElement> i
                 LookupElementBuilder.create(var).withIcon(AllIcons.Nodes.Function)
                         .withTypeText(var.getContainingFile().getText())));
         return variants.toArray();
+    }
 
+    @Override
+    public PsiElement handleElementRename(@NotNull String newElementName) throws IncorrectOperationException {
+        System.out.println("here");
+        ACSScriptVariableDefinition dummyVariable = ACSScriptElementFactory.createDummyVariable(myElement.getProject(), newElementName);
+        ACSScriptVariableName variableName = dummyVariable.getRepeatableVariable().getVariableName();
+        myElement.replace(variableName);
+        return myElement;
     }
 }

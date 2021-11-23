@@ -60,7 +60,7 @@ public class ACSVariableElementImpl extends ACSStubElementImpl<ACSVariableStub> 
         return node.getPsi();
     }
 
-    private ASTNode getVariableNameNode() {
+    public ASTNode getVariableNameNode() {
         return getNode();
     }
 

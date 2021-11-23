@@ -2,73 +2,13 @@ package by.home.acs.language.util.psi;
 
 import by.home.acs.language.ACSScriptTypes;
 import by.home.acs.language.psi.*;
-import by.home.acs.language.reference.ACSVariableReference;
 import by.home.acs.language.reference.FunctionReference;
+import by.home.acs.language.reference.VariableReference;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
 
 public class ACSBnfPsiImplUtil {
-    public static String getName(ACSScriptScriptDefinition scriptElement) {
-        ASTNode scriptName = scriptElement.getNode().findChildByType(ACSScriptTypes.SCRIPT_NAME);
-        if (scriptName != null) {
-            return scriptName.getText().replaceAll("\\\\ ", "");
-        } else {
-            return null;
-        }
-    }
-
-    public static String getName(ACSScriptFunctionDefinition functionElement) {
-        ASTNode scriptName = functionElement.getNode().findChildByType(ACSScriptTypes.FUNCTION_NAME);
-        if (scriptName != null) {
-            return scriptName.getText();
-        } else {
-            System.out.println("NULL");
-            return null;
-        }
-    }
-
-    public static String getName(ACSScriptFunctionInvocation functionElement) {
-        ASTNode scriptName = functionElement.getNode().findChildByType(ACSScriptTypes.FUNCTION_NAME);
-        if (scriptName != null) {
-            return scriptName.getText();
-        } else {
-            return null;
-        }
-    }
-
-    public static ACSScriptScriptDefinition changeName(ACSScriptScriptDefinition scriptWord, String newScriptName) {
-        ASTNode scriptName = scriptWord.getNode().findChildByType(ACSScriptTypes.SCRIPT_NAME);
-        if (scriptName != null) {
-            ACSScriptScriptDefinition acsScriptDefinition = ACSScriptElementFactory.createScript(scriptWord.getProject(), newScriptName);
-            PsiElement psi = scriptName.getPsi();
-            psi.replace(acsScriptDefinition.getScriptName());
-        } else {
-            return null;
-        }
-        return scriptWord;
-    }
-
-    public static ACSScriptFunctionInvocation changeName(ACSScriptFunctionInvocation scriptWord, String newScriptName) {
-        ASTNode scriptName = scriptWord.getNode().findChildByType(ACSScriptTypes.SCRIPT_NAME);
-        if (scriptName != null) {
-            ACSScriptScriptDefinition acsScriptDefinition = ACSScriptElementFactory.createScript(scriptWord.getProject(), newScriptName);
-            PsiElement psi = scriptName.getPsi();
-            psi.replace(acsScriptDefinition.getScriptName());
-        } else {
-            return null;
-        }
-        return scriptWord;
-    }
-
-    public static String getIdentifier(ACSScriptScriptDefinition element) {
-        ASTNode identifier = element.getNode().findChildByType(ACSScriptTypes.IDENTIFIER);
-        if (identifier != null) {
-            return identifier.getText().replaceAll("\\\\", " "); //not sure
-        } else  {
-            return null;
-        }
-    }
 
     public static PsiElement getNameIdentifier(ACSScriptFunctionName functionName) {
         if (functionName != null) {
@@ -82,11 +22,16 @@ public class ACSBnfPsiImplUtil {
         if (functionDefinition != null) {
             ACSScriptFunctionDefinition acsScriptDefinition = ACSScriptElementFactory.createSimpleFunction(functionDefinition.getProject(), newScriptName);
             functionDefinition.replace(acsScriptDefinition.getFunctionName());
-        } else {
-            System.out.println("function name null");
-            return null;
         }
         return functionDefinition;
+    }
+
+    public static ACSScriptVariableName changeName(ACSScriptVariableName variableName, String newVariableName) {
+        if (variableName != null) {
+            ACSScriptVariableDefinition variableDefinition = ACSScriptElementFactory.createDummyVariable(variableName.getProject(), newVariableName);
+            variableName.replace(variableDefinition.getRepeatableVariable().getVariableName());
+        }
+        return variableName;
     }
 
     public static String getName(ACSScriptFunctionName functionElement) {
@@ -94,7 +39,7 @@ public class ACSBnfPsiImplUtil {
     }
 
     public static String getName(ACSScriptVariableName variableDefinition) {
-        return variableDefinition != null ? variableDefinition.getText() : null;
+        return variableDefinition != null ? variableDefinition.getVariableName() : null;
     }
 
     public static ACSScriptVariableName setName(ACSScriptVariableName variableName, String newVariableName) {
@@ -111,7 +56,7 @@ public class ACSBnfPsiImplUtil {
     }
 
     public static PsiReference getReference(ACSScriptVariableName varName) {
-        return new ACSVariableReference(varName);
+        return new VariableReference(varName);
     }
 
     public static PsiReference getReference(ACSScriptFunctionName functionDefinition) {

@@ -34,9 +34,9 @@
         <lang.findUsagesProvider language="ACSScript"
                                  implementationClass="by.home.acs.language.usage.ACSScriptUsageProvider"/>
         <lang.refactoringSupport language="ACSScript"
-                                 implementationClass="by.home.acs.language.refactor.ACSScriptRefactoringSupportProvider"/>
+                                 implementationClass="by.home.acs.language.refactor.ACSVariableRefactorProvider"/>
         <lang.refactoringSupport language="ACSScript"
-                                 implementationClass="by.home.acs.language.refactor.ACSTestRefactoring"/>
+                                 implementationClass="by.home.acs.language.refactor.ACSFunctionRefactorProvider"/>
 
         <moduleType id="ACS_MODULE_TYPE" implementationClass="by.home.acs.language.wizard.ACSModuleType"/>
         <localInspection implementationClass="by.home.acs.language.inspection.VariableReferenceInspection"
@@ -70,13 +70,13 @@
         <stubIndex implementation="by.home.acs.language.stub.variable.ACSStubVariableIndex"/>
     </extensions>
 
-    <extensionPoints>
-        <extensionPoint name="acsFunctionSearch" interface="com.intellij.util.QueryExecutor" dynamic="true"/>
-    </extensionPoints>
+    <!--    <extensionPoints>-->
+    <!--        <extensionPoint name="acsFunctionSearch" interface="com.intellij.util.QueryExecutor" dynamic="true"/>-->
+    <!--    </extensionPoints>-->
 
-    <extensions defaultExtensionNs="by.home.ACSScript">
-        <acsFunctionSearch implementation="by.home.acs.language.search.ACSFunctionSearchExecutor"/>
-    </extensions>
+    <!--    <extensions defaultExtensionNs="by.home.ACSScript">-->
+    <!--        <acsFunctionSearch implementation="by.home.acs.language.search.ACSFunctionSearchExecutor"/>-->
+    <!--    </extensions>-->
 
     <actions>
         <!-- Add your actions here -->

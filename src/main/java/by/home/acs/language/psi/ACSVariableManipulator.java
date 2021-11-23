@@ -23,6 +23,4 @@ public class ACSVariableManipulator extends AbstractElementManipulator<ACSVariab
     public ACSVariableElementImpl handleContentChange(@NotNull ACSVariableElementImpl element, String newContent) throws IncorrectOperationException {
         return super.handleContentChange(element, newContent);
     }
-
-    //maybe get range in element required here. need to check
 }

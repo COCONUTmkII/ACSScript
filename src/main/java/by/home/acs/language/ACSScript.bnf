@@ -222,7 +222,7 @@ VariableName ::=  IDENTIFIER
 {
     implements="by.home.acs.language.psi.ACSVariableElement"
     mixin="by.home.acs.language.psi.impl.ACSVariableElementImpl"
-    methods=[getName getNameIdentifier getReference]
+    methods=[getName changeName getNameIdentifier getReference]
     stubClass="by.home.acs.language.stub.variable.ACSVariableStub"
 }
 

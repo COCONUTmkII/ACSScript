@@ -6,7 +6,7 @@ import com.intellij.psi.PsiElement;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class ACSTestRefactoring extends RefactoringSupportProvider {
+public class ACSFunctionRefactorProvider extends RefactoringSupportProvider {
 
     @Override
     public boolean isMemberInplaceRenameAvailable(@NotNull PsiElement element, @Nullable PsiElement context) {
