@@ -43,7 +43,7 @@ public class VariableReference extends PsiReferenceBase<ACSVariableElement> impl
     public ResolveResult[] multiResolve(boolean incompleteCode) {
         Collection<ACSScriptVariableDefinition> variableNames = ACSUtil.findVariableDefinitions(myElement.getContainingFile(), myElement.getVariableName());
         Collection<ResolveResult> results = new ArrayList<>();
-        variableNames.forEach(acsScriptVariableName -> results.add(new PsiElementResolveResult(acsScriptVariableName)));
+        variableNames.forEach(acsScriptVariableName -> results.add(new PsiElementResolveResult(acsScriptVariableName.getRepeatableVariable().getVariableName())));
         return results.toArray(new ResolveResult[results.size()]);
     }
 
