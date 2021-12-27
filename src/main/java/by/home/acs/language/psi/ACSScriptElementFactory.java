@@ -11,11 +11,6 @@ import java.util.List;
 public class ACSScriptElementFactory {
     private static final String ACS_DUMMY = "script.acs";
 
-    public static ACSScriptFile createACSFile(Project project, String text) {
-        return (ACSScriptFile) PsiFileFactory.getInstance(project)
-                .createFileFromText(ACS_DUMMY, ACSScriptLanguage.INSTANCE, text);
-    }
-
     public static PsiElement createACSKeyword(PsiManager instance, String text) {
         return new ACSKeywordElement(instance, text);
     }

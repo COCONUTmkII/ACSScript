@@ -69,7 +69,6 @@ public class VariableReference extends PsiReferenceBase<ACSVariableElement> impl
 
     @Override
     public PsiElement handleElementRename(@NotNull String newElementName) throws IncorrectOperationException {
-        System.out.println("here");
         ACSScriptVariableDefinition dummyVariable = ACSScriptElementFactory.createDummyVariable(myElement.getProject(), newElementName);
         ACSScriptVariableName variableName = dummyVariable.getRepeatableVariable().getVariableName();
         myElement.replace(variableName);
