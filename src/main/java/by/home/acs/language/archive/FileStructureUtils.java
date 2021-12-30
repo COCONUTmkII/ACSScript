@@ -2,8 +2,17 @@ package by.home.acs.language.archive;
 
 import by.home.acs.language.archive.type.SupportedFileType;
 import com.google.common.hash.Hashing;
+import com.intellij.ide.projectView.ViewSettings;
+import com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode;
+import com.intellij.ide.projectView.impl.nodes.PsiFileNode;
+import com.intellij.ide.util.treeView.AbstractTreeNode;
 import com.intellij.openapi.application.PathManager;
+import com.intellij.openapi.roots.ModuleFileIndex;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.psi.PsiDirectory;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiFileSystemItem;
 import com.intellij.util.io.URLUtil;
 import org.apache.commons.lang.StringUtils;
 
@@ -12,10 +21,37 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Collection;
+import java.util.List;
 
 public class FileStructureUtils {
     public static final String FILE_SEPARATOR = URLUtil.JAR_SEPARATOR;
     private static final String NESTED_FILE_ROOT = "archives";
+
+    public static void processPsiDirectoryChildren(Collection<PsiElement> children,
+                                                   List<AbstractTreeNode<?>> container,
+                                                   ModuleFileIndex moduleFileIndex,
+                                                   ViewSettings viewSettings) {
+        for (PsiElement element : children) {
+            if (!(element instanceof PsiFileSystemItem)) {
+                continue;
+            }
+            var virtualFile = ((PsiFileSystemItem) element).getVirtualFile();
+            if (virtualFile == null) {
+                continue;
+            }
+            if (moduleFileIndex != null && !moduleFileIndex.isInContent(virtualFile)) {
+                continue;
+            }
+            if (element instanceof PsiFile) {
+                container.add(new PsiFileNode(element.getProject(), (PsiFile) element, viewSettings));
+            } else if (element instanceof PsiDirectory) {
+                //TODO other class declared here. See PsiGenericDirectoryNode
+                container.add(new PsiDirectoryNode(element.getProject(), (PsiDirectory) element, viewSettings));
+            }
+        }
+
+    }
 
     public static boolean isArchiveFile(String path) {
         var extensionIndex = path.lastIndexOf('.') + 1;
