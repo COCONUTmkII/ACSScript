@@ -7,12 +7,16 @@ import com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode;
 import com.intellij.ide.projectView.impl.nodes.PsiFileNode;
 import com.intellij.ide.util.treeView.AbstractTreeNode;
 import com.intellij.openapi.application.PathManager;
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.ModuleFileIndex;
+import com.intellij.openapi.roots.ModuleRootManager;
+import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiFileSystemItem;
+import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.io.URLUtil;
 import org.apache.commons.lang.StringUtils;
 
@@ -21,6 +25,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -28,7 +33,7 @@ public class FileStructureUtils {
     public static final String FILE_SEPARATOR = URLUtil.JAR_SEPARATOR;
     private static final String NESTED_FILE_ROOT = "archives";
 
-    public static void processPsiDirectoryChildren(Collection<PsiElement> children,
+    public static void processPsiDirectoryChildren(PsiElement[] children,
                                                    List<AbstractTreeNode<?>> container,
                                                    ModuleFileIndex moduleFileIndex,
                                                    ViewSettings viewSettings) {
@@ -46,8 +51,7 @@ public class FileStructureUtils {
             if (element instanceof PsiFile) {
                 container.add(new PsiFileNode(element.getProject(), (PsiFile) element, viewSettings));
             } else if (element instanceof PsiDirectory) {
-                //TODO other class declared here. See PsiGenericDirectoryNode
-                container.add(new PsiDirectoryNode(element.getProject(), (PsiDirectory) element, viewSettings));
+                container.add(new PsiGenericDirectoryNode(element.getProject(), (PsiDirectory) element, viewSettings));
             }
         }
 
@@ -66,6 +70,7 @@ public class FileStructureUtils {
         return StringUtils.countMatches(path, FILE_SEPARATOR) > 0;
     }
 
+    @SuppressWarnings("Might not work as expected because of mkdirs")
     public static File copyFileToTemp(VirtualFile virtualFile) {
         var nestedFilesRoot = new File(getPluginTempFolder(), NESTED_FILE_ROOT);
         if (!nestedFilesRoot.exists()) {
@@ -78,15 +83,19 @@ public class FileStructureUtils {
                 .putLong(virtualFile.getLength())
                 .hash()
                 .toString();
+        var outFolder = new File(nestedFilesRoot, id);
+        if (!outFolder.exists()) {
+            outFolder.mkdirs();
+        }
         var outFile = new File(id, virtualFile.getName());
         if (!outFile.exists()) {
-            CopyFile(virtualFile, outFile);
+            copyFile(virtualFile, outFile);
         }
         return outFile;
     }
 
-    private static void CopyFile(VirtualFile virtualFile, File outFile) {
-        //TODO Files.copy might not work correctly because of kotlin inputstream.use method
+    @SuppressWarnings("Files.copy might not work correctly because of kotlin inputstream.use method")
+    private static void copyFile(VirtualFile virtualFile, File outFile) {
         if (!tryToDirectoryCopyFile(virtualFile, outFile)) {
             try (final var stream = virtualFile.getInputStream()) {
                 Files.copy(stream, Path.of(outFile.getPath()));
@@ -109,5 +118,36 @@ public class FileStructureUtils {
     public static File getPluginTempFolder() {
         var tmpDir = PathManager.getTempPath();
         return new File(tmpDir, "Action Code Script");
+    }
+
+    @SuppressWarnings("NOTHING_TO_INLINE")
+    private static Collection<AbstractTreeNode<?>> processChildren(PsiDirectory psiDirectory, ViewSettings settings) {
+        var children = new ArrayList<AbstractTreeNode<?>>();
+        var project = psiDirectory.getProject();
+        var fileIndex = ProjectRootManager.getInstance(project).getFileIndex();
+        var module = fileIndex.getModuleForFile(psiDirectory.getVirtualFile());
+        var moduleFileIndex = module != null ? ModuleRootManager.getInstance(module).getFileIndex() : null;
+        processPsiDirectoryChildren(psiDirectory.getChildren(), children, moduleFileIndex, settings);
+        return children;
+    }
+
+    private static class PsiGenericDirectoryNode extends PsiDirectoryNode {
+        private final ViewSettings myViewSettings;
+
+        PsiGenericDirectoryNode(Project project, PsiDirectory value, ViewSettings viewSettings) {
+            super(project, value, viewSettings);
+            myViewSettings = viewSettings;
+        }
+
+        @Override
+        public Collection<AbstractTreeNode<?>> getChildrenImpl() {
+            if (myProject != null) {
+                var psiDirectory = getValue();
+                if (psiDirectory != null) {
+                    return processChildren(psiDirectory, myViewSettings);
+                }
+            }
+            return ContainerUtil.emptyList();
+        }
     }
 }
