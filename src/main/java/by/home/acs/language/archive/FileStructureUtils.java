@@ -6,6 +6,7 @@ import com.intellij.ide.projectView.ViewSettings;
 import com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode;
 import com.intellij.ide.projectView.impl.nodes.PsiFileNode;
 import com.intellij.ide.util.treeView.AbstractTreeNode;
+import com.intellij.openapi.application.ApplicationInfo;
 import com.intellij.openapi.application.PathManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.ModuleFileIndex;
@@ -149,5 +150,11 @@ public class FileStructureUtils {
             }
             return ContainerUtil.emptyList();
         }
+    }
+
+    @SuppressWarnings("Might not be used")
+    public static int getBaseLineVersion() {
+        var appInfo = ApplicationInfo.getInstance();
+        return appInfo.getBuild().getBaselineVersion();
     }
 }
