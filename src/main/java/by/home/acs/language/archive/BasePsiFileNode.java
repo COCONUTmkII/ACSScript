@@ -13,15 +13,18 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public abstract class BasePsiFileNode extends PsiFileNode {
+    private final ViewSettings myViewSettings;
+
     public BasePsiFileNode(Project project, @NotNull PsiFile value, ViewSettings viewSettings) {
         super(project, value, viewSettings);
+        myViewSettings = viewSettings;
     }
 
     public List<AbstractTreeNode<?>> getChildrenForVirtualFile(VirtualFile rootFile) {
         if (myProject != null && rootFile != null) {
             var psiDirectory = PsiManager.getInstance(myProject).findDirectory(rootFile);
             if (psiDirectory != null) {
-                //TODO implement processChildren method in util class
+                FileStructureUtils.processChildren(psiDirectory, myViewSettings);
             }
         }
         return ContainerUtil.emptyList();

@@ -122,7 +122,7 @@ public class FileStructureUtils {
     }
 
     @SuppressWarnings("NOTHING_TO_INLINE")
-    private static Collection<AbstractTreeNode<?>> processChildren(PsiDirectory psiDirectory, ViewSettings settings) {
+    public static Collection<AbstractTreeNode<?>> processChildren(PsiDirectory psiDirectory, ViewSettings settings) {
         var children = new ArrayList<AbstractTreeNode<?>>();
         var project = psiDirectory.getProject();
         var fileIndex = ProjectRootManager.getInstance(project).getFileIndex();
