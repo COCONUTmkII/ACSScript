@@ -1,6 +1,7 @@
 package by.home.acs.language.archive.wad;
 
 import by.home.acs.language.ACSScriptIcon;
+import com.intellij.icons.AllIcons;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.openapi.util.NlsContexts;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -28,13 +29,13 @@ public class WADFile implements FileType {
 
     @Override
     public @Nullable Icon getIcon() {
-        return ACSScriptIcon.FILE;
+        return AllIcons.FileTypes.Archive;
     }
 
     //is it false?
     @Override
     public boolean isBinary() {
-        return false;
+        return true;
     }
 
     @Override

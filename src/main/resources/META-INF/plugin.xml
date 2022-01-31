@@ -70,6 +70,7 @@
         <stubIndex implementation="by.home.acs.language.stub.variable.ACSStubVariableIndex"/>
         <fileType language="ACSScript" name="wad" implementationClass="by.home.acs.language.archive.wad.WADFile"/>
         <virtualFileSystem key="wad" implementationClass="by.home.acs.language.archive.wad.WADArchiveFileSystemImpl"/>
+        <treeStructureProvider implementation="by.home.acs.language.archive.ArchiveStructureProvider"/>
     </extensions>
 
     <!--    <extensionPoints>-->
