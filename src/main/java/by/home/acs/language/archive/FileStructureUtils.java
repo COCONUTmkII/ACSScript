@@ -18,6 +18,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiFileSystemItem;
 import com.intellij.util.containers.ContainerUtil;
+import com.intellij.util.io.FileAccessorCache;
 import com.intellij.util.io.URLUtil;
 import org.apache.commons.lang.StringUtils;
 
@@ -29,6 +30,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Function;
 
 public class FileStructureUtils {
     public static final String FILE_SEPARATOR = URLUtil.JAR_SEPARATOR;
@@ -130,6 +132,26 @@ public class FileStructureUtils {
         var moduleFileIndex = module != null ? ModuleRootManager.getInstance(module).getFileIndex() : null;
         processPsiDirectoryChildren(psiDirectory.getChildren(), children, moduleFileIndex, settings);
         return children;
+    }
+
+    public static <T, R> R getAndUse(FileAccessorCache.Handle<T> handle, Function<T, R> block) {
+        var released = false;
+        try {
+            var value = handle.get();
+            return block.apply(value);
+        } catch (Exception e) {
+            released = true;
+            try {
+                handle.release();
+            } catch (Exception releaseException) {
+                //ignored
+            }
+            throw e;
+        } finally {
+            if (!released) {
+                handle.release();
+            }
+        }
     }
 
     private static class PsiGenericDirectoryNode extends PsiDirectoryNode {

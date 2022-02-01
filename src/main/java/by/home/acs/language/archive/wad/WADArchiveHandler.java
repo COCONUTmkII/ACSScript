@@ -11,7 +11,10 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
+import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.function.Function;
 
 //TODO implement methods and test on actual wad archive. Also check is it binary
 public class WADArchiveHandler extends BaseArchiveHandler<WADArchiveHandler.WADArchiveHolder> {
@@ -40,9 +43,43 @@ public class WADArchiveHandler extends BaseArchiveHandler<WADArchiveHandler.WADA
         return false;
     }
 
+    //TODO IMPLEMENT THIS
     @Override
-    protected @NotNull Map<String, EntryInfo> createEntriesMap() throws IOException {
-        return null;
+    protected @NotNull
+    Map<String, EntryInfo> createEntriesMap() {
+        //var block1 = getFileHandle()
+        var block2 = new Function<WADArchiveHolder, Map<String, EntryInfo>>() {
+            @Override
+            public Map<String, EntryInfo> apply(WADArchiveHolder holder) {
+                var simpleInArchive = holder.simpleInterface;
+                var archive = holder.archive;
+                try {
+                    LinkedHashMap<String, EntryInfo> stringEntryInfoLinkedHashMap = new LinkedHashMap<>(simpleInArchive.getNumberOfItems());
+                    /*.also {
+                        map ->
+                                map[""] = createRootEntry()
+                        // If it's single file archive, we need to construct its name
+                        // because 7z leaves it empty, respecting cases with merged extensions like "tgz"
+                        // For some archives (like xz) format is null
+                        if (isSingleFileArchive(archive)) {
+                            val entry = simpleInArchive.archiveItems[0]
+                            val path = createEntryNameForSingleArchive(entry)
+                            getOrCreate(entry, map, simpleInArchive, path)
+                        } else {
+                            simpleInArchive.archiveItems.forEach {
+                                item ->
+                                        getOrCreate(item, map, simpleInArchive)
+                            }
+                        }
+                    }*/
+                } catch (SevenZipException e) {
+                    //ignored
+                }
+                return null;
+            }
+        };
+        //FileStructureUtils.getAndUse(getFileHandle(), )
+        return Collections.emptyMap();
     }
 
     @Override
@@ -73,17 +110,10 @@ public class WADArchiveHandler extends BaseArchiveHandler<WADArchiveHandler.WADA
             return archive;
         }
 
-        //TODO IMPLEMENT THIS
-        /**
-         *fun <R> useStream(block: (SevenZipArchiveHolder) -> R): R {
-         *  return stream.use {
-         *    block(this)
-         *  }
-         *}
-         *
-         */
-        public void useStream( WADArchiveHolder holder) throws IOException {
-
+        public <R> R useStream(Function<WADArchiveHolder, R> block) throws IOException {
+            try (stream) {
+                return block.apply(this);
+            }
         }
 
         public void closeStream() throws IOException {
@@ -91,8 +121,8 @@ public class WADArchiveHandler extends BaseArchiveHandler<WADArchiveHandler.WADA
         }
 
         public void close() throws IOException {
-            try(stream) {
-                try(archive) {
+            try (stream) {
+                try (archive) {
                     simpleInterface.close();
                 }
             }
