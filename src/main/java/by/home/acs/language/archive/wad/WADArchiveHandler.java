@@ -16,6 +16,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import static by.home.acs.language.archive.FileStructureUtils.convertPathToIdea;
+import static by.home.acs.language.archive.FileStructureUtils.getAndUse;
+
 //TODO implement methods and test on actual wad archive. Also check is it binary
 public class WADArchiveHandler extends BaseArchiveHandler<WADArchiveHandler.WADArchiveHolder> {
 
@@ -43,47 +46,110 @@ public class WADArchiveHandler extends BaseArchiveHandler<WADArchiveHandler.WADA
         return false;
     }
 
-    //TODO IMPLEMENT THIS
+    // Jesus, sorry for this method...
+    // Instead of returning getAndUse i changed the implementations
     @Override
-    protected @NotNull
-    Map<String, EntryInfo> createEntriesMap() {
-        //var block1 = getFileHandle()
-        var block2 = new Function<WADArchiveHolder, Map<String, EntryInfo>>() {
-            @Override
-            public Map<String, EntryInfo> apply(WADArchiveHolder holder) {
-                var simpleInArchive = holder.simpleInterface;
-                var archive = holder.archive;
-                try {
-                    LinkedHashMap<String, EntryInfo> stringEntryInfoLinkedHashMap = new LinkedHashMap<>(simpleInArchive.getNumberOfItems());
-                    /*.also {
-                        map ->
-                                map[""] = createRootEntry()
-                        // If it's single file archive, we need to construct its name
-                        // because 7z leaves it empty, respecting cases with merged extensions like "tgz"
-                        // For some archives (like xz) format is null
-                        if (isSingleFileArchive(archive)) {
-                            val entry = simpleInArchive.archiveItems[0]
-                            val path = createEntryNameForSingleArchive(entry)
-                            getOrCreate(entry, map, simpleInArchive, path)
-                        } else {
-                            simpleInArchive.archiveItems.forEach {
-                                item ->
-                                        getOrCreate(item, map, simpleInArchive)
+    @NotNull
+    protected Map<String, EntryInfo> createEntriesMap() throws IOException {
+        getAndUse(getFileHandle(), holder -> {
+            try {
+                return holder.useStream(wadArchiveHolder -> {
+                    var simpleInArchive = holder.simpleInterface;
+                    var archive = holder.archive;
+                    if (archive != null) {
+                        try {
+                            var stringEntryInfoLinkedHashMap = new LinkedHashMap<String, EntryInfo>(simpleInArchive.getNumberOfItems());
+                            stringEntryInfoLinkedHashMap.put("", createRootEntry());
+                            if (isSingleFileArchive(archive)) {
+                                var entry = simpleInArchive.getArchiveItem(0);
+                                var path = createEntryNameForSingleArchive(entry);
+                                return getOrCreate(entry, stringEntryInfoLinkedHashMap, simpleInArchive, path);
+                            } else {
+                                for (ISimpleInArchiveItem item : simpleInArchive.getArchiveItems()) {
+                                    return getOrCreate(item, stringEntryInfoLinkedHashMap, simpleInArchive, null);
+                                }
                             }
+                        } catch (SevenZipException ignored) {
                         }
-                    }*/
-                } catch (SevenZipException e) {
-                    //ignored
-                }
-                return null;
+                    }
+                    return Collections.emptyMap();
+                });
+            } catch (IOException ignored) {
             }
-        };
-        //FileStructureUtils.getAndUse(getFileHandle(), )
+            return Collections.emptyMap();
+        });
         return Collections.emptyMap();
     }
 
+    private EntryInfo getOrCreate(ISimpleInArchiveItem item, LinkedHashMap<String, EntryInfo> map,
+                                  ISimpleInArchive archive, String altEntryName) throws SevenZipException {
+        var entryName = altEntryName == null ? convertPathToIdea(item.getPath()) : altEntryName;
+        var info = map.get(entryName);
+        if (info != null) {
+            return info;
+        }
+        var path = splitPathAndFix(entryName);
+        var parentInfo = getOrCreate(path.first, map, archive);
+        if (".".equals(path.second)) {
+            return parentInfo;
+        }
+        var shortName = convertNameToBytes(path.second);
+        var definedLength = checkLengthOrCreate(item.getSize());
+        var definedCreationTime = checkCreationTimeOrCreate(item);
+        info = new EntryInfo(shortName, item.isFolder(), definedLength, definedCreationTime, parentInfo);
+        map.put(entryName, info);
+        return info;
+    }
+
+    private EntryInfo getOrCreate(String entryName, LinkedHashMap<String, EntryInfo> map, ISimpleInArchive archive) throws SevenZipException {
+        var info = map.get(entryName);
+        if (info != null) {
+            var items = archive.getArchiveItems();
+            for (ISimpleInArchiveItem item : items) {
+                var myItem = convertPathToIdea(item.getPath());
+                if (myItem.equals(entryName)) {
+                    return getOrCreate(item, map, archive, null);
+                }
+            }
+            var path = splitPathAndFix(entryName);
+            var parentInfo = getOrCreate(path.first, map, archive);
+            info = new EntryInfo(convertNameToBytes(path.second), true, DEFAULT_LENGTH, DEFAULT_TIMESTAMP, parentInfo);
+            map.put(entryName, info);
+        }
+        if (info != null && !info.isDirectory) {
+            info = new EntryInfo(info.shortName, true, info.length, info.timestamp, info.parent);
+            map.put(entryName, info);
+        }
+        return info;
+    }
+
+    private Long checkLengthOrCreate(Long size) {
+        return size == null ? DEFAULT_LENGTH : size;
+    }
+
+    private Long checkCreationTimeOrCreate(ISimpleInArchiveItem item) throws SevenZipException {
+        return item.getCreationTime() == null ? DEFAULT_TIMESTAMP : item.getCreationTime().getTime();
+    }
+
+    @SuppressWarnings("Not suggested merged archive extensions")
+    private String createEntryNameForSingleArchive(ISimpleInArchiveItem entry) throws SevenZipException {
+        var path = convertPathToIdea(entry.getPath());
+        if (!path.isEmpty()) {
+            return path;
+        }
+        var archiveFileName = getFile().getName();
+        return archiveFileName.substring(0, archiveFileName.lastIndexOf('.'));
+    }
+
+    private boolean isSingleFileArchive(IInArchive archive) throws SevenZipException {
+        return (archive.getNumberOfItems() == 1 && archive.getArchiveFormat() == null)
+                || !archive.getArchiveFormat().supportMultipleFiles();
+    }
+
+
     @Override
-    public @NotNull byte[] contentsToByteArray(@NotNull String relativePath) throws IOException {
+    public @NotNull
+    byte[] contentsToByteArray(@NotNull String relativePath) throws IOException {
         return new byte[0];
     }
 
@@ -99,7 +165,6 @@ public class WADArchiveHandler extends BaseArchiveHandler<WADArchiveHandler.WADA
         }
 
         @Nullable
-        @SuppressWarnings("May throw NPE")
         public IInArchive toArchive() {
             IInArchive archive = null;
             try (stream) {
@@ -161,12 +226,15 @@ public class WADArchiveHandler extends BaseArchiveHandler<WADArchiveHandler.WADA
             try {
                 final var openedFile = getRandomFile();
                 switch (seekOrigin) {
-                    case ISeekableStream.SEEK_SET: openedFile.seek(offset);
-                    break;
-                    case ISeekableStream.SEEK_CUR: openedFile.seek(openedFile.getFilePointer() + offset);
-                    break;
-                    case ISeekableStream.SEEK_END: openedFile.seek(openedFile.length() + offset);
-                    break;
+                    case ISeekableStream.SEEK_SET:
+                        openedFile.seek(offset);
+                        break;
+                    case ISeekableStream.SEEK_CUR:
+                        openedFile.seek(openedFile.getFilePointer() + offset);
+                        break;
+                    case ISeekableStream.SEEK_END:
+                        openedFile.seek(openedFile.length() + offset);
+                        break;
                     default:
                         throw new IllegalArgumentException("Seek: unknown origin" + seekOrigin);
                 }

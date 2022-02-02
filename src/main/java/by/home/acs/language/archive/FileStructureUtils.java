@@ -154,6 +154,10 @@ public class FileStructureUtils {
         }
     }
 
+    public static String convertPathToIdea(String path) {
+        return path == null ? "" : path.replace('\\', '/');
+    }
+
     private static class PsiGenericDirectoryNode extends PsiDirectoryNode {
         private final ViewSettings myViewSettings;
 
