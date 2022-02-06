@@ -68,6 +68,7 @@
         <stubElementTypeHolder class="by.home.acs.language.stub.parsing.ACSStubElementTypes"/>
         <stubIndex implementation="by.home.acs.language.stub.function.ACSStubFunctionIndex"/>
         <stubIndex implementation="by.home.acs.language.stub.variable.ACSStubVariableIndex"/>
+        <treeStructureProvider implementation="by.home.acs.language.archive.structure.ArchiveFileStructureProvider"/>
     </extensions>
 
     <!--    <extensionPoints>-->
