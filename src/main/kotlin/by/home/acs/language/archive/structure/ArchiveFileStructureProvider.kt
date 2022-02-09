@@ -2,6 +2,8 @@ package by.home.acs.language.archive.structure
 
 import by.home.acs.language.archive.pk3.Pk3FileNode
 import by.home.acs.language.archive.util.FileStructureUtil
+import by.home.acs.language.archive.wad.WADArchiveFileType
+import by.home.acs.language.archive.wad.WADArchivePsiFileNode
 import com.intellij.ide.highlighter.ArchiveFileType
 import com.intellij.ide.projectView.TreeStructureProvider
 import com.intellij.ide.projectView.ViewSettings
@@ -9,7 +11,6 @@ import com.intellij.ide.projectView.impl.nodes.PsiFileNode
 import com.intellij.ide.util.treeView.AbstractTreeNode
 import com.intellij.openapi.vfs.LocalFileSystem
 import com.intellij.psi.PsiManager
-import java.util.*
 
 class ArchiveFileStructureProvider : TreeStructureProvider {
     override fun modify(
@@ -40,7 +41,7 @@ class ArchiveFileStructureProvider : TreeStructureProvider {
                     }
                     return when (node.virtualFile?.fileType) {
                         is ArchiveFileType -> Pk3FileNode(node.project, psiFile, node.settings)
-//                        is SevenZipArchiveFileType -> SevenZipPsiFileNode(node.project, psiFile, node.settings)
+                        is WADArchiveFileType -> WADArchivePsiFileNode(node.project, psiFile, node.settings)
                         else -> node
                     }
                 } catch (t: Throwable) {

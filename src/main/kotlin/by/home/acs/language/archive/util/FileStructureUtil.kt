@@ -1,5 +1,7 @@
 package by.home.acs.language.archive.util
 
+import by.home.acs.language.archive.wad.WADArchiveFileSystem
+import by.home.acs.language.archive.wad.WADArchiveHandler
 import com.google.common.hash.Hashing
 import com.intellij.ide.projectView.ViewSettings
 import com.intellij.ide.projectView.impl.nodes.BasePsiNode
@@ -20,11 +22,11 @@ import com.intellij.psi.PsiFileSystemItem
 import com.intellij.util.containers.ContainerUtil
 import com.intellij.util.io.FileAccessorCache
 import com.intellij.util.io.URLUtil
+import net.sf.sevenzipjbinding.ExtractOperationResult
 import org.apache.commons.lang.StringUtils
 import java.io.File
 import java.nio.charset.Charset
 import java.nio.file.Files
-import java.util.*
 
 fun processPsiDirectoryChildren(
     children: Array<PsiElement>,
@@ -119,7 +121,7 @@ object FileStructureUtil {
         return StringUtils.countMatches(path, FS_SEPARATOR) > 0
     }
 
-    private fun getPluginTempFolder(): File {
+    fun getPluginTempFolder(): File {
         val tmpDir = PathManager.getTempPath()
         return File(tmpDir, PluginUtils.PLUGIN_NAME)
     }
@@ -142,12 +144,12 @@ object FileStructureUtil {
         }
         val outFile = File(outFolder, file.name)
         if (!outFile.exists()) {
-
+            if (!tryToDirectCopyFile(file, outFile)) {
                 val stream = file.inputStream
                 file.inputStream.use {
                     Files.copy(stream, outFile.toPath())
                 }
-
+            }
         }
         return outFile
     }
@@ -155,7 +157,7 @@ object FileStructureUtil {
     /**
      * Trying to speed up file ops
      */
-    /*private fun tryToDirectCopyFile(file: VirtualFile, outFile: File): Boolean {
+    private fun tryToDirectCopyFile(file: VirtualFile, outFile: File): Boolean {
         return try {
             tryToGetSevenZipStream(file)?.let { stream ->
                 stream.holder.useStream {
@@ -170,15 +172,15 @@ object FileStructureUtil {
         } catch (e: Throwable) {
             false
         }
-    }*/
+    }
 
-    /*private fun tryToGetSevenZipStream(file: VirtualFile): SevenZipArchiveHandler.SevenZipInputStream? {
-        return (file.fileSystem as? SevenZipArchiveFileSystem)?.let { fs ->
-            (fs.getHandlerForFile(file) as? SevenZipArchiveHandler)?.let { handler ->
+    private fun tryToGetSevenZipStream(file: VirtualFile): WADArchiveHandler.WADInputStream? {
+        return (file.fileSystem as? WADArchiveFileSystem)?.let { fs ->
+            (fs.getHandlerForFile(file) as? WADArchiveHandler)?.let { handler ->
                 handler.getInputStreamForFile(file)
             }
         }
-    }*/
+    }
 
     fun convertPathToIdea(path: String?): String {
         return path?.replace('\\', '/') ?: ""

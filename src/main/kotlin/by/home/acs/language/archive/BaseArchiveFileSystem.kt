@@ -3,7 +3,6 @@ package by.home.acs.language.archive
 import by.home.acs.language.archive.util.FileStructureUtil
 import com.intellij.openapi.util.io.FileUtil
 import com.intellij.openapi.util.text.StringUtil
-import com.intellij.openapi.vfs.LocalFileProvider
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.openapi.vfs.newvfs.ArchiveFileSystem
 import com.intellij.openapi.vfs.newvfs.VfsImplUtil
@@ -11,7 +10,7 @@ import com.intellij.openapi.vfs.newvfs.VfsImplUtil
 abstract class BaseArchiveFileSystem(
     private val fsProtocol: String,
     private val fsSeparator: String = FileStructureUtil.FS_SEPARATOR
-) : ArchiveFileSystem(), LocalFileProvider {
+) : ArchiveFileSystem() {
     private fun getVirtualFileForArchive(entryFile: VirtualFile?): VirtualFile? {
         return if (entryFile == null) null else getLocalByEntry(entryFile)
     }
