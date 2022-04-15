@@ -3,7 +3,6 @@
 package by.home.acs.language.formatter;
 
 import by.home.acs.language.ACSScriptLanguage;
-import by.home.acs.language.ACSScriptTypes;
 import com.intellij.formatting.*;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.util.TextRange;
@@ -13,12 +12,15 @@ import com.intellij.psi.codeStyle.CodeStyleSettings;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import static by.home.acs.language.ACSScriptTypes.SEMICOLON;
+import static by.home.acs.language.ACSScriptTypes.VARIABLE_INITIALIZATION;
+
 public class SimpleFormattingModelBuilder implements FormattingModelBuilder {
 
     private static SpacingBuilder createSpaceBuilder(CodeStyleSettings settings) {
         return new SpacingBuilder(settings, ACSScriptLanguage.INSTANCE)
-                .around(ACSScriptTypes.SCRIPT_BODY)
-                .lineBreakInCode();
+                .afterInside(VARIABLE_INITIALIZATION, SEMICOLON).lineBreakInCode()
+                .after(SEMICOLON).spaces(1);
     }
 
     @NotNull
